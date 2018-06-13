@@ -1,147 +1,178 @@
-import React from "react";
+import React from 'react'
 import {
     BrowserRouter as Router,
     Route,
     Link,
     Redirect,
     withRouter
-} from "react-router-dom";
+} from 'react-router-dom'
 
-////////////////////////////////////////////////////////////
-// 1. Click the public page
-// 2. Click the protected page
-// 3. Log in
-// 4. Click the back button, note the URL each time
-
-let session = undefined;
-
-fetch('http://localhost:3001/content',
-    {
-        credentials: 'include',
-        method: 'post',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({})
-    }
-).then(res => {
-    session = res.status === '200';
-});
+import LoginForm from './components/Login'
+import RegisterForm from './components/Register'
 
 const AuthExample = () => (
     <Router>
         <div>
-            {/*  <AuthButton/>*/}
+            <AuthButton/>
             <ul>
-                <li>
-                    <Link to="/public">Public Page</Link>
-                </li>
-                <li>
-                    <Link to="/protected">Protected Page</Link>
-                </li>
+                <li><Link to="/public">Public Page</Link></li>
+                <li><Link to="/protected">Protected Page</Link></li>
+                <li><Link to="/register">Register a New User</Link></li>
             </ul>
-            <Route path="/public" component={Public}/>
-            <Route path="/login" component={Login}/>
-            <PrivateRoute path="/protected" component={Protected}/>
+                <Route path="/public" component={Public}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/register" component={Register}/>
+                <PrivateRoute path="/protected" component={Protected}/>
         </div>
     </Router>
-);
+)
 
 const auth = {
-    isAuthenticated: () => session,
+    isAuthenticated: false,
     authenticate(cb) {
-        fetch('http://localhost:3001/login',
-            {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({username: "amy", password: "amyspassword"})
-            }
-        ).then(res => {
-            session = res.status === '200';
-        });
+        fetch('/user', {
+            credentials: 'include'
+        })
+            .then((res) => {
+                this.isAuthenticated = true
+                if (typeof cb === 'function') {
+                    cb(res.json().user);
+                }
+            })
+            .catch((err) => {
+                console.log('Error fetching authorized user.');
+            });
     },
     signout(cb) {
-        fetch('http://localhost:3001/logout',
-            {
-                method: 'post',
-                body: JSON.stringify({})
-            }
-        );
-    }
-};
-
-const AuthButton = withRouter(
-    ({history}) =>
-        auth.isAuthenticated().then(res => {
-            res ? (
-                <p>
-                    Welcome!{" "}
-                    <button
-                        onClick={() => {
-                            auth.signout(() => history.push("/"));
-                        }}
-                    >
-                        Sign out
-                    </button>
-                </p>
-            ) : (
-                <p>You are not logged in.</p>
-            )
+        fetch('/api/logout', {
+            method: 'POST',
+            credentials: 'include'
         })
-);
+            .then((res) => {
+                this.isAuthenticated = false;
+                if (typeof cb === 'function') {
+                    // user was logged out
+                    cb(true);
+                }
+            })
+            .catch((err) => {
+                console.log('Error logging out user.');
+                if (typeof cb === 'function') {
+                    // user was not logged out
+                    cb(false);
+                }
+            });
+    }
+}
 
-
-const PrivateRoute = ({component: Component, ...rest}) => {
-    return (
-        <Route
-            {...rest}
-            render={props =>
-                auth.isAuthenticated() ? (
-                    <Component {...props} />
-                ) : (
-                    <Redirect
-                        to={{
-                            pathname: "/login",
-                            state: {from: props.location}
-                        }}
-                    />
-                )
-            }
-        />
+const AuthButton = withRouter(({history}) => (
+    auth.isAuthenticated ? (
+        <p>
+            Welcome! <button onClick={() => {
+            auth.signout(() => history.push('/'))
+        }}>Sign out</button>
+        </p>
+    ) : (
+        <p>You are not logged in.</p>
     )
-};
+))
 
-const Public = () => <h3>Public</h3>;
-const Protected = () => <h3>Protected</h3>;
+const PrivateRoute = ({component: Component, ...rest}) => (
+    <Route {...rest} render={props => (
+        auth.isAuthenticated ? (
+            <Component {...props}/>
+        ) : (
+            <Redirect to={{
+                pathname: '/login',
+                state: {from: props.location}
+            }}/>
+        )
+    )}/>
+)
+
+const Public = () => <h3>Public</h3>
+const Protected = () => <h3>Protected</h3>
 
 class Login extends React.Component {
     state = {
         redirectToReferrer: false
-    };
+    }
 
-    login = () => {
-        auth.authenticate();
-    };
+    login = (data) => {
+        console.log('Logging in ' + data.username);
+        fetch('/api/login', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    auth.authenticate(() => {
+                        this.setState({redirectToReferrer: true})
+                    });
+                } else {
+                    alert('Could not log in');
+                }
+            })
+            .catch((err) => {
+                console.log('Error logging in.', err);
+            });
+    }
 
     render() {
-        const {from} = this.props.location.state || {from: {pathname: "/"}};
-        const {redirectToReferrer} = this.state;
+        const {from} = this.props.location.state || {from: {pathname: '/'}}
+        const {redirectToReferrer} = this.state
 
         if (redirectToReferrer) {
-            return <Redirect to={from}/>;
+            return (
+                <Redirect to={from}/>
+            )
         }
 
         return (
             <div>
                 <p>You must log in to view the page at {from.pathname}</p>
-                <button onClick={this.login}>Log in</button>
+                <LoginForm onLogin={this.login}/>
             </div>
-        );
+        )
     }
 }
 
-export default AuthExample;
+class Register extends React.Component {
+    state = {
+        redirectToReferrer: false
+    }
+
+    register = (data) => {
+        fetch('/register', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log('Succesfully registered user!');
+                }
+            })
+            .catch((err) => {
+                console.log('Error registering user.', err);
+            });
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>Register a New User</h1>
+                <RegisterForm onRegister={this.register}/>
+            </div>
+        )
+    }
+}
+
+export default AuthExample

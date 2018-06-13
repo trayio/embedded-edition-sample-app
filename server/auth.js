@@ -9,7 +9,7 @@ module.exports = function (app) {
     }));
 
 // Authentication and Authorization Middleware
-    var auth = function(req, res, next) {
+    var auth = function (req, res, next) {
         console.log(req.session);
         if (req.session && req.session.user === "amy" && req.session.admin)
             return next();
@@ -18,29 +18,29 @@ module.exports = function (app) {
     };
 
 // Login endpoint
-    app.post('/login', function (req, res) {
+    app.post('/api/login', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         console.log(req.body);
 
-        if(req.body.username !== "amy" || req.body.password !== "amyspassword") {
-            console.log('login failed');
-            res.send('login failed');
-        } else if(req.body.username === "amy" && req.body.password === "amyspassword") {
+        if (req.body.username === "amy" && req.body.password === "amyspassword") {
             req.session.user = "amy";
             req.session.admin = true;
             res.send('login successs');
             console.log('login successs');
+        } else {
+            console.log('login failed');
+            res.status(401).send('login failed');
         }
     });
 
 // Logout endpoint
-    app.post('/logout', function (req, res) {
+    app.post('/api/logout', function (req, res) {
         req.session.destroy();
         res.send("logout success!");
     });
 
 // Get content endpoint
-    app.post('/content', auth, function (req, res) {
+    app.get('/api/content', auth, function (req, res) {
         res.send("You can only see this after you've logged in.");
     });
 }
