@@ -1,6 +1,6 @@
 import React from 'react'
 
-class LoginForm extends React.Component {
+class RegisterForm extends React.Component {
     // refs
     form: null;
     usernameElem: null;
@@ -34,4 +34,4 @@ class LoginForm extends React.Component {
     }
 }
 
-export default LoginForm
+export default RegisterForm

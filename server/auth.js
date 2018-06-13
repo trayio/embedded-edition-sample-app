@@ -4,7 +4,7 @@ const express = require('express');
 users = [
     {
         username: "amy",
-        password: "amypassword"
+        password: "amyspassword"
     }
 ]
 

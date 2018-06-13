@@ -7,25 +7,8 @@ import {
     withRouter
 } from 'react-router-dom'
 
-import LoginForm from './components/Login'
-import RegisterForm from './components/Register'
-
-const AuthExample = () => (
-    <Router>
-        <div>
-            <AuthButton/>
-            <ul>
-                <li><Link to="/public">Public Page</Link></li>
-                <li><Link to="/protected">Protected Page</Link></li>
-                <li><Link to="/register">Register a New User</Link></li>
-            </ul>
-                <Route path="/public" component={Public}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/register" component={Register}/>
-                <PrivateRoute path="/protected" component={Protected}/>
-        </div>
-    </Router>
-)
+import LoginForm from './LoginForm'
+import RegisterForm from './RegisterForm'
 
 const auth = {
     isAuthenticated: false,
@@ -65,7 +48,7 @@ const auth = {
     }
 }
 
-const AuthButton = withRouter(({history}) => (
+export const AuthButton = withRouter(({history}) => (
     auth.isAuthenticated ? (
         <p>
             Welcome! <button onClick={() => {
@@ -77,7 +60,7 @@ const AuthButton = withRouter(({history}) => (
     )
 ))
 
-const PrivateRoute = ({component: Component, ...rest}) => (
+export const PrivateRoute = ({component: Component, ...rest}) => (
     <Route {...rest} render={props => (
         auth.isAuthenticated ? (
             <Component {...props}/>
@@ -90,10 +73,10 @@ const PrivateRoute = ({component: Component, ...rest}) => (
     )}/>
 )
 
-const Public = () => <h3>Public</h3>
-const Protected = () => <h3>Protected</h3>
+export const Public = () => <h3>Public</h3>
+export const Protected = () => <h3>Protected</h3>
 
-class Login extends React.Component {
+export class Login extends React.Component {
     state = {
         redirectToReferrer: false
     }
@@ -141,7 +124,7 @@ class Login extends React.Component {
     }
 }
 
-class Register extends React.Component {
+export  class Register extends React.Component {
     state = {
         redirectToReferrer: false
     }
@@ -175,4 +158,3 @@ class Register extends React.Component {
     }
 }
 
-export default AuthExample
