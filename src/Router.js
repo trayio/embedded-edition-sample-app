@@ -4,7 +4,8 @@ import {
     Route,
     Link,
     Redirect,
-    withRouter
+    withRouter,
+    Switch,
 } from 'react-router-dom'
 import {
     PrivateRoute,
@@ -14,20 +15,18 @@ import {
     Register,
     Protected,
 } from "./components/Auth";
+import Dashboard from "./components/Dashboard";
 
 const App = () => (
     <Router>
         <div>
-            <AuthButton/>
-            <ul>
-                <li><Link to="/public">Public Page</Link></li>
-                <li><Link to="/protected">Protected Page</Link></li>
-                <li><Link to="/register">Register a New User</Link></li>
-            </ul>
+            <Switch>
+                <Redirect from="/" to="/dashboard"/>
+            </Switch>
             <Route path="/public" component={Public}/>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
-            <PrivateRoute path="/protected" component={Protected}/>
+            <PrivateRoute path="/dashboard" component={Dashboard}/>
         </div>
     </Router>
 )
