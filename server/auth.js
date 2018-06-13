@@ -1,5 +1,13 @@
 const express = require('express');
 
+// In-memory users instead of a DB
+users = [
+    {
+        username: "amy",
+        password: "amypassword"
+    }
+]
+
 module.exports = function (app) {
 
     app.use(require('express-session')({
@@ -8,7 +16,7 @@ module.exports = function (app) {
         saveUninitialized: true
     }));
 
-// Authentication and Authorization Middleware
+    // Authentication and Authorization Middleware
     var auth = function (req, res, next) {
         console.log(req.session);
         if (req.session && req.session.user === "amy" && req.session.admin)
@@ -17,12 +25,14 @@ module.exports = function (app) {
             return res.sendStatus(401);
     };
 
-// Login endpoint
+    // Login endpoint
     app.post('/api/login', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         console.log(req.body);
 
-        if (req.body.username === "amy" && req.body.password === "amyspassword") {
+        const usrFound = users.filter(user => user.username === req.body.username && user.password === req.body.password);
+
+        if (usrFound.length) {
             req.session.user = "amy";
             req.session.admin = true;
             res.send('login successs');
@@ -33,14 +43,31 @@ module.exports = function (app) {
         }
     });
 
-// Logout endpoint
+    // Logout endpoint
     app.post('/api/logout', function (req, res) {
         req.session.destroy();
         res.send("logout success!");
     });
 
-// Get content endpoint
-    app.get('/api/content', auth, function (req, res) {
-        res.send("You can only see this after you've logged in.");
+    // Register endpoint
+    app.post('/api/register', function (req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        console.log(req.body);
+
+        if (req.body.username && req.body.password) {
+            users.push(
+                {
+                    username: req.body.username,
+                    password: req.body.password,
+                }
+            )
+
+            console.log(`successfully created user ${req.body.username}`);
+            res.status(200).send(`successfully created user ${req.body.username}`);
+        } else {
+            console.log(`unable to create user from ${req.body}`);
+            res.status(200).send(`unable to create user from ${req.body}`);
+        }
     });
+
 }

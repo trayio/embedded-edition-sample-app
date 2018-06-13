@@ -147,7 +147,7 @@ class Register extends React.Component {
     }
 
     register = (data) => {
-        fetch('/register', {
+        fetch('/api/register', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
