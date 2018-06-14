@@ -16,6 +16,7 @@ import {
     Protected,
 } from "./components/Auth";
 import Dashboard from "./components/Dashboard";
+import Nav from "./components/Nav";
 
 const App = () => (
     <Router>
@@ -23,7 +24,6 @@ const App = () => (
             <Switch>
                 <Redirect from="/" to="/dashboard"/>
             </Switch>
-            <Route path="/public" component={Public}/>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
             <PrivateRoute path="/dashboard" component={Dashboard}/>
