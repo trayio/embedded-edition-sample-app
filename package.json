@@ -5,11 +5,16 @@
   "dependencies": {
     "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.1.0",
+    "apollo-boost": "^0.1.9",
+    "apollo-link-context": "^1.0.8",
     "body-parser": "^1.17.2",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
+    "graphql": "^0.13.2",
+    "graphql-tag": "^2.9.2",
     "morgan": "^1.9.0",
     "react": "^16.4.0",
+    "react-apollo": "^2.1.5",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4"
