@@ -1,20 +1,15 @@
-import React, {Component} from 'react';
-import Button from '@material-ui/core/Button';
-import Nav from '../Nav';
+import React from 'react';
 import View from '../View';
-import gql from "graphql-tag";
-import ApolloClient from "apollo-client";
-import {createHttpLink} from 'apollo-link-http';
-import {setContext} from 'apollo-link-context';
-import {InMemoryCache} from 'apollo-cache-inmemory';
 import request from 'request';
 import {get} from 'lodash';
-
+import Error from '../Error';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export class Account extends React.Component {
 
     state = {
         loading: true,
+        error: false,
         userInfo: {},
     }
 
@@ -25,19 +20,26 @@ export class Account extends React.Component {
             console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
             console.log('body:', body); // Print the HTML for the Google homepage.
 
-            this.setState({
-                userInfo: JSON.parse(body),
-                loading: false,
-            })
+            if (response.statusCode !== 200) {
+                this.setState({
+                    error: body,
+                    loading: false,
+                })
+            } else {
+                this.setState({
+                    userInfo: JSON.parse(body),
+                    loading: false,
+                })
+            }
         });
     }
 
     render() {
         let data;
         if (this.state.loading) {
-            data = <div>Loading...</div>;
+            data =   <CircularProgress/>;
         } else {
-            data = <div>{get(this.state, 'userInfo.data.viewer.details.email')}</div>
+            data = this.state.error ? <Error msg={this.state.error}/> : <div>{get(this.state, 'userInfo.data.viewer.details.email')}</div>
         }
         return (
             <View>

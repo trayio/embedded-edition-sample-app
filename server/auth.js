@@ -1,11 +1,15 @@
 const express = require('express');
+import {get} from 'lodash';
 
 // In-memory users instead of a DB
-users = [
+const users = [
     {
         username: "amy",
         password: "amyspassword"
-    }
+    }, {
+        username: "test",
+        password: "test"
+    },
 ]
 
 module.exports = function (app) {
@@ -16,15 +20,6 @@ module.exports = function (app) {
         saveUninitialized: true
     }));
 
-    // Authentication and Authorization Middleware
-    var auth = function (req, res, next) {
-        console.log(req.session);
-        if (req.session && req.session.user === "amy" && req.session.admin)
-            return next();
-        else
-            return res.sendStatus(401);
-    };
-
     // Login endpoint
     app.post('/api/login', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
@@ -33,7 +28,7 @@ module.exports = function (app) {
         const usrFound = users.filter(user => user.username === req.body.username && user.password === req.body.password);
 
         if (usrFound.length) {
-            req.session.user = "amy";
+            req.session.user = get(usrFound, '[0].username');
             req.session.admin = true;
             res.send('login successs');
             console.log('login successs');
@@ -70,4 +65,14 @@ module.exports = function (app) {
         }
     });
 
+    //Authenticate all endpoints except the four defined in this module
+    app.use(function (req, res, next) {
+        console.log(req.session);
+
+        //WARNING: Right now only user 'amy' can successfully authenticate with API
+        if (req.session && req.session.user === "amy" && req.session.admin)
+            return next();
+        else
+            return res.sendStatus(401);
+    });
 }
