@@ -15,8 +15,8 @@ app.use(function (req, res, next) {
 
 // Configure Express application.
 app.use(require('morgan')('tiny'));
-
 require('./auth')(app);
+require('./graphql')(app);
 
 //app.use(express.static('build'))
 
