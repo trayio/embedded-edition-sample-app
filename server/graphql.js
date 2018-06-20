@@ -13,19 +13,42 @@ module.exports = function (app, client) {
     app.get('/api/account', (req, response) => {
 
         let query = gql`
-      {
-  viewer {
-    details {
-			username
-			email
-		}
-    }
-  }
-    `
+            {
+                viewer {
+                    details {
+                        username
+                        email
+                    }
+                }
+            }
+        `
         client.query({query}).then((results) => {
             response.status(200).send(results);
         }).catch(reason => {
             response.status(500).send(reason);
         })
     });
+
+    app.get('/api/templates', (req, response) => {
+
+        let query = gql`
+            {
+                viewer {
+                    templates {
+                        edges {
+                            node {
+                                title
+                            }
+                        }
+                    }
+                }
+            }
+        `
+        client.query({query}).then((results) => {
+            response.status(200).send(results);
+        }).catch(reason => {
+            response.status(500).send(reason);
+        })
+    });
+
 }
