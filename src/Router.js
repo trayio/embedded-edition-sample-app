@@ -18,8 +18,8 @@ import {
 import Dashboard from "./components/views/Dashboard";
 import Account from "./components/views/Account";
 import Billing from "./components/views/Billing";
-import Integrations from "./components/views/Integrations";
-import Nav from "./components/Nav";
+import Discover from "./components/views/IntegrationsDiscover";
+import Mine from "./components/views/IntegrationsMine";
 
 const App = () => (
     <Router>
@@ -32,7 +32,8 @@ const App = () => (
             <PrivateRoute path="/dashboard" component={Dashboard}/>
             <PrivateRoute path="/account" component={Account}/>
             <PrivateRoute path="/billing" component={Billing}/>
-            <PrivateRoute path="/integrations" component={Integrations}/>
+            <PrivateRoute path="/integrations/discover" component={Discover}/>
+            <PrivateRoute path="/integrations/mine" component={Mine}/>
         </div>
     </Router>
 )

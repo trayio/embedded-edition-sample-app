@@ -30,7 +30,6 @@ module.exports = function (app, client) {
     });
 
     app.get('/api/templates', (req, response) => {
-
         let query = gql`
             {
                 viewer {
