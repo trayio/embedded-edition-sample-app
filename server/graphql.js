@@ -2,6 +2,7 @@ const express = require('express');
 const https = require('https');
 const request = require('request');
 require('request-debug')(request);
+import {get} from 'lodash';
 
 const gqlEndpoint = 'https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql',
     bearer = 'Bearer a18a3da9-f4e6-45a1-b2df-8e5972c45c04';
@@ -44,7 +45,8 @@ module.exports = function (app, client) {
             }
         `
         client.query({query}).then((results) => {
-            response.status(200).send(results);
+            const titles = get(results, 'data.viewer.templates.edges').map(e => e.node.title);
+            response.status(200).send(titles);
         }).catch(reason => {
             response.status(500).send(reason);
         })

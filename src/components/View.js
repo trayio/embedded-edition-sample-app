@@ -17,7 +17,7 @@ class View extends React.Component {
             <div style={styles.header}> Acme Inc.</div>
             <div style={{backgroundColor: "lightgray", display: "flex",}}>
                 <Nav/>
-                <div style={{display: 'flex', width: '100%', justifyContent: 'center'}}>
+                <div style={{display: 'flex', width: '100%', justifyContent: 'center', padding: '10px'}}>
                     {this.props.children}
                 </div>
             </div>

@@ -1,56 +1,14 @@
-import React from 'react';
+import React, {Component} from 'react';
+import Button from '@material-ui/core/Button';
+import Nav from '../Nav';
 import View from '../View';
-import {get} from 'lodash';
-import Error from '../Error';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-export class IntegrationsMine extends React.Component {
-
-    state = {
-        loading: true,
-        error: false,
-        templates: {},
-    }
-
-    componentDidMount() {
-        fetch('/api/templates', {credentials: 'include'}).then(res =>
-            res.json().then(body => {
-                if (res.ok) {
-                    this.setState({
-                        templates: body,
-                        loading: false,
-                    });
-
-                } else {
-                    this.setState({
-                        error: body,
-                        loading: false,
-                    })
-                }
-
-            })
-        );
-    }
-
+export class Billing extends React.Component {
     render() {
-        let data;
-        if (this.state.loading) {
-            data = <CircularProgress/>;
-        } else {
-            data = this.state.error ? <Error msg={this.state.error}/> :
-                <div>
-                    <ul>
-                        <li>{get(this.state, 'templates.data.viewer.templates.edges').map(e => e.node.title)}></li>
-                    </ul>
-                </div>
-        }
-        return (
-            <View>
-                {data}
-            </View>
-        )
+        return <View>
+            <div>My integrations (coming soon..)</div>
+        </View>
     }
-
 }
 
-export default IntegrationsMine;
+export default Billing;
