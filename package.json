@@ -31,8 +31,7 @@
     "api": "nodemon server/server.js --exec babel-node --presets es2015,stage-2",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "tray": "react-scripts build && node server/server.js"
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

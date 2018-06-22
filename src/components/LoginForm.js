@@ -90,7 +90,7 @@ class LoginForm extends React.Component {
                     <div style={styles.buttonsDiv}>
                         <Button
                             label="Register"
-                            href="/"
+                            href="/register"
                             icon={<PersonAdd/>}
                             color="secondary"
                         >

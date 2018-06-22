@@ -123,8 +123,7 @@ export class Login extends React.Component {
         )
     }
 }
-
-export  class Register extends React.Component {
+export class Register extends React.Component {
     state = {
         redirectToReferrer: false
     }
