@@ -14,7 +14,7 @@ import ChartIcon from '@material-ui/icons/Assessment';
 import PaymentIcon from '@material-ui/icons/Payment';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import CircleIcon from '@material-ui/icons/BlurCircular';
+import CircleIcon from '@material-ui/icons/FiberManualRecord';
 import {Link} from 'react-router-dom';
 
 const styles = theme => ({
@@ -83,7 +83,7 @@ class NestedList extends React.Component {
                                 <Link className={classes.link} to="/integrations/mine">
                                     <ListItem button className={classes.nested}>
                                         <ListItemIcon>
-                                            <CircleIcon style={{backgroundColor: "lightpink", borderRadius: 20}}/>
+                                            <CircleIcon style={{borderRadius: 20}}/>
                                         </ListItemIcon>
                                         <ListItemText inset primary="Mine"/>
                                     </ListItem>
@@ -92,7 +92,7 @@ class NestedList extends React.Component {
                                 <Link className={classes.link} to="/integrations/discover">
                                     <ListItem button className={classes.nested}>
                                         <ListItemIcon>
-                                            <CircleIcon style={{backgroundColor: "crimson", borderRadius: 20}}/>
+                                            <CircleIcon style={{borderRadius: 20}}/>
                                         </ListItemIcon>
                                         <ListItemText inset primary="Discover"/>
                                     </ListItem>
