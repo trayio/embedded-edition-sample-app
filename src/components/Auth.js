@@ -108,13 +108,13 @@ export class Login extends React.Component {
     }
 
     render() {
-        const {from} = this.props.location.state || {from: {pathname: '/'}}
-        const {redirectToReferrer} = this.state
+        const { from } = this.props.location.state || {from: {pathname: '/'}};
+        const { redirectToReferrer } = this.state;
 
         if (redirectToReferrer) {
             return (
                 <Redirect to={from}/>
-            )
+            );
         }
 
         return (
@@ -122,7 +122,7 @@ export class Login extends React.Component {
                 <p>You must log in to view the page at {from.pathname}</p>
                 <LoginForm onLogin={this.login}/>
             </div>
-        )
+        );
     }
 }
 export class Register extends React.Component {

@@ -14,17 +14,17 @@ export class Account extends React.Component {
     }
 
     componentDidMount() {
-        request.get('http://localhost:3000/api/account', (error, response, body) => {
+        request.get('http://localhost:3000/api/me', (error, response, body) => {
             if (response.statusCode !== 200) {
                 this.setState({
                     error: body,
                     loading: false,
-                })
+                });
             } else {
                 this.setState({
                     userInfo: JSON.parse(body),
                     loading: false,
-                })
+                });
             }
         });
     }
@@ -32,15 +32,18 @@ export class Account extends React.Component {
     render() {
         let data;
         if (this.state.loading) {
-            data =   <CircularProgress/>;
+            data = <CircularProgress/>;
         } else {
-            data = this.state.error ? <Error msg={this.state.error}/> : <div>{get(this.state, 'userInfo.data.viewer.details.email')}</div>
+            data = this.state.error ?
+                <Error msg={this.state.error}/> :
+                <div>{get(this.state, 'userInfo.data.viewer.details.email')}</div>;
         }
+
         return (
             <View>
                 {data}
             </View>
-        )
+        );
     }
 }
 

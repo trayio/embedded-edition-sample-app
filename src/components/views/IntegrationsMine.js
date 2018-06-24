@@ -5,9 +5,11 @@ import View from '../View';
 
 export class MyIntegrations extends React.Component {
     render() {
-        return <View>
-            <div>My integrations (coming soon..)</div>
-        </View>
+        return (
+            <View>
+                <div>My integrations (coming soon..)</div>
+            </View>
+        );
     }
 }
 

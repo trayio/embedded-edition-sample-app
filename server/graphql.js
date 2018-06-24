@@ -12,7 +12,7 @@ import gql from 'graphql-tag';
 module.exports = function (app, client) {
 
     // GET Account:
-    app.get('/api/account', (req, res) => {
+    app.get('/api/me', (req, res) => {
         const query = gql`
             {
                 viewer {
