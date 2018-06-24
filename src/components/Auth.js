@@ -12,6 +12,7 @@ import RegisterForm from './RegisterForm'
 
 const auth = {
     isAuthenticated: false,
+
     authenticate(cb) {
         fetch('/user', {
             credentials: 'include'
@@ -26,6 +27,7 @@ const auth = {
                 console.log('Error fetching authorized user.');
             });
     },
+
     signout(cb) {
         fetch('/api/logout', {
             method: 'POST',

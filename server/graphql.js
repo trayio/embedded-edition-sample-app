@@ -1,19 +1,19 @@
-const express = require('express');
 const https = require('https');
+const express = require('express');
 const request = require('request');
-require('request-debug')(request);
-import {get} from 'lodash';
 
-const gqlEndpoint = 'https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql',
-    bearer = 'Bearer a18a3da9-f4e6-45a1-b2df-8e5972c45c04';
+import { get } from 'lodash';
 
-import gql from 'graphql-tag'
+const gqlEndpoint = 'https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql';
+const bearer = 'Bearer a18a3da9-f4e6-45a1-b2df-8e5972c45c04';
+
+import gql from 'graphql-tag';
 
 module.exports = function (app, client) {
 
-    app.get('/api/account', (req, response) => {
-
-        let query = gql`
+    // GET Account:
+    app.get('/api/account', (req, res) => {
+        const query = gql`
             {
                 viewer {
                     details {
@@ -22,16 +22,19 @@ module.exports = function (app, client) {
                     }
                 }
             }
-        `
-        client.query({query}).then((results) => {
-            response.status(200).send(results);
-        }).catch(reason => {
-            response.status(500).send(reason);
-        })
+        `;
+
+        client.query({query})
+            .then((results) => {
+                res.status(200).send(results);
+            }).catch(reason => {
+                res.status(500).send(reason);
+            });
     });
 
-    app.get('/api/templates', (req, response) => {
-        let query = gql`
+    // GET Templates:
+    app.get('/api/templates', (req, res) => {
+        const query = gql`
             {
                 viewer {
                     templates {
@@ -43,13 +46,16 @@ module.exports = function (app, client) {
                     }
                 }
             }
-        `
-        client.query({query}).then((results) => {
-            const titles = get(results, 'data.viewer.templates.edges').map(e => e.node.title);
-            response.status(200).send(titles);
-        }).catch(reason => {
-            response.status(500).send(reason);
-        })
+        `;
+
+        client.query({query})
+            .then((results) => {
+                const titles = get(results, 'data.viewer.templates.edges').map(e => e.node.title);
+                res.status(200).send(titles);
+            }).catch(reason => {
+                res.status(500).send(reason);
+            });
     });
 
-}
+
+};

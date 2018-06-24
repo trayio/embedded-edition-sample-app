@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Nav from '../Nav';
 import View from '../View';
 
-export class Billing extends React.Component {
+export class MyIntegrations extends React.Component {
     render() {
         return <View>
             <div>My integrations (coming soon..)</div>
@@ -11,4 +11,4 @@ export class Billing extends React.Component {
     }
 }
 
-export default Billing;
+export default MyIntegrations;

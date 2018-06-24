@@ -5,7 +5,7 @@ const Error = ({msg}) => (
     <div>
         <div style={{border: "thick red solid", color: "red", display: "flex",}}>
             <div>
-                Error: {msg}
+                Error: {msg.toString()}
             </div>
         </div>
     </div>
