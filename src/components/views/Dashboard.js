@@ -5,11 +5,12 @@ import View from '../View';
 
 
 export class Dashboard extends React.Component {
-
     render() {
-        return <View>
-            <div> My dashboard content</div>
-        </View>
+        return (
+            <View>
+                <div> My dashboard content</div>
+            </View>
+        );
     }
 }
 

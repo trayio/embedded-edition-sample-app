@@ -26,10 +26,10 @@ module.exports = function (app) {
         res.setHeader('Content-Type', 'application/json');
         console.log(req.body);
 
-        const usrFound = users.filter(user => user.username === req.body.username && user.password === req.body.password);
+        const userFound = users.filter(user => user.username === req.body.username && user.password === req.body.password);
 
-        if (usrFound.length) {
-            req.session.user = get(usrFound, '[0].username');
+        if (userFound.length) {
+            req.session.user = get(userFound, '[0].username');
             req.session.admin = true;
             res.send('login successs');
             console.log('login successs');
@@ -56,7 +56,7 @@ module.exports = function (app) {
                     username: req.body.username,
                     password: req.body.password,
                 }
-            )
+            );
 
             console.log(`successfully created user ${req.body.username}`);
             res.status(200).send(`successfully created user ${req.body.username}`);

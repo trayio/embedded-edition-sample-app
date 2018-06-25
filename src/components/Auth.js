@@ -12,6 +12,7 @@ import RegisterForm from './RegisterForm'
 
 const auth = {
     isAuthenticated: false,
+
     authenticate(cb) {
         fetch('/user', {
             credentials: 'include'
@@ -26,6 +27,7 @@ const auth = {
                 console.log('Error fetching authorized user.');
             });
     },
+
     signout(cb) {
         fetch('/api/logout', {
             method: 'POST',
@@ -106,13 +108,13 @@ export class Login extends React.Component {
     }
 
     render() {
-        const {from} = this.props.location.state || {from: {pathname: '/'}}
-        const {redirectToReferrer} = this.state
+        const { from } = this.props.location.state || {from: {pathname: '/'}};
+        const { redirectToReferrer } = this.state;
 
         if (redirectToReferrer) {
             return (
                 <Redirect to={from}/>
-            )
+            );
         }
 
         return (
@@ -120,7 +122,7 @@ export class Login extends React.Component {
                 <p>You must log in to view the page at {from.pathname}</p>
                 <LoginForm onLogin={this.login}/>
             </div>
-        )
+        );
     }
 }
 

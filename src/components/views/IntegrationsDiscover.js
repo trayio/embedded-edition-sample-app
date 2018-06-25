@@ -16,7 +16,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 
-export class IntegrationsMine extends React.Component {
+export class DiscoverIntegrations extends React.Component {
 
     state = {
         loading: true,
@@ -32,12 +32,11 @@ export class IntegrationsMine extends React.Component {
                         templates: body,
                         loading: false,
                     });
-
                 } else {
                     this.setState({
                         error: body,
                         loading: false,
-                    })
+                    });
                 }
             })
         );
@@ -49,53 +48,57 @@ export class IntegrationsMine extends React.Component {
 
     buildList(templates) {
         console.log(templates);
-        return <Grid item>
-            <Typography variant="title">
-                Discover integrations
-            </Typography>
-            <div>
-                <List>
-                    {
-                        templates.map((title, index) =>
-                            <ListItem key={index}>
-                                <ListItemAvatar>
-                                    <Avatar style={{backgroundColor: 'black'}}>
-                                        <CloudCircle/>
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={title}
-                                    secondary={null}
-                                />
-                                <ListItemSecondaryAction>
-                                    <IconButton aria-label="Delete">
-                                        <BuildIcon onClick={(b) => this.handleClick(title)}/>
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        )
-                    }
-                </List>
-            </div>
-        </Grid>
+        return (
+            <Grid item>
+                <Typography variant="title">
+                    Discover integrations
+                </Typography>
+                <div>
+                    <List>
+                        {
+                            templates.map((title, index) =>
+                                <ListItem key={index}>
+                                    <ListItemAvatar>
+                                        <Avatar style={{backgroundColor: 'black'}}>
+                                            <CloudCircle/>
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={title}
+                                        secondary={null}
+                                    />
+                                    <ListItemSecondaryAction>
+                                        <IconButton aria-label="Delete">
+                                            <BuildIcon onClick={(b) => this.handleClick(title)}/>
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            )
+                        }
+                    </List>
+                </div>
+           </Grid>
+       );
     }
 
     render() {
         let data;
+
         if (this.state.loading) {
             data = <CircularProgress/>;
         } else {
             data = this.state.error ?
                 <Error msg={this.state.error}/> :
-                this.buildList(this.state.templates)
+                this.buildList(this.state.templates);
         }
+
         return (
             <View>
                 {data}
             </View>
-        )
+        );
     }
 
 }
 
-export default IntegrationsMine;
+export default DiscoverIntegrations;

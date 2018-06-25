@@ -13,15 +13,17 @@ class View extends React.Component {
             }
         };
 
-        return <div>
-            <div style={styles.header}> Acme Inc.</div>
-            <div style={{backgroundColor: "lightgray", display: "flex",}}>
-                <Nav/>
-                <div style={{display: 'flex', width: '100%', justifyContent: 'center', padding: '10px'}}>
-                    {this.props.children}
+        return (
+            <div>
+                <div style={styles.header}> Acme Inc.</div>
+                <div style={{backgroundColor: "lightgray", display: "flex",}}>
+                    <Nav/>
+                    <div style={{display: 'flex', width: '100%', justifyContent: 'center', padding: '10px'}}>
+                        {this.props.children}
+                    </div>
                 </div>
             </div>
-        </div>;
+        );
     }
 }
 

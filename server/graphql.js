@@ -1,19 +1,12 @@
-const express = require('express');
-const https = require('https');
-const request = require('request');
-require('request-debug')(request);
-import {get} from 'lodash';
+// Module with all graphql queries and mutations:
 
-const gqlEndpoint = 'https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql',
-    bearer = 'Bearer a18a3da9-f4e6-45a1-b2df-8e5972c45c04';
+import gql from 'graphql-tag';
 
-import gql from 'graphql-tag'
+const client = require('./client');
 
-module.exports = function (app, client) {
-
-    app.get('/api/account', (req, response) => {
-
-        let query = gql`
+export const queries = {
+    me: () => {
+        const query = gql`
             {
                 viewer {
                     details {
@@ -22,16 +15,13 @@ module.exports = function (app, client) {
                     }
                 }
             }
-        `
-        client.query({query}).then((results) => {
-            response.status(200).send(results);
-        }).catch(reason => {
-            response.status(500).send(reason);
-        })
-    });
+        `;
 
-    app.get('/api/templates', (req, response) => {
-        let query = gql`
+        return client.query({query});
+    },
+
+    templates: () => {
+        const query = gql`
             {
                 viewer {
                     templates {
@@ -43,45 +33,30 @@ module.exports = function (app, client) {
                     }
                 }
             }
-        `
-        client.query({query}).then((results) => {
-            const titles = get(results, 'data.viewer.templates.edges').map(e => e.node.title);
-            response.status(200).send(titles);
-        }).catch(reason => {
-            response.status(500).send(reason);
-        })
-    });
+        `;
 
-    app.get('/api/create', (req, response) => {
+        return client.query({query})
+    },
 
-        let query = gql`
+    workflows: () => {
+        const query = gql`
             {
                 viewer {
-                    templates {
+                    workflows {
                         edges {
                             node {
-                                title
+                                name
                             }
                         }
                     }
                 }
             }
-        `
+        `;
 
-        const id = "someID";
+        return client.query({query});
+    }
+};
 
-        client.mutate({mutation: gql`
-            mutation {
-                createExternalUser(input : {externalUserId: "${id}", name: "johnsmith"}) {
-                    userId
-                }
-            }
-        `}).then((results) => {
-            console.log(results);
-            //const titles = get(results, 'data.viewer.templates.edges').map(e => e.node.title);
-            response.status(200).send(results);
-        }).catch(reason => {
-            response.status(500).send(reason);
-        })
-    });
-}
+export const mutations = {
+
+};
