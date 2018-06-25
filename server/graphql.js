@@ -88,7 +88,6 @@ export const mutations = {
             templateId,
         };
 
-
         const userClient = client.generateClient(userToken);
 
         return userClient.mutate({mutation, variables});

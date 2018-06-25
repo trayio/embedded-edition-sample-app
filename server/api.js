@@ -45,13 +45,18 @@ module.exports = function (app) {
     // POST Workflows
     app.post('/api/workflows', (req, res) => {
         mutations.authorize('388ce871-1639-4215-a3f0-04ea3e5e0c14')
-            .then(token => {
-                return mutations.createWorkflowFromTemplate(token, req.body.id);
+            .then(payload => {
+                return mutations.createWorkflowFromTemplate(
+                    payload.data.authorize.accessToken,
+                    req.body.id,
+                );
             })
             .then(workflow => {
                 // Generate grant token
                 console.log(workflow)
-            });
+            }).catch(err => {
+                console.log(JSON.stringify(err, null, 4));
+            })
         // Get user Id.
         // Create workflow from template.
         // Given user - create grant token
