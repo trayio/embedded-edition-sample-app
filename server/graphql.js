@@ -54,9 +54,11 @@ export const queries = {
         `;
 
         return client.query({query});
-    }
+    },
 };
 
 export const mutations = {
-
+    getGrantTokenForUser: (user, uuid) => {
+        
+    },
 };

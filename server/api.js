@@ -44,6 +44,11 @@ module.exports = function (app) {
 
     // POST Workflows
     app.post('/api/workflows', (req, res) => {
+        mutations.createWorkflowFromTemplate()
+            .then(uuid => {
+                return mutations.getGrantTokenForUser(user, uuid);
+            })
+            .then(({uuid, grantToken}) => {})
         // Create workflow from template.
         // Given user - create grant token
         // Setup QST links from grant token
