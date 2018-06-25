@@ -32,12 +32,11 @@ export class DiscoverIntegrations extends React.Component {
                         templates: body,
                         loading: false,
                     });
-
                 } else {
                     this.setState({
                         error: body,
                         loading: false,
-                    })
+                    });
                 }
             })
         );

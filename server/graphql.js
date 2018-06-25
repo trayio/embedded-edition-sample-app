@@ -50,12 +50,38 @@ module.exports = function (app, client) {
 
         client.query({query})
             .then((results) => {
-                const titles = get(results, 'data.viewer.templates.edges').map(e => e.node.title);
+                const titles = get(results, 'data.viewer.templates.edges')
+                    .map(e => e.node.title);
                 res.status(200).send(titles);
             }).catch(reason => {
                 res.status(500).send(reason);
             });
     });
 
+    // GET Workflows:
+    app.get('/api/workflows', (req, res) => {
+        const query = gql`
+            {
+                viewer {
+                    workflows {
+                        edges {
+                            node {
+                                name
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+        client.query({query})
+            .then((results) => {
+                const titles = get(results, 'data.viewer.workflows.edges')
+                    .map(e => e.node.name);
+                res.status(200).send(titles);
+            }).catch(reason => {
+                res.status(500).send(reason);
+            });
+    });
 
 };
