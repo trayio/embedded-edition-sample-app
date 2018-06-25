@@ -5,7 +5,7 @@ import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 
 const gqlEndpoint = 'https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql';
-const masterToken = 'Bearer a18a3da9-f4e6-45a1-b2df-8e5972c45c04';
+const masterToken = process.env.MASTER_TOKEN;
 
 const authLink = setContext((_, {headers}) => {
     // get the authentication token from local storage if it exists
