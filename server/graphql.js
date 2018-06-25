@@ -84,4 +84,11 @@ module.exports = function (app, client) {
             });
     });
 
+    // POST Workflows
+    app.post('/api/workflows', (req, res) => {
+        // Create workflow from template.
+        // Given user - create grant token
+        // Setup QST links from grant token
+    });
+
 };
