@@ -2,7 +2,7 @@
 
 import gql from 'graphql-tag';
 
-const client = require('./client');
+import {masterClient as client} from './client';
 
 export const queries = {
     me: () => {
@@ -124,5 +124,3 @@ export const mutations = {
         };
     },
 }
-
-

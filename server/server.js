@@ -27,7 +27,9 @@ app.use(require('morgan')('tiny'));
 require('./auth')(app);
 require('./api')(app);
 
-//app.use(express.static('build'))
+if (!process.env.MASTER_TOKEN) {
+    throw new Error(`Tray io master token must be passed as env variable MASTER_TOKEN to authenticate with tray graphQL api.`);
+}
 
 app.listen(process.env.PORT || 3001, () => {
     console.log(`Express started on port ${process.env.PORT || 3001}`);
