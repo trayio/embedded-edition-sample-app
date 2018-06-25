@@ -25,7 +25,7 @@ const gqlClient = require('./client');
 app.use(require('morgan')('tiny'));
 
 require('./auth')(app);
-require('./graphql')(app, gqlClient);
+require('./api')(app);
 
 //app.use(express.static('build'))
 
