@@ -25,21 +25,22 @@ export class DiscoverIntegrations extends React.Component {
     }
 
     componentDidMount() {
-        fetch('/api/templates', {credentials: 'include'})
-            .then(res => ({body: res.json(), ok: res.ok}))
-            .then(({body, ok}) => {
-                 if (ok) {
+        fetch('/api/templates', {credentials: 'include'}).then(res =>
+            res.json().then(body => {
+                if (res.ok) {
                     this.setState({
                         templates: body,
                         loading: false,
                     });
+
                 } else {
                     this.setState({
                         error: body,
                         loading: false,
-                    });
+                    })
                 }
-            });
+            })
+        );
     }
 
     handleClick(e) {
