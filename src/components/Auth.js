@@ -14,18 +14,10 @@ const auth = {
     isAuthenticated: false,
 
     authenticate(cb) {
-        fetch('/user', {
-            credentials: 'include'
-        })
-            .then((res) => {
-                this.isAuthenticated = true
-                if (typeof cb === 'function') {
-                    res.json().then(data => cb(data.user));
-                }
-            })
-            .catch((err) => {
-                console.log('Error fetching authorized user.');
-            });
+        this.isAuthenticated = true
+        if (typeof cb === 'function') {
+            cb(true)
+        }
     },
 
     signout(cb) {

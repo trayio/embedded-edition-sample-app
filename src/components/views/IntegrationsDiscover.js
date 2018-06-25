@@ -43,12 +43,13 @@ export class DiscoverIntegrations extends React.Component {
     }
 
     handleClick(e) {
-        fetch('/api/templates', {
-            method: 'POST',
-            credentials: 'include',
-        }).then(res => {
-            console.log(res);
-        });
+        console.log(e)
+        // fetch('/api/workflows', {
+        //     method: 'POST',
+        //     credentials: 'include',
+        // }).then(res => {
+        //     console.log(res);
+        // });
     }
 
     buildList(templates) {

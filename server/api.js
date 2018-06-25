@@ -9,8 +9,6 @@ import {
     mutations,
 } from './graphql';
 
-
-
 module.exports = function (app) {
 
     // GET Account:
