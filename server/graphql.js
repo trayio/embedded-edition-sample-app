@@ -2,7 +2,7 @@
 
 import gql from 'graphql-tag';
 
-const gqlClient = require('./client');
+const client = require('./client');
 
 export const queries = {
     me: () => {
@@ -53,7 +53,7 @@ export const queries = {
             }
         `;
 
-        rewturn client.query({query});
+        return client.query({query});
     }
 };
 

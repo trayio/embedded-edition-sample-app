@@ -22,7 +22,7 @@ module.exports = function (app) {
 
     // GET Templates:
     app.get('/api/templates', (req, res) => {
-        queries.templates.then((results) => {
+        queries.templates().then((results) => {
             const titles = get(results, 'data.viewer.templates.edges')
                 .map(e => e.node.title);
             res.status(200).send(titles);
@@ -33,7 +33,7 @@ module.exports = function (app) {
 
     // GET Workflows:
     app.get('/api/workflows', (req, res) => {
-        queries.workflows.then((results) => {
+        queries.workflows().then((results) => {
             const titles = get(results, 'data.viewer.workflows.edges')
                 .map(e => e.node.name);
             res.status(200).send(titles);
