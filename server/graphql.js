@@ -52,4 +52,36 @@ module.exports = function (app, client) {
         })
     });
 
+    app.get('/api/create', (req, response) => {
+
+        let query = gql`
+            {
+                viewer {
+                    templates {
+                        edges {
+                            node {
+                                title
+                            }
+                        }
+                    }
+                }
+            }
+        `
+
+        const id = "someID";
+
+        client.mutate({mutation: gql`
+            mutation {
+                createExternalUser(input : {externalUserId: "${id}", name: "johnsmith"}) {
+                    userId
+                }
+            }
+        `}).then((results) => {
+            console.log(results);
+            //const titles = get(results, 'data.viewer.templates.edges').map(e => e.node.title);
+            response.status(200).send(results);
+        }).catch(reason => {
+            response.status(500).send(reason);
+        })
+    });
 }

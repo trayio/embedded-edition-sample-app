@@ -123,6 +123,7 @@ export class Login extends React.Component {
         )
     }
 }
+
 export class Register extends React.Component {
     state = {
         redirectToReferrer: false
@@ -147,10 +148,14 @@ export class Register extends React.Component {
             });
     }
 
+    explain = 'This will create a new in-memory user account in the local Express backend that will persist until the backend is restarted.' +
+        ' It will also create a remote Tray.io user that will be associated with the privded email. The Tray.io account is persisted.';
+
     render() {
         return (
             <div>
-                <h1>Register a New User</h1>
+                <h1 style={{textAlign: 'center'}}>Register a New User</h1>
+                <div style={{textAlign: 'left', width: '500px', margin: 'auto', paddingBottom: '10px'}}>{this.explain}</div>
                 <RegisterForm onRegister={this.register}/>
             </div>
         )

@@ -1,13 +1,10 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import RaisedButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import {grey500, white} from '@material-ui/core/colors/';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Help from '@material-ui/icons/Help'
 import Input from '@material-ui/core/Input';
-import {Link} from 'react-router-dom';
 
 class LoginForm extends React.Component {
     render() {
@@ -111,7 +108,6 @@ class LoginForm extends React.Component {
             </div>
         );
     }
-
 }
 
 export default LoginForm;
