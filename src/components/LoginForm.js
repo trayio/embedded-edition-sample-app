@@ -44,7 +44,7 @@ class LoginForm extends React.Component {
         return (
             <div>
                 <div style={styles.loginContainer}>
-
+                    <h3 style={{textAlign: "center"}}>Login to OEM demo app</h3>
                     <Paper style={styles.paper}>
 
                         <form

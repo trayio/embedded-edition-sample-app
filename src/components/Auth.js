@@ -108,8 +108,8 @@ export class Login extends React.Component {
     }
 
     render() {
-        const { from } = this.props.location.state || {from: {pathname: '/'}};
-        const { redirectToReferrer } = this.state;
+        const {from} = this.props.location.state || {from: {pathname: '/'}};
+        const {redirectToReferrer} = this.state;
 
         if (redirectToReferrer) {
             return (
@@ -128,8 +128,15 @@ export class Login extends React.Component {
 
 export class Register extends React.Component {
     state = {
-        redirectToReferrer: false
+        redirectToReferrer: false,
+        error: false,
+        success: false,
     }
+
+    showError = () => this.setState({
+        error: true
+    });
+
 
     register = (data) => {
         fetch('/api/register', {
@@ -141,23 +148,39 @@ export class Register extends React.Component {
             credentials: 'include'
         })
             .then((response) => {
-                if (response.status === 200) {
-                    console.log('Succesfully registered user!');
+                if (response.ok) {
+
+                    this.setState({
+                        success: true
+                    })
+
+                    setTimeout(() => {
+                        window.location = '/login';
+                    }, 3000);
+                } else {
+                    this.showError();
                 }
             })
             .catch((err) => {
-                console.log('Error registering user.', err);
+                this.showError();
             });
     }
 
-    explain = 'This will create a new in-memory user account in the local Express backend that will persist until the backend is restarted.' +
-        ' It will also create a remote Tray.io user that will be associated with the privded email. The Tray.io account is persisted.';
+    explain = 'This will create a new in-memory user account in the local Express backend that will persist until the backend is restarted.';
 
     render() {
         return (
             <div>
                 <h1 style={{textAlign: 'center'}}>Register a New User</h1>
-                <div style={{textAlign: 'left', width: '500px', margin: 'auto', paddingBottom: '10px'}}>{this.explain}</div>
+                <div style={{
+                    textAlign: 'center',
+                    width: '500px',
+                    margin: 'auto',
+                    paddingBottom: '10px'
+                }}>{this.explain}</div>
+
+                {this.state.error ? <h3 style={{color: "red", textAlign: "center"}}>Registration failed</h3> : ""}
+                {this.state.success ? <h3 style={{color: "green", textAlign: "center"}}>Registration success</h3> : ""}
                 <RegisterForm onRegister={this.register}/>
             </div>
         )

@@ -59,6 +59,18 @@ export const queries = {
 
 export const mutations = {
     getGrantTokenForUser: (user, uuid) => {
-        
+
     },
+
+    createExternalUser: (id, name) => {
+        return client.mutate({
+            mutation: gql`
+                mutation {
+                    createExternalUser(input : {externalUserId: "${id}", name: "${name}"}) {
+                        userId
+                    }
+                }
+            `
+        })
+    }
 };

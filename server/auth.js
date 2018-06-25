@@ -1,15 +1,17 @@
+import {mutations} from "./graphql";
+
 const express = require('express');
 import {get} from 'lodash';
+
+const uuidv1 = require('uuid/v1');
 
 // In-memory users instead of a DB
 const users = [
     {
         username: "amy",
+        name: "Amy Tang",
+        uuid: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
         password: "amyspassword"
-    },
-    {
-        username: "test",
-        password: "test"
     },
 ]
 
@@ -50,19 +52,24 @@ module.exports = function (app) {
         res.setHeader('Content-Type', 'application/json');
         console.log(req.body);
 
-        if (req.body.username && req.body.password) {
+        if (users.filter(user => user.username === req.body.username).length) {
+            res.status(500).send(`User name ${user.username} already exists`);
+        } else if (!req.body.username || !req.body.password || !req.body.name) {
+            const errorMsg = `One or more of following params missing in body: username, password, uuid`;
+            console.log(errorMsg);
+            res.status(500).send(errorMsg);
+        } else {
             users.push(
                 {
                     username: req.body.username,
                     password: req.body.password,
+                    name: req.body.name,
+                    uuid: uuidv1(),
                 }
             );
-
             console.log(`successfully created user ${req.body.username}`);
+            console.log(users[users.length - 1]);
             res.status(200).send(`successfully created user ${req.body.username}`);
-        } else {
-            console.log(`unable to create user from ${req.body}`);
-            res.status(200).send(`unable to create user from ${req.body}`);
         }
     });
 
@@ -70,10 +77,10 @@ module.exports = function (app) {
     app.use(function (req, res, next) {
         console.log(req.session);
 
-        //WARNING: Right now only user 'amy' can successfully authenticate with API
-        if (req.session && req.session.user === "amy" && req.session.admin)
+        if (req.session && req.session.admin)
             return next();
         else
             return res.sendStatus(401);
     });
+
 }

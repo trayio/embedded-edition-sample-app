@@ -2,7 +2,7 @@ const https = require('https');
 const express = require('express');
 const request = require('request');
 
-import { get } from 'lodash';
+import {get} from 'lodash';
 
 import {
     queries,

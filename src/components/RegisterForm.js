@@ -6,10 +6,15 @@ import PersonAdd from '@material-ui/icons/PersonAdd';
 import Help from '@material-ui/icons/Help'
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class RegisterForm extends React.Component {
+    state = {
+        loading: false,
+    }
+
     render() {
-        const {onLogin} = this.props;
+        const {onRegister} = this.props;
         const styles = {
             loginContainer: {
                 backgroundColor: white,
@@ -48,44 +53,65 @@ class RegisterForm extends React.Component {
 
                     <Paper style={styles.paper}>
 
-                        <form
-                            ref={(elem) => this.form = elem}
-                            onSubmit={(e) => {
-                                console.log('---ONSUBMIT---');
-                                e.preventDefault();
-                                return onLogin({
-                                    username: this.usernameElem.value,
-                                    password: this.passwordElem.value
-                                });
-                            }}
-                        >
-                            <InputLabel>Enter New Username </InputLabel>
-                            <Input
-                                inputRef={(input) => this.usernameElem = input}
-                                label="Username"
-                                placeholder="user"
-                                fullWidth={true}
-                                style={{marginBottom: 10}}
-                            />
-
-                            <InputLabel>Select Password </InputLabel>
-                            <Input
-                                inputRef={(input) => this.passwordElem = input}
-                                label="Password"
-                                placeholder="pass"
-                                fullWidth={true}
-                                type="password"
-                            />
-
-                            <Button
-                                style={styles.loginBtn}
-                                variant="raised" color="primary"
-                                type='submit'
+                        {this.state.loading ?
+                            <div style={{textAlign: "center"}}>
+                                <CircularProgress/>
+                            </div> :
+                            <form
+                                ref={(elem) => this.form = elem}
+                                onSubmit={e => {
+                                    this.setState({
+                                        loading: true
+                                    })
+                                    console.log('---ONSUBMIT---');
+                                    e.preventDefault();
+                                    return onRegister({
+                                            name: this.nameElem.value,
+                                            username: this.usernameElem.value,
+                                            password: this.passwordElem.value,
+                                        },
+                                    );
+                                }
+                                }
                             >
-                                Register New User
-                            </Button>
 
-                        </form>
+                                <h3 style={{textAlign: "center", padding: "30px"}}> New User Form </h3>
+
+                                <Input
+                                    inputRef={(input) => this.nameElem = input}
+                                    autoFocus={true}
+                                    label="Name"
+                                    placeholder="Full Name"
+                                    fullWidth={true}
+                                    style={{marginBottom: 10}}
+                                />
+
+                                <Input
+                                    inputRef={(input) => this.usernameElem = input}
+                                    label="Username"
+                                    placeholder="Username"
+                                    fullWidth={true}
+                                    style={{marginBottom: 10}}
+                                />
+
+                                <Input
+                                    inputRef={(input) => this.passwordElem = input}
+                                    label="Password"
+                                    placeholder="Password"
+                                    fullWidth={true}
+                                    type="password"
+                                />
+
+                                <Button
+                                    style={styles.loginBtn}
+                                    variant="raised" color="primary"
+                                    type='submit'
+                                >
+                                    Register User
+                                </Button>
+
+                            </form>}
+
                     </Paper>
 
                 </div>
