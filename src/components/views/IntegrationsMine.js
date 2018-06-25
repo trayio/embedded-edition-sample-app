@@ -30,7 +30,7 @@ export class MyIntegrations extends React.Component {
             res.json().then(body => {
                 if (res.ok) {
                     this.setState({
-                        workflows: body,
+                        workflows: body.data,
                         loading: false,
                     });
                 } else {

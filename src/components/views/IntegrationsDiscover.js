@@ -29,7 +29,7 @@ export class DiscoverIntegrations extends React.Component {
             res.json().then(body => {
                 if (res.ok) {
                     this.setState({
-                        templates: body,
+                        templates: body.data,
                         loading: false,
                     });
                 } else {
@@ -43,7 +43,12 @@ export class DiscoverIntegrations extends React.Component {
     }
 
     handleClick(e) {
-        alert(`You clicked on "${e}"`);
+        fetch('/api/templates', {
+            method: 'POST',
+            credentials: 'include',
+        }).then(res => {
+            console.log(res);
+        });
     }
 
     buildList(templates) {
@@ -56,7 +61,7 @@ export class DiscoverIntegrations extends React.Component {
                 <div>
                     <List>
                         {
-                            templates.map((title, index) =>
+                            templates.map(({title}, index) =>
                                 <ListItem key={index}>
                                     <ListItemAvatar>
                                         <Avatar style={{backgroundColor: 'black'}}>
