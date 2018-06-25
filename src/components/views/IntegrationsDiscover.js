@@ -29,7 +29,7 @@ export class DiscoverIntegrations extends React.Component {
             res.json().then(body => {
                 if (res.ok) {
                     this.setState({
-                        templates: body,
+                        templates: body.data,
                         loading: false,
                     });
                 } else {
@@ -42,8 +42,22 @@ export class DiscoverIntegrations extends React.Component {
         );
     }
 
-    handleClick(e) {
-        alert(`You clicked on "${e}"`);
+    handleClick(id) {
+        console.log(id,  ({
+                id: id,
+            }))
+        fetch('/api/workflows', {
+            body: JSON.stringify({
+                id: id,
+            }),
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST',
+            credentials: 'include',
+        }).then(res => {
+            console.log(res);
+        });
     }
 
     buildList(templates) {
@@ -56,7 +70,7 @@ export class DiscoverIntegrations extends React.Component {
                 <div>
                     <List>
                         {
-                            templates.map((title, index) =>
+                            templates.map(({title, id}, index) =>
                                 <ListItem key={index}>
                                     <ListItemAvatar>
                                         <Avatar style={{backgroundColor: 'black'}}>
@@ -69,7 +83,7 @@ export class DiscoverIntegrations extends React.Component {
                                     />
                                     <ListItemSecondaryAction>
                                         <IconButton aria-label="Delete">
-                                            <BuildIcon onClick={(b) => this.handleClick(title)}/>
+                                            <BuildIcon onClick={() => this.handleClick(id)}/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
                                 </ListItem>

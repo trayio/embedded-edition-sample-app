@@ -2,7 +2,7 @@ const https = require('https');
 const express = require('express');
 const request = require('request');
 
-import {get} from 'lodash';
+import { get, values, map } from 'lodash';
 
 import {
     queries,
@@ -23,9 +23,9 @@ module.exports = function (app) {
     // GET Templates:
     app.get('/api/templates', (req, res) => {
         queries.templates().then((results) => {
-            const titles = get(results, 'data.viewer.templates.edges')
-                .map(e => e.node.title);
-            res.status(200).send(titles);
+            res.status(200).send({
+                data: map(values(get(results, 'data.viewer.templates.edges')), x => x.node),
+            });
         }).catch(reason => {
             res.status(500).send(reason);
         });
@@ -34,9 +34,9 @@ module.exports = function (app) {
     // GET Workflows:
     app.get('/api/workflows', (req, res) => {
         queries.workflows().then((results) => {
-            const titles = get(results, 'data.viewer.workflows.edges')
-                .map(e => e.node.name);
-            res.status(200).send(titles);
+            res.status(200).send({
+                data: map(values(get(results, 'data.viewer.workflows.edges')), x => x.node),
+            });
         }).catch(reason => {
             res.status(500).send(reason);
         });
@@ -44,11 +44,20 @@ module.exports = function (app) {
 
     // POST Workflows
     app.post('/api/workflows', (req, res) => {
-        mutations.createWorkflowFromTemplate()
-            .then(uuid => {
-                return mutations.getGrantTokenForUser(user, uuid);
+        mutations.authorize('388ce871-1639-4215-a3f0-04ea3e5e0c14')
+            .then(payload => {
+                return mutations.createWorkflowFromTemplate(
+                    payload.data.authorize.accessToken,
+                    req.body.id,
+                );
             })
-            .then(({uuid, grantToken}) => {})
+            .then(workflow => {
+                // Generate grant token
+                console.log(workflow)
+            }).catch(err => {
+                console.log(JSON.stringify(err, null, 4));
+            })
+        // Get user Id.
         // Create workflow from template.
         // Given user - create grant token
         // Setup QST links from grant token

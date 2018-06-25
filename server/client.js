@@ -7,21 +7,28 @@ import { setContext } from 'apollo-link-context';
 const gqlEndpoint = 'https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql';
 const masterToken = process.env.MASTER_TOKEN;
 
-const authLink = setContext((_, {headers}) => {
-    // get the authentication token from local storage if it exists
-    // const token = localStorage.getItem('token');
-    // return the headers to the context so httpLink can read them
-    return {
-        headers: {
-            ...headers,
-            authorization: masterToken,
-            //token ? `Bearer ${token}` : "",
-        }
-    };
-});
+const authLink = token =>
+    setContext((_, {headers}) => {
+        // get the authentication token from local storage if it exists
+        // const token = localStorage.getItem('token');
+        // return the headers to the context so httpLink can read them
+        return {
+            headers: {
+                ...headers,
+                authorization: `Bearer ${token}`,
+                //token ? `Bearer ${token}` : "",
+            }
+        };
+    });
 
-module.exports = new ApolloClient({
-    link: authLink.concat(new HttpLink({uri: gqlEndpoint, fetch})),
-    cache: new InMemoryCache()
-});
+const generateClient = token => {
+    return new ApolloClient({
+        link: authLink(token).concat(new HttpLink({uri: gqlEndpoint, fetch})),
+        cache: new InMemoryCache()
+    });
+};
 
+module.exports = {
+    generateClient,
+    masterClient: generateClient(masterToken),
+};
