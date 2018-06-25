@@ -20,7 +20,7 @@ const auth = {
             .then((res) => {
                 this.isAuthenticated = true
                 if (typeof cb === 'function') {
-                    cb(res.json().then(data => cb(data.user)));
+                    res.json().then(data => cb(data.user));
                 }
             })
             .catch((err) => {
