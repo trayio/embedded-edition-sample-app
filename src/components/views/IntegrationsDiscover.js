@@ -43,9 +43,6 @@ export class DiscoverIntegrations extends React.Component {
     }
 
     handleClick(id) {
-        console.log(id,  ({
-                id: id,
-            }))
         fetch('/api/workflows', {
             body: JSON.stringify({
                 id: id,
@@ -57,6 +54,9 @@ export class DiscoverIntegrations extends React.Component {
             credentials: 'include',
         }).then(res => {
             console.log(res);
+            res.json().then(body => {
+                window.open(body.data.popupUrl, '_blank', 'width=500,height=500,scrollbars=no')
+            })
         });
     }
 
