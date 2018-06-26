@@ -81,9 +81,9 @@ export class DiscoverIntegrations extends React.Component {
                                         primary={title}
                                         secondary={null}
                                     />
-                                    <ListItemSecondaryAction>
+                                    <ListItemSecondaryAction onClick={() => this.handleClick(id)}>
                                         <IconButton aria-label="Delete">
-                                            <BuildIcon onClick={() => this.handleClick(id)}/>
+                                            <BuildIcon/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
                                 </ListItem>
