@@ -108,7 +108,7 @@ export const mutations = {
         })
     },
 
-    getGrantTokenForUser: (user, uuid) => {
+    getGrantTokenForUser: (uuid, workflowId) => {
         const mutation = gql`
             mutation ($userId: ID!) {
                 generateAuthorizationCode(input: {userId: $userId}) {
@@ -118,12 +118,17 @@ export const mutations = {
         `;
 
         const variables = {
-            userId: '388ce871-1639-4215-a3f0-04ea3e5e0c14',
+            userId: uuid,
         };
 
-        return {
-            uuid: '388ce871-1639-4215-a3f0-04ea3e5e0c14',
-            data: masterClient.mutate({variables, mutation}),
-        };
+        return masterClient.mutate({mutation, variables})
+            .then(payload => {
+                console.log('re'. payload)
+                return {
+                    uuid,
+                    payload,
+                    workflowId,
+                };
+        });
     },
 }

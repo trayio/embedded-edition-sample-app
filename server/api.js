@@ -44,6 +44,7 @@ module.exports = function (app) {
 
     // POST Workflows
     app.post('/api/workflows', (req, res) => {
+
         mutations.authorize('388ce871-1639-4215-a3f0-04ea3e5e0c14')
             .then(payload => {
                 return mutations.createWorkflowFromTemplate(
@@ -52,9 +53,20 @@ module.exports = function (app) {
                 );
             })
             .then(workflow => {
-                // Generate grant token
-                console.log(workflow)
-            }).catch(err => {
+                return mutations.getGrantTokenForUser(
+                    '388ce871-1639-4215-a3f0-04ea3e5e0c14',
+                    workflow.data.createWorkflowFromTemplate.workflowId
+                );
+            })
+            .then(({uuid, payload, workflowId}) => {
+                console.log('got to here')
+                res.status(200).send({
+                    data: {
+                        popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
+                    }
+                });
+            })
+            .catch(err => {
                 console.log(JSON.stringify(err, null, 4));
             })
         // Get user Id.
