@@ -97,7 +97,7 @@ export const mutations = {
     },
 
     createExternalUser: (id, name) => {
-        return client.mutate({
+        return masterClient.mutate({
             mutation: gql`
                 mutation {
                     createExternalUser(input : {externalUserId: "${id}", name: "${name}"}) {
