@@ -2,7 +2,10 @@
 
 import gql from 'graphql-tag';
 
-import {masterClient as client} from './client';
+import {
+    masterClient,
+    generateClient,
+} from './client';
 
 export const queries = {
     me: () => {
@@ -17,7 +20,7 @@ export const queries = {
             }
         `;
 
-        return client.masterClient.query({query});
+        return masterClient.query({query});
     },
 
     templates: () => {
@@ -36,7 +39,7 @@ export const queries = {
             }
         `;
 
-        return client.masterClient.query({query})
+        return masterClient.query({query})
     },
 
     workflows: () => {
@@ -54,7 +57,7 @@ export const queries = {
             }
         `;
 
-        return client.masterClient.query({query});
+        return masterClient.query({query});
     },
 };
 
@@ -72,7 +75,7 @@ export const mutations = {
             userId,
         };
 
-        return client.masterClient.mutate({mutation, variables});
+        return masterClient.mutate({mutation, variables});
     },
 
     createWorkflowFromTemplate: (userToken, templateId) => {
@@ -88,7 +91,7 @@ export const mutations = {
             templateId,
         };
 
-        const userClient = client.generateClient(userToken);
+        const userClient = generateClient(userToken);
 
         return userClient.mutate({mutation, variables});
     },
@@ -120,7 +123,7 @@ export const mutations = {
 
         return {
             uuid: '388ce871-1639-4215-a3f0-04ea3e5e0c14',
-            data: client.masterClient.mutate({variables, mutation}),
+            data: masterClient.mutate({variables, mutation}),
         };
     },
 }
