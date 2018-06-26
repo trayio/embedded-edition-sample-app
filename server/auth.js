@@ -36,14 +36,14 @@ module.exports = function (app) {
             res.send('login successs');
             console.log('login successs');
 
-            // //Create new tray user via calling gql mutation
-            // mutations.createExternalUser(userFound[0].uuid, userFound[0].name).then(res => {
-            //     console.log(`Successfully created external tray user`);
-            //     console.log(res);
-            // }).catch(err => {
-            //     console.log(`Failed to creat new external tray user`);
-            //     console.log(err);
-            // });
+            //Create new tray user via calling gql mutation
+            mutations.createExternalUser(userFound[0].uuid, userFound[0].name).then(res => {
+                console.log(`Successfully created external tray user`);
+                console.log(res);
+            }).catch(err => {
+                console.log(`Failed to creat new external tray user`);
+                console.log(err);
+            });
 
         } else {
             console.log('login failed');
