@@ -60,6 +60,7 @@ module.exports = function (app) {
         res.setHeader('Content-Type', 'application/json');
 
         if (checkUserExists(req)) {
+            log({ message: 'Failed to create user, already exists:', object: req.body });
             return res.status(409).send(`User name ${req.body.username} already exists`);
         }
 
