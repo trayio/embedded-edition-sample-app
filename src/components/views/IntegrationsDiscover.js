@@ -53,7 +53,11 @@ export class DiscoverIntegrations extends React.Component {
             credentials: 'include',
         }).then(res => {
             res.json().then(body => {
-                window.open(body.data.popupUrl, '_blank', 'width=500,height=500,scrollbars=no')
+                window.open(
+                    body.data.popupUrl,
+                    '_blank',
+                    'width=500,height=500,scrollbars=no'
+                );
             });
         });
     }

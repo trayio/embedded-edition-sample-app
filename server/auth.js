@@ -92,35 +92,34 @@ module.exports = function (app) {
         res.sendStatus(401);
     });
 
-    /*
-    * /api/register:
-    * Check if user already exists, if so respond with 409 status.
-    * Validate request body, if not valid respond with 400 status.
-    * Otherwise attempt to generate a tray user and insert new user object into
-    * the DB.
-    */
-    app.post('/api/register', function (req, res) {
-        res.setHeader('Content-Type', 'application/json');
-
+    const checkUserExists = (req, res) => {
         if (userExistsInMockDB(req.body)) {
             res.status(409).send(`User name ${user.username} already exists`);
-            return;
+            return true;
         }
 
+        return false;
+    }
+
+    const validateRequest = (req, res) => {
         const validationErrors = validateNewUser(req.body);
 
         if (validationErrors.length) {
             const errorMsg = `The following params missing in user object, [${validationErrors.join(', ')}]`;
             log({ message: errorMsg });
             res.status(400).send(errorMsg);
-            return;
+            return false;
         }
 
+        return true;
+    };
+
+    const generateNewUser = (req, res) => {
         // Generate UUID for user:
         const uuid = uuidv1();
 
         // Generate a tray user for this account:
-        mutations.createExternalUser(uuid, req.body.name)
+        return mutations.createExternalUser(uuid, req.body.name)
             .then(createRes => {
                 // Add user to internal DB:
                 insertUserToMockDB(
@@ -145,7 +144,27 @@ module.exports = function (app) {
                 });
                 res.status(500).send('There was an error creating the external Tray user:');
             });
+    };
 
+    /*
+    * /api/register:
+    * Check if user already exists, if so respond with 409 status.
+    * Validate request body, if not valid respond with 400 status.
+    * Otherwise attempt to generate a tray user and insert new user object into
+    * the DB.
+    */
+    app.post('/api/register', function (req, res) {
+        res.setHeader('Content-Type', 'application/json');
+
+        if (checkUserExists(req, res)) {
+            return;
+        }
+
+        if (!validateRequest(req, res)) {
+            return;
+        }
+
+        generateNewUser(req, res);
     });
 
     /*
