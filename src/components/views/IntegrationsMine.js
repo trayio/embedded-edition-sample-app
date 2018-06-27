@@ -11,12 +11,18 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CloudCircle from '@material-ui/icons/CloudCircle';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 export class MineIntegrations extends React.Component {
 
     state = {
         loading: true,
         error: false,
+        open: false,
         workflows: {},
     }
 
@@ -47,7 +53,9 @@ export class MineIntegrations extends React.Component {
     }
 
     onDelete(id) {
-
+        this.setState({
+            open: true
+        })
     }
 
     handleClick(id) {
@@ -66,6 +74,29 @@ export class MineIntegrations extends React.Component {
                       window.open(body.data.popupUrl, '_blank', 'width=500,height=500,scrollbars=no')
                   })
               });*/
+    }
+
+    buildConfirmDialog() {
+        return <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Are you sure you want to delete this workflow?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={this.handleClose} color="secondary">
+                    Yes
+                </Button>
+                <Button onClick={this.handleClose} color="primary" autoFocus>
+                    No
+                </Button>
+            </DialogActions>
+        </Dialog>
     }
 
     buildWorkflowDetails(id) {
@@ -146,6 +177,7 @@ export class MineIntegrations extends React.Component {
 
         return (
             <View>
+                {this.buildConfirmDialog()}
                 {data}
             </View>
         );
