@@ -36,7 +36,7 @@ export class Account extends React.Component {
         } else {
             data = this.state.error ?
                 <Error msg={this.state.error}/> :
-                <div>{get(this.state, 'userInfo.data.viewer.details.email')}</div>;
+                <div>{get(this.state, 'userInfo.data.viewer.details.username')}</div>;
         }
 
         return (

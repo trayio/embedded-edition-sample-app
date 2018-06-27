@@ -8,7 +8,7 @@ import {
 } from './gqlclient';
 
 export const queries = {
-    me: () => {
+    me: token => {
         const query = gql`
             {
                 viewer {
@@ -20,7 +20,7 @@ export const queries = {
             }
         `;
 
-        return masterClient.query({query});
+        return generateClient(token).query({query});
     },
 
     templates: () => {

@@ -13,7 +13,7 @@ module.exports = function (app) {
 
     // GET Account:
     app.get('/api/me', (req, res) => {
-        queries.me()
+        queries.me(req.session.token)
             .then((results) => {
                 res.status(200).send(results);
             })
