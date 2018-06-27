@@ -60,7 +60,7 @@ module.exports = function (app) {
         )
         .then(workflow => {
             return mutations.getGrantTokenForUser(
-                req.session.externalId,
+                req.session.trayId,
                 workflow.data.createWorkflowFromTemplate.workflowId
             );
         })

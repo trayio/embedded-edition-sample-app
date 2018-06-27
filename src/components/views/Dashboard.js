@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Nav from '../Nav';
 import View from '../View';
 
-
 export class Dashboard extends React.Component {
     render() {
         return (
