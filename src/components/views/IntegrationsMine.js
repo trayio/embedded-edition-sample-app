@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
-import Button from '@material-ui/core/Button';
-import Nav from '../Nav';
+import React from 'react';
 import View from '../View';
+import {get} from 'lodash';
 import Error from '../Error';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
@@ -17,7 +16,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 
-export class MyIntegrations extends React.Component {
+export class MineIntegrations extends React.Component {
 
     state = {
         loading: true,
@@ -43,18 +42,35 @@ export class MyIntegrations extends React.Component {
         );
     }
 
-    handleClick = e => {
-
+    handleClick(id) {
+  /*      fetch('/api/workflows', {
+            body: JSON.stringify({
+                id: id,
+            }),
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST',
+            credentials: 'include',
+        }).then(res => {
+            console.log(res);
+            res.json().then(body => {
+                window.open(body.data.popupUrl, '_blank', 'width=500,height=500,scrollbars=no')
+            })
+        });*/
     }
 
-    buildList(workflows) {
+    buildList(templates) {
+        console.log(templates);
         return (
             <Grid item>
-                <Typography variant="title">My integrations</Typography>
+                <Typography variant="title">
+                    Discover integrations
+                </Typography>
                 <div>
                     <List>
                         {
-                            workflows.map((title, index) =>
+                            templates.map(({title, id}, index) =>
                                 <ListItem key={index}>
                                     <ListItemAvatar>
                                         <Avatar style={{backgroundColor: 'black'}}>
@@ -65,9 +81,9 @@ export class MyIntegrations extends React.Component {
                                         primary={title}
                                         secondary={null}
                                     />
-                                    <ListItemSecondaryAction>
+                                    <ListItemSecondaryAction onClick={() => this.handleClick(id)}>
                                         <IconButton aria-label="Delete">
-                                            <BuildIcon onClick={(b) => this.handleClick(title)}/>
+                                            <BuildIcon/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -75,11 +91,9 @@ export class MyIntegrations extends React.Component {
                         }
                     </List>
                 </div>
-           </Grid>
-       );
+            </Grid>
+        );
     }
-
-
 
     render() {
         let data;
@@ -98,6 +112,7 @@ export class MyIntegrations extends React.Component {
             </View>
         );
     }
+
 }
 
-export default MyIntegrations;
+export default MineIntegrations;

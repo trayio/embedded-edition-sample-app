@@ -42,7 +42,7 @@ export const queries = {
         return masterClient.query({query})
     },
 
-    workflows: () => {
+    workflows: (token) => {
         const query = gql`
             {
                 viewer {
@@ -57,8 +57,23 @@ export const queries = {
             }
         `;
 
-        return masterClient.query({query});
+        return generateClient(token).query({query});
     },
+
+    trayUsername: uuid => {
+        const query = gql`
+            {
+                users(criteria: {externalUserId: "${uuid}"}) {
+                    edges {
+                        node {
+                            id
+                        }
+                    }
+                }
+            }
+        `
+        return masterClient.query({query});
+    }
 };
 
 export const mutations = {
@@ -123,12 +138,12 @@ export const mutations = {
 
         return masterClient.mutate({mutation, variables})
             .then(payload => {
-                console.log('re'. payload)
+                console.log('re'.payload)
                 return {
                     uuid,
                     payload,
                     workflowId,
                 };
-        });
+            });
     },
 }

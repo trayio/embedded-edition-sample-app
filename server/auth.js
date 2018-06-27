@@ -1,4 +1,4 @@
-import {mutations} from "./graphql";
+import {mutations, queries} from "./graphql";
 
 const express = require('express');
 import {get} from 'lodash';
@@ -24,30 +24,59 @@ module.exports = function (app) {
     }));
 
     // Login endpoint
-    app.post('/api/login', function (req, res) {
-        res.setHeader('Content-Type', 'application/json');
-        console.log(req.body);
+    app.post('/api/login', function (request, response) {
+        response.setHeader('Content-Type', 'application/json');
+        console.log(request.body);
 
-        const userFound = users.filter(user => user.username === req.body.username && user.password === req.body.password);
+        const userFound = users.filter(user => user.username === request.body.username && user.password === request.body.password);
 
+        //Is local user able to login?
         if (userFound.length) {
-            req.session.user = get(userFound, '[0].username');
-            req.session.admin = true;
-            res.send('login successs');
-            console.log('login successs');
+            const user = userFound[0];
 
-            //Create new tray user via calling gql mutation
-            mutations.createExternalUser(userFound[0].uuid, userFound[0].name).then(res => {
-                console.log(`Successfully created external tray user`);
+            request.session.user = user.username;
+            request.session.admin = true;
+
+            //Create new tray external user via calling mutation
+            //If user already exists the promise is rejected (checks by uuid)
+            mutations.createExternalUser(user.uuid, user.name).then(res => {
+                console.log(`Tray external tray user now exists`);
                 console.log(res);
             }).catch(err => {
-                console.log(`Failed to creat new external tray user`);
+                console.log(`Unable to creat new external tray user`);
                 console.log(err);
-            });
+            }).finally(() => {
+
+                //Get tray external username corresponding to local user uuid
+                queries.trayUsername(user.uuid).then(res => {
+
+                    const trayUsername = get(res, 'data.users.edges[0].node.id');
+                    if (!trayUsername)
+                        res.status(500).send('Unable to retrieve tray external username');
+
+                    console.log(trayUsername);
+
+                    //Create token to be used for external user requests
+                    mutations.authorize(trayUsername).then(res => {
+                        const token = get(res, 'data.authorize.accessToken');
+                        console.log(`Token:${token}`);
+                        request.session.token = token;
+                        response.status(200).send('login success');
+                    }).catch(err => {
+                        console.log(`Failed to get token for ${user.username}`);
+                        console.log(err);
+                    });
+
+                }).catch(err => {
+                    console.log(`Failed to get trayUsername for ${user.username}`);
+                    console.log(err);
+                });
+
+            })
 
         } else {
             console.log('login failed');
-            res.status(401).send('login failed');
+            response.status(401).send('login failed');
         }
     });
 

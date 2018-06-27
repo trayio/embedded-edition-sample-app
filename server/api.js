@@ -2,7 +2,7 @@ const https = require('https');
 const express = require('express');
 const request = require('request');
 
-import { get, values, map } from 'lodash';
+import {get, values, map} from 'lodash';
 
 import {
     queries,
@@ -22,7 +22,7 @@ module.exports = function (app) {
 
     // GET Templates:
     app.get('/api/templates', (req, res) => {
-        queries.templates().then((results) => {
+        queries.workflows().then((results) => {
             res.status(200).send({
                 data: map(values(get(results, 'data.viewer.templates.edges')), x => x.node),
             });
@@ -33,7 +33,15 @@ module.exports = function (app) {
 
     // GET Workflows:
     app.get('/api/workflows', (req, res) => {
-        queries.workflows().then((results) => {
+        const externalUserToken = req.session.token;
+
+        if (!externalUserToken)
+            res.status(500).send('Missing external user auth');
+
+        console.log(externalUserToken);
+        queries.workflows(externalUserToken).then(results => {
+            console.log(get(results, 'data.viewer.workflows.edges'));
+
             res.status(200).send({
                 data: map(values(get(results, 'data.viewer.workflows.edges')), x => x.node),
             });

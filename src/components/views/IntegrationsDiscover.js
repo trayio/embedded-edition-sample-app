@@ -103,7 +103,7 @@ export class DiscoverIntegrations extends React.Component {
         } else {
             data = this.state.error ?
                 <Error msg={this.state.error}/> :
-                this.buildList(this.state.templates);
+                this.buildList(this.state.workflows);
         }
 
         return (
