@@ -38,8 +38,7 @@ module.exports = function (app) {
 
     /*
     * /api/login:
-    * Attempt to retrieve user from DB,
-    * If no user found respond with 401 status code,
+    * Attempt to retrieve user from DB, if not found respond with 401 status,
     * Otherwise attempt to generate a tray access token and set user info onto
     * session.
     */
