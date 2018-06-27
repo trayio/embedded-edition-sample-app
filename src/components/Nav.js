@@ -47,16 +47,6 @@ class NestedList extends React.Component {
                     <List
                         component="nav"
                     >
-                        {/*1---------------------*/}
-                        <Link className={classes.link} to="/dashboard">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <ChartIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Dashboard"/>
-                            </ListItem>
-                        </Link>
-                        {/*2---------------------*/}
                         <Link to="/account" className={classes.link}>
                             <ListItem button>
 
@@ -67,7 +57,6 @@ class NestedList extends React.Component {
 
                             </ListItem>
                         </Link>
-                        {/*3---------------------*/}
 
                         <ListItem button onClick={this.handleClick}>
                             <ListItemIcon>
@@ -100,17 +89,6 @@ class NestedList extends React.Component {
 
                             </List>
                         </Collapse>
-
-                        {/*4---------------------*/}
-
-                        <Link className={classes.link} to="/billing">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <PaymentIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Billing"/>
-                            </ListItem>
-                        </Link>
                     </List>
                 </div>
             </div>
