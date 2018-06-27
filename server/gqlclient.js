@@ -14,7 +14,7 @@ const authLink = token =>
             ...headers,
             authorization: `Bearer ${token}`,
         },
-    });
+    }));
 
 // Generate an Apollo Client for a given auth token:
 const generateClient = token =>
