@@ -2,7 +2,7 @@ const https = require('https');
 const express = require('express');
 const request = require('request');
 
-import {get, values, map} from 'lodash';
+import { get, values, map } from 'lodash';
 
 import {
     queries,
@@ -33,15 +33,7 @@ module.exports = function (app) {
 
     // GET Workflows:
     app.get('/api/workflows', (req, res) => {
-        const externalUserToken = req.session.token;
-
-        if (!externalUserToken)
-            res.status(500).send('Missing external user auth');
-
-        console.log(externalUserToken);
-        queries.workflows(externalUserToken).then(results => {
-            console.log(get(results, 'data.viewer.workflows.edges'));
-
+        queries.workflows().then((results) => {
             res.status(200).send({
                 data: map(values(get(results, 'data.viewer.workflows.edges')), x => x.node),
             });
@@ -52,22 +44,17 @@ module.exports = function (app) {
 
     // POST Workflows
     app.post('/api/workflows', (req, res) => {
-
-        mutations.authorize('388ce871-1639-4215-a3f0-04ea3e5e0c14')
-            .then(payload => {
-                return mutations.createWorkflowFromTemplate(
-                    payload.data.authorize.accessToken,
+            mutations.createWorkflowFromTemplate(
+                    req.session.token,
                     req.body.id,
-                );
-            })
+            )
             .then(workflow => {
                 return mutations.getGrantTokenForUser(
-                    '388ce871-1639-4215-a3f0-04ea3e5e0c14',
+                    req.session.uuid,
                     workflow.data.createWorkflowFromTemplate.workflowId
                 );
             })
             .then(({uuid, payload, workflowId}) => {
-                console.log('got to here')
                 res.status(200).send({
                     data: {
                         popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
@@ -76,11 +63,7 @@ module.exports = function (app) {
             })
             .catch(err => {
                 console.log(JSON.stringify(err, null, 4));
-            })
-        // Get user Id.
-        // Create workflow from template.
-        // Given user - create grant token
-        // Setup QST links from grant token
+            });
     });
 
 };
