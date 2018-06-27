@@ -22,11 +22,15 @@ export class MineIntegrations extends React.Component {
     state = {
         loading: true,
         error: false,
-        open: false,
+        deleteWorkflow: false,
         workflows: {},
     }
 
     componentDidMount() {
+        this.loadAllWorkflows();
+    }
+
+    loadAllWorkflows() {
         fetch('/api/workflows', {credentials: 'include'}).then(res =>
             res.json().then(body => {
                 if (res.ok) {
@@ -44,41 +48,38 @@ export class MineIntegrations extends React.Component {
         );
     }
 
-    onConfigure(id) {
+    onClickConfigure(id) {
         alert(`You clicked CONFIGURE on workflow id ${id}`);
     }
 
-    onStop(id) {
+    onClickStop(id) {
 
     }
 
-    onDelete(id) {
+    onClickDelete(id) {
         this.setState({
-            open: true
+            deleteWorkflow: id
         })
     }
 
-    handleClick(id) {
-        /*      fetch('/api/workflows', {
-                  body: JSON.stringify({
-                      id: id,
-                  }),
-                  headers: {
-                      'content-type': 'application/json'
-                  },
-                  method: 'POST',
-                  credentials: 'include',
-              }).then(res => {
-                  console.log(res);
-                  res.json().then(body => {
-                      window.open(body.data.popupUrl, '_blank', 'width=500,height=500,scrollbars=no')
-                  })
-              });*/
+    deleteWorkflow(id) {
+        return fetch('/api/delete', {
+            credentials: 'include',
+            body: JSON.stringify({
+                id: id,
+            }),
+            headers: {
+                'content-type': 'application/json',
+            },
+            method: 'POST',
+            credentials: 'include',
+
+        });
     }
 
-    buildConfirmDialog() {
+    buildDeleteConfirmDialog() {
         return <Dialog
-            open={this.state.open}
+            open={this.state.deleteWorkflow}
             onClose={this.handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -89,10 +90,18 @@ export class MineIntegrations extends React.Component {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={this.handleClose} color="secondary">
+                <Button onClick={() => {
+                    const id = this.state.deleteWorkflow;
+                    this.deleteWorkflow(id).then(res => {
+                        this.setState({deleteWorkflow: false});
+                        this.loadAllWorkflows();
+                    })
+                }} color="secondary">
                     Yes
                 </Button>
-                <Button onClick={this.handleClose} color="primary" autoFocus>
+                <Button onClick={() => {
+                    this.setState({deleteWorkflow: false})
+                }} color="primary" autoFocus>
                     No
                 </Button>
             </DialogActions>
@@ -119,17 +128,16 @@ export class MineIntegrations extends React.Component {
                 sit amet blandit leo lobortis eget.
             </div>
             <div id="Controls" style={styles.controls}>
-                <Button style={styles.button} onClick={() => this.onConfigure(id)} variant="contained"
+                <Button style={styles.button} onClick={() => this.onClickConfigure(id)} variant="contained"
                         color="primary">Configure</Button>
-                <Button style={styles.button} onClick={() => this.onStop(id)} variant="contained"
+                <Button style={styles.button} onClick={() => this.onClickStop(id)} variant="contained"
                         color="secondary">Stop</Button>
-                <Button style={styles.button} onClick={() => this.onDelete(id)} variant="contained"
+                <Button style={styles.button} onClick={() => this.onClickDelete(id)} variant="contained"
                         color="secondary">Delete</Button>
             </div>
 
         </ExpansionPanelDetails>
     }
-
 
     buildList(templates) {
         console.log(templates);
@@ -177,7 +185,7 @@ export class MineIntegrations extends React.Component {
 
         return (
             <View>
-                {this.buildConfirmDialog()}
+                {this.buildDeleteConfirmDialog()}
                 {data}
             </View>
         );

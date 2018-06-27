@@ -133,4 +133,16 @@ export const mutations = {
                 };
             });
     },
+
+    deleteWorkflow: (workflowID, token) => {
+        const mutation = gql`
+            mutation {
+                deleteWorkflow(input: {workflowId: "${workflowID}"}) {
+                    clientMutationId
+                }
+            }
+        `;
+
+        return generateClient(token).mutate({mutation});
+    }
 }
