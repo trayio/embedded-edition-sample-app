@@ -80,7 +80,7 @@ export const mutations = {
     authorize: (userId) => {
         const mutation = gql`
             mutation {
-                authorize(input: {userId: `${userId}`}) {
+                authorize(input: {userId: "${userId}"}) {
                     accessToken
                 }
             }
@@ -92,7 +92,7 @@ export const mutations = {
     createWorkflowFromTemplate: (userToken, templateId) => {
         const mutation = gql`
             mutation {
-                createWorkflowFromTemplate(input: {templateId: `${templateId}`}) {
+                createWorkflowFromTemplate(input: {templateId: "${templateId}"}) {
                     workflowId
                 }
             }
@@ -115,10 +115,10 @@ export const mutations = {
         return masterClient.mutate({mutation})
     },
 
-    getGrantTokenForUser: (uuid, workflowId) => {
+    getGrantTokenForUser: (userId, workflowId) => {
         const mutation = gql`
             mutation {
-                generateAuthorizationCode(input: {userId: `${userId}`}) {
+                generateAuthorizationCode(input: {userId: "${userId}"}) {
                     authorizationCode
                 }
             }
@@ -127,7 +127,7 @@ export const mutations = {
         return masterClient.mutate({mutation})
             .then(payload => {
                 return {
-                    uuid,
+                    userId,
                     payload,
                     workflowId,
                 };
