@@ -22,7 +22,7 @@ module.exports = function (app) {
 
     // GET Templates:
     app.get('/api/templates', (req, res) => {
-        queries.workflows().then((results) => {
+        queries.templates().then((results) => {
             res.status(200).send({
                 data: map(values(get(results, 'data.viewer.templates.edges')), x => x.node),
             });
