@@ -1,46 +1,14 @@
-const express = require('express');
-const uuidv1 = require('uuid/v1');
 
 import { log } from './logging';
-import { get, isNil } from 'lodash';
-import { mutations, queries } from "./graphql";
+import { get } from 'lodash';
+import { mutations } from "./graphql";
+import { retrieveUserFromMockDB } from './db';
+
 import {
-    userExistsInMockDB,
-    insertUserToMockDB,
-    retrieveUserFromMockDB,
-} from './db';
-
-/**
- * Returns the tray user accesstoken that is used to authenticate operations
- * related to individiual accounts (for instance configure workflow operation)
- * This is different than the master token which is shared across the entire
- * partner organization (used to create users for instance)
- * @param trayUsername - trayUsername generated when user is created
- * (different from local ID that was passed to tray during user creation)
- *
- * Returns promise that resolves to the token [string] or null if it didn't work
- */
-const getTrayUserToken = trayUsername =>
-    mutations.authorize(trayUsername)
-        .then(authorizeResponse =>
-            get(authorizeResponse, 'data.authorize.accessToken')
-        ).catch(err => {
-            log({ message: `Failed to get token for ${uuid}` });
-            return null;
-        });
-
-const validateNewUser = user => {
-    const errors = [];
-    const fields = ['username', 'password', 'name'];
-
-    fields.forEach(f => {
-        if (isNil(user[f]) || user[f] === '') {
-            errors.push(f);
-        }
-    });
-
-    return errors;
-};
+    checkUserExists,
+    generateNewUser,
+    validateRequest,
+} from './registration'
 
 module.exports = function (app) {
 
@@ -70,10 +38,13 @@ module.exports = function (app) {
                 object: currentUser,
             });
 
-            // Generate the external user token
-            return getTrayUserToken(currentUser.trayId)
-                .then(trayUserToken => {
-                    req.session.token = trayUserToken;
+            // Generate the external user token and save to session:
+            return mutations.authorize(currentUser.trayId)
+                .then(authorizeResponse => {
+                    req.session.token = get(
+                        authorizeResponse,
+                        'data.authorize.accessToken'
+                    );
                     res.sendStatus(200);
                 })
                 .catch(err => {
@@ -91,60 +62,6 @@ module.exports = function (app) {
         });
         res.sendStatus(401);
     });
-
-    const checkUserExists = (req, res) => {
-        if (userExistsInMockDB(req.body)) {
-            res.status(409).send(`User name ${user.username} already exists`);
-            return true;
-        }
-
-        return false;
-    }
-
-    const validateRequest = (req, res) => {
-        const validationErrors = validateNewUser(req.body);
-
-        if (validationErrors.length) {
-            const errorMsg = `The following params missing in user object, [${validationErrors.join(', ')}]`;
-            log({ message: errorMsg });
-            res.status(400).send(errorMsg);
-            return false;
-        }
-
-        return true;
-    };
-
-    const generateNewUser = (req, res) => {
-        // Generate UUID for user:
-        const uuid = uuidv1();
-
-        // Generate a tray user for this account:
-        return mutations.createExternalUser(uuid, req.body.name)
-            .then(createRes => {
-                // Add user to internal DB:
-                insertUserToMockDB(
-                    {
-                        uuid: uuid,
-                        body: req.body,
-                        trayId: createRes.data.createExternalUser.userId,
-                    },
-                );
-
-                const newUser = retrieveUserFromMockDB(req.body);
-                log({
-                    message: `successfully created user ${req.body.username}`,
-                    object: newUser,
-                });
-                res.status(200).send(JSON.stringify(newUser));
-            })
-            .catch(err => {
-                log({
-                    message: 'There was an error creating the external Tray user:',
-                    object: err,
-                });
-                res.status(500).send('There was an error creating the external Tray user:');
-            });
-    };
 
     /*
     * /api/register:

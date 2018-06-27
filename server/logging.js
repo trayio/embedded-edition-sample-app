@@ -1,8 +1,5 @@
 
-export const log = ({
-    object,
-    message,
-}) => {
+export const log = ({object, message}) => {
     console.log('------------------------------');
     if (message) {
         console.log(message);
