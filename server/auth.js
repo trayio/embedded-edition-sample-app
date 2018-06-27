@@ -2,13 +2,17 @@
 import { log } from './logging';
 import { get } from 'lodash';
 import { mutations } from "./graphql";
-import { retrieveUserFromMockDB } from './db';
+
+import {
+    attemptLogin,
+    generateUserAccessToken,
+} from './domain/login';
 
 import {
     checkUserExists,
     generateNewUser,
     validateRequest,
-} from './registration'
+} from './domain/registration';
 
 module.exports = function (app) {
 
@@ -27,26 +31,12 @@ module.exports = function (app) {
     app.post('/api/login', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
 
-        const currentUser = retrieveUserFromMockDB(req.body);
+        const user = attemptLogin(req);
 
-        if (currentUser) {
-            req.session.user = currentUser;
-            req.session.admin = true;
-
-            log({
-                message: 'Logged in with:',
-                object: currentUser,
-            });
-
-            // Generate the external user token and save to session:
-            return mutations.authorize(currentUser.trayId)
-                .then(authorizeResponse => {
-                    req.session.token = get(
-                        authorizeResponse,
-                        'data.authorize.accessToken'
-                    );
-                    res.sendStatus(200);
-                })
+        if (user) {
+            // Attempt to generate the external user token and save to session:
+            generateUserAccessToken(req, res, user)
+                .then(_ => res.sendStatus(200))
                 .catch(err => {
                     log({
                         message: 'Failed to generate user access token:',
@@ -54,13 +44,13 @@ module.exports = function (app) {
                     });
                     res.status(500).send(err);
                 });
+        } else {
+            log({
+                message: 'Login failed for user:',
+                object: req.body,
+            });
+            res.sendStatus(401);
         }
-
-        log({
-            message: 'Login failed for user:',
-            object: req.body,
-        });
-        res.sendStatus(401);
     });
 
     /*
@@ -73,15 +63,37 @@ module.exports = function (app) {
     app.post('/api/register', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
 
-        if (checkUserExists(req, res)) {
+        if (checkUserExists(req)) {
+            res.status(409)
+                .send(`User name ${req.body.username} already exists`);
             return;
         }
 
-        if (!validateRequest(req, res)) {
+        const validation = validateRequest(req);
+
+        if (!validation.valid) {
+            const errorMsg = `The following params missing in user object, [${validation.errors.join(', ')}]`;
+            log({ message: errorMsg });
+            res.status(400).send(errorMsg);
             return;
         }
 
-        generateNewUser(req, res);
+        generateNewUser(req)
+            .then(user => {
+                log({
+                    message: `successfully created user ${req.body.username}`,
+                    object: user,
+                });
+
+                return res.status(200).send(JSON.stringify(user));
+            })
+            .catch(err => {
+                log({
+                    message: 'There was an error creating the external Tray user:',
+                    object: err,
+                });
+                res.status(500).send('There was an error creating the external Tray user:');
+            })
     });
 
     /*

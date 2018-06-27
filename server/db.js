@@ -22,6 +22,7 @@ export const retrieveUserFromMockDB = input => {
             user.password === input.password
     );
 
+
     return matches[0];
 };
 
