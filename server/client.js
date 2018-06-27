@@ -14,7 +14,7 @@ const authLink = token =>
             headers: {
                 ...headers,
                 authorization: `Bearer ${token}`,
-            }
+            },
         };
     });
 

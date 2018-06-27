@@ -9,10 +9,6 @@ import {
     mutations,
 } from './graphql';
 
-function withErrorHandling(promise) {
-    return promise.catch(err => res.status(500).send(err));
-}
-
 module.exports = function (app) {
 
     // GET Account:
@@ -29,7 +25,10 @@ module.exports = function (app) {
         queries.templates()
             .then((results) => {
                 res.status(200).send({
-                    data: map(values(get(results, 'data.viewer.templates.edges')), x => x.node),
+                    data: map(
+                        values(get(results, 'data.viewer.templates.edges')),
+                        x => x.node
+                    ),
                 });
             })
             .catch(err => res.status(500).send(err));
@@ -46,7 +45,10 @@ module.exports = function (app) {
         queries.workflows(externalUserToken)
             .then(results => {
                 res.status(200).send({
-                    data: map(values(get(results, 'data.viewer.workflows.edges')), x => x.node),
+                    data: map(
+                        values(get(results, 'data.viewer.workflows.edges')),
+                        x => x.node
+                    ),
                 })
             })
             .catch(err => res.status(500).send(err));

@@ -42,7 +42,7 @@ export const queries = {
         return masterClient.query({query})
     },
 
-    workflows: (token) => {
+    workflows: token => {
         const query = gql`
             {
                 viewer {
@@ -77,10 +77,10 @@ export const queries = {
 };
 
 export const mutations = {
-    authorize: (userId) => {
+    authorize: trayId => {
         const mutation = gql`
             mutation {
-                authorize(input: {userId: "${userId}"}) {
+                authorize(input: {userId: "${trayId}"}) {
                     accessToken
                 }
             }
@@ -103,10 +103,10 @@ export const mutations = {
         return userClient.mutate({mutation});
     },
 
-    createExternalUser: (id, name) => {
+    createExternalUser: (uuid, name) => {
         const mutation = gql`
             mutation {
-                createExternalUser(input : {externalUserId: "${id}", name: "${name}"}) {
+                createExternalUser(input : {externalUserId: "${uuid}", name: "${name}"}) {
                     userId
                 }
             }
@@ -115,10 +115,10 @@ export const mutations = {
         return masterClient.mutate({mutation})
     },
 
-    getGrantTokenForUser: (userId, workflowId) => {
+    getGrantTokenForUser: (trayId, workflowId) => {
         const mutation = gql`
             mutation {
-                generateAuthorizationCode(input: {userId: "${userId}"}) {
+                generateAuthorizationCode(input: {userId: "${trayId}"}) {
                     authorizationCode
                 }
             }

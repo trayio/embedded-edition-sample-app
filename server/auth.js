@@ -35,9 +35,9 @@ const retrieveUserFromMockDB = (allUsers, current) => {
  */
 const getExternalUserToken = trayUsername => {
     // Create token to be used for external user requests
-    return mutations.authorize(trayUsername).then(authorizeResponse => {
-        return get(authorizeResponse, 'data.authorize.accessToken');
-    }).catch(err => {
+    return mutations.authorize(trayUsername).then(authorizeResponse =>
+        get(authorizeResponse, 'data.authorize.accessToken');
+    ).catch(err => {
         console.error(`Failed to get token for ${uuid}`);
         return null;
     });
@@ -63,8 +63,8 @@ module.exports = function (app) {
             request.session.admin = true;
 
             // Generate the external user token
-            getExternalUserToken(currentUser.trayId).then(externalUserToken => {
-                request.session.token = externalUserToken;
+            getExternalUserToken(currentUser.trayId).then(trayUserToken => {
+                request.session.token = trayUserToken;
                 response.status(200).send('Succesfully logged, assigned external user token to session.');
             });
         } else {
