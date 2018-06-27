@@ -1,7 +1,7 @@
 const express = require('express');
 const uuidv1 = require('uuid/v1');
 
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import { mutations, queries } from "./graphql";
 import {
     userExistsInMockDB,
@@ -19,15 +19,26 @@ import {
  *
  * Returns promise that resolves to the token [string] or null if it didn't work
  */
-const getTrayUserToken = trayUsername => {
-    // Create token to be used for external user requests
-    return mutations.authorize(trayUsername)
-        .then(authorizeResponse => {
-            return get(authorizeResponse, 'data.authorize.accessToken')
-        }).catch(err => {
+const getTrayUserToken = trayUsername =>
+    mutations.authorize(trayUsername)
+        .then(authorizeResponse =>
+            get(authorizeResponse, 'data.authorize.accessToken')
+        ).catch(err => {
             console.error(`Failed to get token for ${uuid}`);
             return null;
         });
+
+const validateNewUser = user => {
+    const errors = [];
+    const fields = ['username', 'password', 'name'];
+
+    fields.forEach(f => {
+        if (isNil(user[f]) || user[f] === '') {
+            errors.push(f);
+        }
+    });
+
+    return errors;
 };
 
 module.exports = function (app) {
@@ -38,13 +49,17 @@ module.exports = function (app) {
         saveUninitialized: true
     }));
 
-    // Login endpoint
+    /*
+    * /api/login:
+    * Attempt to retrieve user from DB, if not found respond with 401 status.
+    * Otherwise attempt to generate a tray access token and set user info onto
+    * session.
+    */
     app.post('/api/login', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
 
         const currentUser = retrieveUserFromMockDB(req.body);
 
-        // Is local user able to login?
         if (currentUser) {
             req.session.user = currentUser;
             req.session.admin = true;
@@ -53,48 +68,59 @@ module.exports = function (app) {
             console.log(currentUser);
 
             // Generate the external user token
-            getTrayUserToken(currentUser.trayId)
+            return getTrayUserToken(currentUser.trayId)
                 .then(trayUserToken => {
                     req.session.token = trayUserToken;
                     res.sendStatus(200);
+                })
+                .catch(err => {
+                    console.log('Failed to generate user access token:');
+                    console.log(err);
+                    res.status(500).send(err);
                 });
-        } else {
-            console.log('Login failed for user:');
-            console.log(req.body);
-            res.sendStatus(401);
         }
+        
+        console.log('Login failed for user:');
+        console.log(req.body);
+        res.sendStatus(401);
     });
 
-    // Logout endpoint
-    app.post('/api/logout', function (req, res) {
-        req.session.destroy();
-        res.send("logout success!");
-    });
-
-    // Register endpoint
+    /*
+    * /api/register:
+    * Check if user already exists, if so respond with 409 status.
+    * Validate request body, if not valid respond with 400 status.
+    * Otherwise attempt to generate a tray user and insert new user object into
+    * the DB.
+    */
     app.post('/api/register', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
 
         if (userExistsInMockDB(req.body)) {
-            res.status(500).send(`User name ${user.username} already exists`);
-        } else if (!req.body.username || !req.body.password || !req.body.name) {
-            const errorMsg = `One or more of following params missing in body: username, password, uuid`;
-            console.log(errorMsg);
-            res.status(500).send(errorMsg);
-        } else {
-            // Generate UUID for user:
-            const uuid = uuidv1();
+            res.status(409).send(`User name ${user.username} already exists`);
+            return;
+        }
 
-            // Generate a tray user for this account:
-            mutations.createExternalUser(uuid, req.body.name).then(createRes => {
+        const validationErrors = validateNewUser(req.body);
+
+        if (validationErrors.length) {
+            const errorMsg = `The following params missing in user object, [${validationErrors.join(', ')}]`;
+            console.log(errorMsg);
+            res.status(400).send(errorMsg);
+            return;
+        }
+
+        // Generate UUID for user:
+        const uuid = uuidv1();
+
+        // Generate a tray user for this account:
+        mutations.createExternalUser(uuid, req.body.name)
+            .then(createRes => {
                 // Add user to internal DB:
                 insertUserToMockDB(
                     {
                         uuid: uuid,
-                        name: req.body.name,
+                        body: req.body,
                         trayId: createRes.data.createExternalUser.userId,
-                        username: req.body.username,
-                        password: req.body.password,
                     },
                 );
 
@@ -103,15 +129,25 @@ module.exports = function (app) {
                 console.log(`successfully created user ${req.body.username}`);
                 console.log(newUser);
                 res.status(200).send(JSON.stringify(newUser));
-            }).catch(err => {
+            })
+            .catch(err => {
                 console.log('There was an error creating the external Tray user:');
                 console.log(err);
                 res.status(500).send('There was an error creating the external Tray user:');
             });
-        }
+
     });
 
-    // Authenticate all endpoints except the four defined in this module
+    /*
+    * /api/logout:
+    * Remove session data.
+    */
+    app.post('/api/logout', function (req, res) {
+        req.session.destroy();
+        res.sendStatus(200);
+    });
+
+    // Authenticate all endpoints except the auth endpoints defined in this module
     app.use(function (req, res, next) {
         if (req.session && req.session.admin) {
             return next();

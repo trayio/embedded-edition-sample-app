@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import {
     masterClient,
     generateClient,
-} from './client';
+} from './gqlclient';
 
 export const queries = {
     me: () => {

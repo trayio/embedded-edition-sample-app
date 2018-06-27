@@ -1,11 +1,8 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import {grey500, white} from '@material-ui/core/colors/';
-import PersonAdd from '@material-ui/icons/PersonAdd';
-import Help from '@material-ui/icons/Help'
+import {white} from '@material-ui/core/colors/';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class RegisterForm extends React.Component {

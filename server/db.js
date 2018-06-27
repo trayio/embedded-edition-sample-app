@@ -38,10 +38,16 @@ export const userExistsInMockDB = input => {
 
 /**
  * Insert user into the Mock DB:
- * @param user - {username: 'myname', password: 'mypass'}
+ * @param input - {body, uuid, trayId}
  *
  * @void
  */
-export const insertUserToMockDB = user => {
-    mockUserDB.push(user);
+export const insertUserToMockDB = input => {
+    mockUserDB.push({
+        name: input.body.name,
+        uuid: input.uuid,
+        trayId: input.trayId,
+        username: input.body.username,
+        password: input.body.password,
+    });
 };

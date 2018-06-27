@@ -1,17 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import PlugIcon from '@material-ui/icons/SettingsInputComponent';
-import ChartIcon from '@material-ui/icons/Assessment';
-import PaymentIcon from '@material-ui/icons/Payment';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import CircleIcon from '@material-ui/icons/FiberManualRecord';
@@ -20,6 +16,7 @@ import {Link} from 'react-router-dom';
 const styles = theme => ({
     root: {
         width: '100%',
+        height: '100%',
         maxWidth: 250,
         backgroundColor: theme.palette.background.paper,
         height: '100%',
@@ -48,16 +45,6 @@ class NestedList extends React.Component {
                     <List
                         component="nav"
                     >
-                        {/*1---------------------*/}
-                        <Link className={classes.link} to="/dashboard">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <ChartIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Dashboard"/>
-                            </ListItem>
-                        </Link>
-                        {/*2---------------------*/}
                         <Link to="/account" className={classes.link}>
                             <ListItem button>
 
@@ -68,7 +55,6 @@ class NestedList extends React.Component {
 
                             </ListItem>
                         </Link>
-                        {/*3---------------------*/}
 
                         <ListItem button onClick={this.handleClick}>
                             <ListItemIcon>
@@ -101,17 +87,6 @@ class NestedList extends React.Component {
 
                             </List>
                         </Collapse>
-
-                        {/*4---------------------*/}
-
-                        <Link className={classes.link} to="/billing">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <PaymentIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Billing"/>
-                            </ListItem>
-                        </Link>
                     </List>
                 </div>
             </div>

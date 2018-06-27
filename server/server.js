@@ -17,21 +17,19 @@ app.use(function (req, res, next) {
     next();
 });
 
-const gqlClient = require('./client');
-
-// Authentication and Authorization Middleware
-
-// Configure Express application.
+// Configure Express application:
 app.use(require('morgan')('tiny'));
 
+// Authentication and Authorization Middleware:
 require('./auth')(app);
+
+// Setup API router:
 require('./api')(app);
 
 if (!process.env.MASTER_TOKEN) {
-    throw new Error(`Tray io master token must be passed as env variable MASTER_TOKEN to authenticate with tray graphQL api.`);
+    throw new Error('Your master token must be passed as env variable MASTER_TOKEN to authenticate with tray graphQL api.');
 }
 
 app.listen(process.env.PORT || 3001, () => {
     console.log(`Express started on port ${process.env.PORT || 3001}`);
 });
-

@@ -1,6 +1,5 @@
 import React from 'react';
 import View from '../View';
-import {get} from 'lodash';
 import Error from '../Error';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';

@@ -1,9 +1,8 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import {grey500, white} from '@material-ui/core/colors/';
+import {white} from '@material-ui/core/colors/';
 import PersonAdd from '@material-ui/icons/PersonAdd';
-import Help from '@material-ui/icons/Help'
 import Input from '@material-ui/core/Input';
 
 class LoginForm extends React.Component {
@@ -50,7 +49,6 @@ class LoginForm extends React.Component {
                         <form
                             ref={(elem) => this.form = elem}
                             onSubmit={(e) => {
-                                console.log('---ONSUBMIT---');
                                 e.preventDefault();
                                 return onLogin({
                                     username: this.usernameElem.value,
@@ -91,16 +89,7 @@ class LoginForm extends React.Component {
                             icon={<PersonAdd/>}
                             color="secondary"
                         >
-                            Register
-                        </Button>
-
-                        <Button
-                            label="Forgot Password?"
-                            href="/"
-                            icon={<Help/>}
-                            color="secondary"
-                        >
-                            Forgot Password
+                            Register New Account
                         </Button>
                     </div>
 
