@@ -11,9 +11,8 @@ const mockUserDB = [
 
 /**
  * Retreive user from the Mock DB:
- * @param input - {username: 'myname', password: 'mypass'}
- *
- * @returns - the found user object or undefined if not found
+ * @param {User} input - {username: 'myname', password: 'mypass'}
+ * @returns {User | undefined}
  */
 export const retrieveUserFromMockDB = input => {
     const matches = mockUserDB.filter(
@@ -27,9 +26,8 @@ export const retrieveUserFromMockDB = input => {
 
 /**
  * Check user exists in Mock DB:
- * @param input - {username: 'myname', password: 'mypass'}
- *
- * @returns - if there is a match for the input user
+ * @param {User} input
+ * @returns {Boolean}
  */
 export const userExistsInMockDB = input => {
     const matches = mockUserDB.filter(user => user.username === input.username);
@@ -38,9 +36,9 @@ export const userExistsInMockDB = input => {
 
 /**
  * Insert user into the Mock DB:
- * @param input - {body, uuid, trayId}
+ * @param {User} input
  *
- * @void
+ * @returns {Void}
  */
 export const insertUserToMockDB = input => {
     mockUserDB.push({
