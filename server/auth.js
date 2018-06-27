@@ -36,7 +36,13 @@ module.exports = function (app) {
         saveUninitialized: true
     }));
 
-    // Login endpoint
+    /*
+    * /api/login:
+    * Attempt to retrieve user from DB,
+    * If no user found respond with 401 status code,
+    * Otherwise attempt to generate a tray access token and set user info onto
+    * session.
+    */
     app.post('/api/login', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
 
@@ -67,17 +73,23 @@ module.exports = function (app) {
         res.sendStatus(401);
     });
 
-    // Register endpoint
+    /*
+    * /api/register:
+    * Check if user already exists, if so respond with 409 status code.
+    * Validate request body, if not valid respond with 400 status code.
+    * Otherwise attempt to generate a tray user and insert new user object into
+    * the DB.
+    */
     app.post('/api/register', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
 
         if (userExistsInMockDB(req.body)) {
-            res.status(500).send(`User name ${user.username} already exists`);
+            res.status(409).send(`User name ${user.username} already exists`);
             return;
         } else if (!req.body.username || !req.body.password || !req.body.name) {
             const errorMsg = `One or more of following params missing in body: username, password, uuid`;
             console.log(errorMsg);
-            res.status(500).send(errorMsg);
+            res.status(400).send(errorMsg);
             return;
         }
 
@@ -110,13 +122,16 @@ module.exports = function (app) {
 
     });
 
-    // Logout endpoint
+    /*
+    * /api/logout:
+    * Remove session data.
+    */
     app.post('/api/logout', function (req, res) {
         req.session.destroy();
-        res.send("logout success!");
+        res.sendStatus(200);
     });
 
-    // Authenticate all endpoints except the four defined in this module
+    // Authenticate all endpoints except the auth endpoints defined in this module
     app.use(function (req, res, next) {
         if (req.session && req.session.admin) {
             return next();
