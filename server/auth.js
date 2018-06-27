@@ -1,7 +1,7 @@
 const express = require('express');
 const uuidv1 = require('uuid/v1');
 
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import { mutations, queries } from "./graphql";
 import {
     userExistsInMockDB,
@@ -28,6 +28,19 @@ const getTrayUserToken = trayUsername =>
             return null;
         });
 
+const validateNewUser = user => {
+    const errors = [];
+    const fields = ['username', 'password', 'name'];
+
+    fields.forEach(f => {
+        if (isNil(user[f]) || user[f] === '') {
+            errors.push(f);
+        }
+    });
+
+    return errors;
+};
+
 module.exports = function (app) {
 
     app.use(require('express-session')({
@@ -38,7 +51,7 @@ module.exports = function (app) {
 
     /*
     * /api/login:
-    * Attempt to retrieve user from DB, if not found respond with 401 status,
+    * Attempt to retrieve user from DB, if not found respond with 401 status.
     * Otherwise attempt to generate a tray access token and set user info onto
     * session.
     */
@@ -74,8 +87,8 @@ module.exports = function (app) {
 
     /*
     * /api/register:
-    * Check if user already exists, if so respond with 409 status code.
-    * Validate request body, if not valid respond with 400 status code.
+    * Check if user already exists, if so respond with 409 status.
+    * Validate request body, if not valid respond with 400 status.
     * Otherwise attempt to generate a tray user and insert new user object into
     * the DB.
     */
@@ -85,8 +98,12 @@ module.exports = function (app) {
         if (userExistsInMockDB(req.body)) {
             res.status(409).send(`User name ${user.username} already exists`);
             return;
-        } else if (!req.body.username || !req.body.password || !req.body.name) {
-            const errorMsg = `One or more of following params missing in body: username, password, uuid`;
+        }
+
+        const validationErrors = validateNewUser(req.body);
+
+        if (validationErrors.length) {
+            const errorMsg = `The following params missing in user object, [${validationErrors.join(', ')}]`;
             console.log(errorMsg);
             res.status(400).send(errorMsg);
             return;
