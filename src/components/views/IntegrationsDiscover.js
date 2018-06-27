@@ -48,7 +48,7 @@ export class DiscoverIntegrations extends React.Component {
                 id: id,
             }),
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
             },
             method: 'POST',
             credentials: 'include',
@@ -61,7 +61,6 @@ export class DiscoverIntegrations extends React.Component {
     }
 
     buildList(templates) {
-        console.log(templates);
         return (
             <Grid item>
                 <Typography variant="title">

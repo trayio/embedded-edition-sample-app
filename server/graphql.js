@@ -112,15 +112,15 @@ export const mutations = {
     },
 
     createExternalUser: (id, name) => {
-        return masterClient.mutate({
-            mutation: gql`
-                mutation {
-                    createExternalUser(input : {externalUserId: "${id}", name: "${name}"}) {
-                        userId
-                    }
+        const mutation = gql`
+            mutation {
+                createExternalUser(input : {externalUserId: "${id}", name: "${name}"}) {
+                    userId
                 }
-            `
-        })
+            }
+        `;
+
+        return masterClient.mutate({mutation})
     },
 
     getGrantTokenForUser: (uuid, workflowId) => {
@@ -138,7 +138,6 @@ export const mutations = {
 
         return masterClient.mutate({mutation, variables})
             .then(payload => {
-                console.log('re'.payload)
                 return {
                     uuid,
                     payload,

@@ -70,13 +70,13 @@ module.exports = function (app) {
 
         const currentUser = retrieveUserFromMockDB(allUsersDB, request.body);
 
-        //Is local user able to login?
+        // Is local user able to login?
         if (currentUser) {
             request.session.user = currentUser.username;
             request.session.admin = true;
 
-            //Create new tray external user via calling mutation
-            //If user already exists the promise is rejected (checks by uuid)
+            // Create new tray external user via calling mutation
+            // If user already exists the promise is rejected (checks by uuid)
             mutations.createExternalUser(currentUser.uuid, currentUser.name).then(res => {
                 console.log(`Tray external tray user now exists`);
                 console.log(res);
@@ -85,7 +85,7 @@ module.exports = function (app) {
                 console.log(`Unable to create new external tray user`);
                 console.log(err);
             }).finally(() => {
-                //Generate the external user token
+                // Generate the external user token
                 getExternalUserToken(currentUser.uuid).then(externalUserToken => {
                     request.session.token = externalUserToken;
                     response.status(200).send('Succesfully logged, assigned external user token to session.');
@@ -130,14 +130,15 @@ module.exports = function (app) {
         }
     });
 
-    //Authenticate all endpoints except the four defined in this module
+    // Authenticate all endpoints except the four defined in this module
     app.use(function (req, res, next) {
         console.log(req.session);
 
-        if (req.session && req.session.admin)
+        if (req.session && req.session.admin) {
             return next();
-        else
+        } else {
             return res.sendStatus(401);
+        }
     });
 
 }
