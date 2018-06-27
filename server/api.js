@@ -64,7 +64,7 @@ module.exports = function (app) {
                 workflow.data.createWorkflowFromTemplate.workflowId
             );
         })
-        .then(({uuid, payload, workflowId}) => {
+        .then((payload, workflowId}) => {
             res.status(200).send({
                 data: {
                     popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`

@@ -127,7 +127,6 @@ export const mutations = {
         return masterClient.mutate({mutation})
             .then(payload => {
                 return {
-                    userId,
                     payload,
                     workflowId,
                 };
