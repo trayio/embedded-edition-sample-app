@@ -9,6 +9,7 @@ import {
 
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const auth = {
     isAuthenticated: false,
@@ -72,11 +73,15 @@ export const Protected = () => <h3>Protected</h3>
 
 export class Login extends React.Component {
     state = {
+        loading: false,
         redirectToReferrer: false
     }
 
     login = (data) => {
         console.log('Logging in ' + data.username);
+        this.setState({
+            loading: true
+        })
         fetch('/api/login', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -85,17 +90,22 @@ export class Login extends React.Component {
                 'Content-Type': 'application/json'
             },
         })
-            .then((response) => {
-                if (response.status === 200) {
+            .then((res) => {
+                if (res.ok) {
                     auth.authenticate(() => {
-                        this.setState({redirectToReferrer: true})
+                        this.setState(
+                            {
+                                redirectToReferrer: true,
+                                loading: false
+                            }
+                        )
                     });
                 } else {
                     alert('Could not log in');
                 }
             })
             .catch((err) => {
-                console.log('Error logging in.', err);
+                console.error('Error logging in.', err);
             });
     }
 
@@ -111,8 +121,16 @@ export class Login extends React.Component {
 
         return (
             <div>
-                <p>You must log in to view the page at {from.pathname}</p>
-                <LoginForm onLogin={this.login}/>
+                {
+                    this.state.loading ?
+                        <div style={{textAlign: "center"}}>
+                            <CircularProgress/>
+                        </div> :
+                        <div>
+                            <p>You must log in to view the page at {from.pathname}</p>
+                            <LoginForm onLogin={this.login}/>
+                        </div>
+                }
             </div>
         );
     }
