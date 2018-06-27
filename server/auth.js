@@ -28,9 +28,9 @@ const retrieveUserFromMockDB = (allUsers, current) => {
 };
 
 /**
- * Returns the external user token that is used to authenticate operations related to individiual accounts (or instance configura workflow)
+ * Returns the external user token that is used to authenticate operations related to individiual accounts (for instance configure workflow operation)
  * This is different than the master token which is shared across the entire partner organization (used to create users for instance)
- * @param uuid - the unique id that was assigned when the user was created
+ * @param trayUsername - trayUsername generated when user is created (different from local ID that was passed to tray during user creation)
  * Returns promise that resolves to the token [string] or null if it didn't work
  */
 const getExternalUserToken = trayUsername => {
