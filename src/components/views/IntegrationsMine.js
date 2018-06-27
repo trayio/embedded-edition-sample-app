@@ -5,16 +5,13 @@ import Error from '../Error';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import CloudCircle from '@material-ui/icons/CloudCircle';
-import BuildIcon from '@material-ui/icons/Build';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CloudCircle from '@material-ui/icons/CloudCircle';
+import Button from '@material-ui/core/Button';
 
 export class MineIntegrations extends React.Component {
 
@@ -42,56 +39,98 @@ export class MineIntegrations extends React.Component {
         );
     }
 
-    handleClick(id) {
-  /*      fetch('/api/workflows', {
-            body: JSON.stringify({
-                id: id,
-            }),
-            headers: {
-                'content-type': 'application/json'
-            },
-            method: 'POST',
-            credentials: 'include',
-        }).then(res => {
-            console.log(res);
-            res.json().then(body => {
-                window.open(body.data.popupUrl, '_blank', 'width=500,height=500,scrollbars=no')
-            })
-        });*/
+    onConfigure(id) {
+        alert(`You clicked CONFIGURE on workflow id ${id}`);
     }
+
+    onStop(id) {
+
+    }
+
+    onDelete(id) {
+
+    }
+
+    handleClick(id) {
+        /*      fetch('/api/workflows', {
+                  body: JSON.stringify({
+                      id: id,
+                  }),
+                  headers: {
+                      'content-type': 'application/json'
+                  },
+                  method: 'POST',
+                  credentials: 'include',
+              }).then(res => {
+                  console.log(res);
+                  res.json().then(body => {
+                      window.open(body.data.popupUrl, '_blank', 'width=500,height=500,scrollbars=no')
+                  })
+              });*/
+    }
+
+    buildWorkflowDetails(id) {
+        const styles = {
+            controls: {
+                marginLeft: "10px"
+            },
+            button: {
+                width: "100%",
+                marginBottom: "10px"
+            }
+        }
+
+        return <ExpansionPanelDetails>
+
+            <div id="Logs">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                malesuada
+                lacus ex,
+                sit amet blandit leo lobortis eget.
+            </div>
+            <div id="Controls" style={styles.controls}>
+                <Button style={styles.button} onClick={() => this.onConfigure(id)} variant="contained"
+                        color="primary">Configure</Button>
+                <Button style={styles.button} onClick={() => this.onStop(id)} variant="contained"
+                        color="secondary">Stop</Button>
+                <Button style={styles.button} onClick={() => this.onDelete(id)} variant="contained"
+                        color="secondary">Delete</Button>
+            </div>
+
+        </ExpansionPanelDetails>
+    }
+
 
     buildList(templates) {
         console.log(templates);
         return (
-            <Grid item>
+            <div>
                 <Typography variant="title">
-                    Discover integrations
+                    My Workflows
                 </Typography>
                 <div>
-                    <List>
-                        {
-                            templates.map(({title, id}, index) =>
-                                <ListItem key={index}>
-                                    <ListItemAvatar>
-                                        <Avatar style={{backgroundColor: 'black'}}>
-                                            <CloudCircle/>
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={title}
-                                        secondary={null}
-                                    />
-                                    <ListItemSecondaryAction onClick={() => this.handleClick(id)}>
-                                        <IconButton aria-label="Delete">
-                                            <BuildIcon/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            )
-                        }
-                    </List>
+                    <div>
+                        <List>
+
+                            {
+                                templates.map(({name, id}, index) =>
+                                    <ListItem key={index}>
+                                        <ExpansionPanel>
+                                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                                                <CloudCircle style={{paddingRight: "10px"}}/>
+                                                <Typography>{name}</Typography>
+                                            </ExpansionPanelSummary>
+                                            {this.buildWorkflowDetails(id)}
+                                        </ExpansionPanel>
+                                    </ListItem>
+                                )
+                            }
+
+                        </List>
+                    </div>
+
                 </div>
-            </Grid>
+            </div>
         );
     }
 

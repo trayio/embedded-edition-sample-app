@@ -49,7 +49,8 @@ export const queries = {
                     workflows {
                         edges {
                             node {
-                                name
+                                name,
+                                id
                             }
                         }
                     }
