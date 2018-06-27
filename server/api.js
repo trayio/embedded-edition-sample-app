@@ -14,9 +14,7 @@ module.exports = function (app) {
     // GET Account:
     app.get('/api/me', (req, res) => {
         queries.me(req.session.token)
-            .then((results) => {
-                res.status(200).send(results);
-            })
+            .then((results) => res.status(200).send(results))
             .catch(err => res.status(500).send(err));
     });
 
@@ -27,7 +25,7 @@ module.exports = function (app) {
                 res.status(200).send({
                     data: map(
                         values(get(results, 'data.viewer.templates.edges')),
-                        x => x.node
+                        x => x.node,
                     ),
                 });
             })
@@ -36,18 +34,16 @@ module.exports = function (app) {
 
     // GET Workflows:
     app.get('/api/workflows', (req, res) => {
-        const externalUserToken = req.session.token;
-
-        if (!externalUserToken) {
-            res.status(500).send('Missing external user auth');
+        if (!req.session.token) {
+            res.status(500).send('Missing external user token on session');
         }
 
-        queries.workflows(externalUserToken)
+        queries.workflows(req.session.token)
             .then(results => {
                 res.status(200).send({
                     data: map(
                         values(get(results, 'data.viewer.workflows.edges')),
-                        x => x.node
+                        x => x.node,
                     ),
                 })
             })
