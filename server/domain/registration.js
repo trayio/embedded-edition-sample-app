@@ -1,6 +1,5 @@
 import uuidv1 from 'uuid/v1';
 
-import { log } from '../logging';
 import { isNil } from 'lodash';
 import { mutations } from "../graphql";
 import {
