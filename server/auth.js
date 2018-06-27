@@ -84,13 +84,11 @@ module.exports = function (app) {
                 console.log(`Unable to creat new external tray user`);
                 console.log(err);
             }).finally(() => {
-                //Get tray external username corresponding to local user uuid
-
+                //Generate the external user token
                 getExternalUserToken(currentUser.uuid).then(externalUserToken => {
                     request.session.token = externalUserToken;
-                    response.status(200).send('Succesfully logged, assigned external user token');
+                    response.status(200).send('Succesfully logged, assigned external user token to session.');
                 });
-
             })
 
         } else {
