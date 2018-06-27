@@ -113,28 +113,28 @@ module.exports = function (app) {
         const uuid = uuidv1();
 
         // Generate a tray user for this account:
-        mutations.createExternalUser(uuid, req.body.name).then(createRes => {
-            // Add user to internal DB:
-            insertUserToMockDB(
-                {
-                    uuid: uuid,
-                    name: req.body.name,
-                    trayId: createRes.data.createExternalUser.userId,
-                    username: req.body.username,
-                    password: req.body.password,
-                },
-            );
+        mutations.createExternalUser(uuid, req.body.name)
+            .then(createRes => {
+                // Add user to internal DB:
+                insertUserToMockDB(
+                    {
+                        uuid: uuid,
+                        body: req.body,
+                        trayId: createRes.data.createExternalUser.userId,
+                    },
+                );
 
-            const newUser = retrieveUserFromMockDB(req.body);
+                const newUser = retrieveUserFromMockDB(req.body);
 
-            console.log(`successfully created user ${req.body.username}`);
-            console.log(newUser);
-            res.status(200).send(JSON.stringify(newUser));
-        }).catch(err => {
-            console.log('There was an error creating the external Tray user:');
-            console.log(err);
-            res.status(500).send('There was an error creating the external Tray user:');
-        });
+                console.log(`successfully created user ${req.body.username}`);
+                console.log(newUser);
+                res.status(200).send(JSON.stringify(newUser));
+            })
+            .catch(err => {
+                console.log('There was an error creating the external Tray user:');
+                console.log(err);
+                res.status(500).send('There was an error creating the external Tray user:');
+            });
 
     });
 
