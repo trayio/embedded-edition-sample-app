@@ -1,26 +1,21 @@
 import React from 'react';
 
 import {
-    Link,
     Route,
     Switch,
     Redirect,
-    withRouter,
     BrowserRouter as Router,
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 import {
     Login,
-    Public,
     Register,
-    Protected,
-    AuthButton,
     PrivateRoute,
 } from "./components/Auth";
 
+import Mine from "./components/views/IntegrationsMine";
 import Account from "./components/views/Account";
 import Discover from "./components/views/IntegrationsDiscover";
-import Mine from "./components/views/IntegrationsMine";
 
 const App = () => (
     <Router>

@@ -5,12 +5,14 @@ import './index.css';
 import App from './Router';
 import registerServiceWorker from './registerServiceWorker';
 import blue from '@material-ui/core/colors/blue';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import WithTheme from './WithTheme';
+import {
+    createMuiTheme,
+    MuiThemeProvider,
+} from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
     palette: {
-        type: 'light', // Switching the dark mode on is a single property value change.
+        type: 'light',
         primary: blue,
     },
 });

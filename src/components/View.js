@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import Button from '@material-ui/core/Button';
+import React from 'react';
 import Nav from './Nav';
 import { withTheme } from '@material-ui/core/styles';
 
@@ -15,7 +14,7 @@ class View extends React.Component {
 
         return (
             <div>
-                <div style={styles.header}> Acme Inc.</div>
+                <div style={styles.header}> OEM Demo Application</div>
                 <div style={{backgroundColor: "lightgray", display: "flex",}}>
                     <Nav/>
                     <div style={{display: 'flex', width: '100%', justifyContent: 'center', padding: '10px'}}>

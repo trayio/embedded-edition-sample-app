@@ -1,15 +1,13 @@
-import React from 'react'
-import {
-    BrowserRouter as Router,
-    Route,
-    Link,
-    Redirect,
-    withRouter
-} from 'react-router-dom'
-
+import React from 'react';
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import {
+    Route,
+    Redirect,
+    withRouter
+} from 'react-router-dom';
 
 const auth = {
     isAuthenticated: false,
@@ -41,7 +39,7 @@ const auth = {
                 }
             });
     }
-}
+};
 
 export const AuthButton = withRouter(({history}) => (
     auth.isAuthenticated ? (
@@ -53,7 +51,7 @@ export const AuthButton = withRouter(({history}) => (
     ) : (
         <p>You are not logged in.</p>
     )
-))
+));
 
 export const PrivateRoute = ({component: Component, ...rest}) => (
     <Route {...rest} render={props => (
@@ -66,10 +64,10 @@ export const PrivateRoute = ({component: Component, ...rest}) => (
             }}/>
         )
     )}/>
-)
+);
 
-export const Public = () => <h3>Public</h3>
-export const Protected = () => <h3>Protected</h3>
+export const Public = () => <h3>Public</h3>;
+export const Protected = () => <h3>Protected</h3>;
 
 export class Login extends React.Component {
     state = {
