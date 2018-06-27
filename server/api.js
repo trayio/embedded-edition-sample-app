@@ -60,11 +60,11 @@ module.exports = function (app) {
         )
         .then(workflow => {
             return mutations.getGrantTokenForUser(
-                req.session.trayId,
-                workflow.data.createWorkflowFromTemplate.workflowId
+                req.session.user.trayId,
+                workflow.data.createWorkflowFromTemplate.workflowId,
             );
         })
-        .then((payload, workflowId}) => {
+        .then(({payload, workflowId}) => {
             res.status(200).send({
                 data: {
                     popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`

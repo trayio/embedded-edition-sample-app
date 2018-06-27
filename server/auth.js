@@ -11,7 +11,8 @@ const allUsersDB = [
         username: "amy",
         name: "Amy Tang",
         uuid: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
-        password: "amyspassword"
+        trayId: "da774c77-abd7-4161-8e47-f5f67da81808",
+        password: "amyspassword",
     },
 ]
 
@@ -24,7 +25,7 @@ const allUsersDB = [
 const retrieveUserFromMockDB = (allUsers, current) => {
     const userFound = allUsersDB.filter(user => user.username === current.username && user.password === current.password);
     return userFound[0];
-}
+};
 
 /**
  * Returns the external user token that is used to authenticate operations related to individiual accounts (or instance configura workflow)
@@ -32,28 +33,15 @@ const retrieveUserFromMockDB = (allUsers, current) => {
  * @param uuid - the unique id that was assigned when the user was created
  * Returns promise that resolves to the token [string] or null if it didn't work
  */
-const getExternalUserToken = uuid => {
-    return queries.trayUsername(uuid).then(usernameResponse => {
-        const trayUsername = get(usernameResponse, 'data.users.edges[0].node.id');
-
-        if (!trayUsername) {
-            console.error(`Unable to retrieve tray username for userid ${uuid}`);
-            return null;
-        }
-
-        //Create token to be used for external user requests
-        return mutations.authorize(trayUsername).then(authorizeResponse => {
-            return get(authorizeResponse, 'data.authorize.accessToken');
-        }).catch(err => {
-            console.error(`Failed to get token for ${uuid}`);
-            return null;
-        });
-
+const getExternalUserToken = trayUsername => {
+    // Create token to be used for external user requests
+    return mutations.authorize(trayUsername).then(authorizeResponse => {
+        return get(authorizeResponse, 'data.authorize.accessToken');
     }).catch(err => {
-        console.error(`Failed to get trayUsername for ${uuid}`);
+        console.error(`Failed to get token for ${uuid}`);
         return null;
     });
-}
+};
 
 module.exports = function (app) {
 
@@ -66,33 +54,19 @@ module.exports = function (app) {
     // Login endpoint
     app.post('/api/login', function (request, response) {
         response.setHeader('Content-Type', 'application/json');
-        console.log(request.body);
 
         const currentUser = retrieveUserFromMockDB(allUsersDB, request.body);
 
         // Is local user able to login?
         if (currentUser) {
-            request.session.user = currentUser.username;
+            request.session.user = currentUser;
             request.session.admin = true;
 
-            // Create new tray external user via calling mutation
-            // If user already exists the promise is rejected (checks by uuid)
-            mutations.createExternalUser(currentUser.uuid, currentUser.name).then(res => {
-                console.log(`Tray external tray user now exists`);
-                console.log(res);
-                request.session.trayId = res.data.createExternalUser.userId;
-            }).catch(err => {
-                console.log(`Unable to create new external tray user`);
-                console.log(err);
-            }).finally(() => {
-                // Generate the external user token
-                getExternalUserToken(currentUser.uuid).then(externalUserToken => {
-                    request.session.token = externalUserToken;
-                    request.session.uuid = currentUser.uuid;
-                    response.status(200).send('Succesfully logged, assigned external user token to session.');
-                });
-            })
-
+            // Generate the external user token
+            getExternalUserToken(currentUser.trayId).then(externalUserToken => {
+                request.session.token = externalUserToken;
+                response.status(200).send('Succesfully logged, assigned external user token to session.');
+            });
         } else {
             console.log('login failed');
             response.status(401).send('login failed');
@@ -117,17 +91,28 @@ module.exports = function (app) {
             console.log(errorMsg);
             res.status(500).send(errorMsg);
         } else {
-            allUsersDB.push(
-                {
-                    username: req.body.username,
-                    password: req.body.password,
-                    name: req.body.name,
-                    uuid: uuidv1(),
-                }
-            );
-            console.log(`successfully created user ${req.body.username}`);
-            console.log(allUsersDB[allUsersDB.length - 1]);
-            res.status(200).send(`successfully created user ${req.body.username}`);
+            const uuid = uuidv1();
+            mutations.createExternalUser(uuid, req.body.name).then(createRes => {
+                console.log(`We have now created the external tray user:`);
+                console.log(res);
+
+                allUsersDB.push(
+                    {
+                        uuid: uuid,
+                        name: req.body.name,
+                        username: req.body.username,
+                        password: req.body.password,
+                        trayId: createRes.data.createExternalUser.userId,
+                    }
+                );
+
+                console.log(`successfully created user ${req.body.username}`);
+                console.log(allUsersDB[allUsersDB.length - 1]);
+                res.status(200).send(`successfully created user ${req.body.username}`);
+            }).catch(err => {
+                console.log('There was an error creating the external Tray user:')
+                console.log(err);
+            });
         }
     });
 
