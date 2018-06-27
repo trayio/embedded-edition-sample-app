@@ -79,36 +79,28 @@ export const queries = {
 export const mutations = {
     authorize: (userId) => {
         const mutation = gql`
-            mutation ($userId: ID!) {
-                authorize(input: {userId: $userId}) {
+            mutation {
+                authorize(input: {userId: `${userId}`}) {
                     accessToken
                 }
             }
         `;
 
-        const variables = {
-            userId,
-        };
-
-        return masterClient.mutate({mutation, variables});
+        return masterClient.mutate({mutation});
     },
 
     createWorkflowFromTemplate: (userToken, templateId) => {
         const mutation = gql`
-            mutation ($templateId: ID!) {
-                createWorkflowFromTemplate(input: {templateId: $templateId}) {
+            mutation {
+                createWorkflowFromTemplate(input: {templateId: `${templateId}`}) {
                     workflowId
                 }
             }
         `;
 
-        const variables = {
-            templateId,
-        };
-
         const userClient = generateClient(userToken);
 
-        return userClient.mutate({mutation, variables});
+        return userClient.mutate({mutation});
     },
 
     createExternalUser: (id, name) => {
@@ -125,18 +117,14 @@ export const mutations = {
 
     getGrantTokenForUser: (uuid, workflowId) => {
         const mutation = gql`
-            mutation ($userId: ID!) {
-                generateAuthorizationCode(input: {userId: $userId}) {
+            mutation {
+                generateAuthorizationCode(input: {userId: `${userId}`}) {
                     authorizationCode
                 }
             }
         `;
 
-        const variables = {
-            userId: uuid,
-        };
-
-        return masterClient.mutate({mutation, variables})
+        return masterClient.mutate({mutation})
             .then(payload => {
                 return {
                     uuid,

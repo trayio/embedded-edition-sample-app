@@ -80,6 +80,7 @@ module.exports = function (app) {
             mutations.createExternalUser(currentUser.uuid, currentUser.name).then(res => {
                 console.log(`Tray external tray user now exists`);
                 console.log(res);
+                request.session.externalId = res.data.createExternalUser.userId;
             }).catch(err => {
                 console.log(`Unable to create new external tray user`);
                 console.log(err);
