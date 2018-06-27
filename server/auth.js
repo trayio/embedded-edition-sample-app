@@ -1,6 +1,7 @@
 const express = require('express');
 const uuidv1 = require('uuid/v1');
 
+import { log } from './logging';
 import { get, isNil } from 'lodash';
 import { mutations, queries } from "./graphql";
 import {
@@ -24,7 +25,7 @@ const getTrayUserToken = trayUsername =>
         .then(authorizeResponse =>
             get(authorizeResponse, 'data.authorize.accessToken')
         ).catch(err => {
-            console.error(`Failed to get token for ${uuid}`);
+            log({ message: `Failed to get token for ${uuid}` });
             return null;
         });
 
@@ -64,8 +65,10 @@ module.exports = function (app) {
             req.session.user = currentUser;
             req.session.admin = true;
 
-            console.log('Logged in with:');
-            console.log(currentUser);
+            log({
+                message: 'Logged in with:',
+                object: currentUser,
+            });
 
             // Generate the external user token
             return getTrayUserToken(currentUser.trayId)
@@ -74,14 +77,18 @@ module.exports = function (app) {
                     res.sendStatus(200);
                 })
                 .catch(err => {
-                    console.log('Failed to generate user access token:');
-                    console.log(err);
+                    log({
+                        message: 'Failed to generate user access token:',
+                        object: err,
+                    });
                     res.status(500).send(err);
                 });
         }
-        
-        console.log('Login failed for user:');
-        console.log(req.body);
+
+        log({
+            message: 'Login failed for user:',
+            object: req.body,
+        });
         res.sendStatus(401);
     });
 
@@ -104,7 +111,7 @@ module.exports = function (app) {
 
         if (validationErrors.length) {
             const errorMsg = `The following params missing in user object, [${validationErrors.join(', ')}]`;
-            console.log(errorMsg);
+            log({ message: errorMsg });
             res.status(400).send(errorMsg);
             return;
         }
@@ -125,14 +132,17 @@ module.exports = function (app) {
                 );
 
                 const newUser = retrieveUserFromMockDB(req.body);
-
-                console.log(`successfully created user ${req.body.username}`);
-                console.log(newUser);
+                log({
+                    message: `successfully created user ${req.body.username}`,
+                    object: newUser,
+                });
                 res.status(200).send(JSON.stringify(newUser));
             })
             .catch(err => {
-                console.log('There was an error creating the external Tray user:');
-                console.log(err);
+                log({
+                    message: 'There was an error creating the external Tray user:',
+                    object: err,
+                });
                 res.status(500).send('There was an error creating the external Tray user:');
             });
 
