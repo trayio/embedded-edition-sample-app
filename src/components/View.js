@@ -7,17 +7,18 @@ class View extends React.Component {
         const { theme } = this.props;
         const styles = {
             header: {
-                backgroundColor: theme.palette.primary.main,
+                backgroundColor: "#2889ed",
                 padding: 10,
-            }
+                color: "white",
+            },
         };
 
         return (
             <div>
-                <div style={styles.header}> OEM Demo Application</div>
-                <div style={{backgroundColor: "lightgray", display: "flex",}}>
+                <div style={styles.header}>OEM Demo Application</div>
+                <div style={{backgroundColor: "#f0f0f0", display: "flex",}}>
                     <Nav/>
-                    <div style={{display: 'flex', width: '100%', justifyContent: 'center', padding: '10px'}}>
+                    <div style={{width: "100%"}}>
                         {this.props.children}
                     </div>
                 </div>

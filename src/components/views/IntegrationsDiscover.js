@@ -13,7 +13,7 @@ import CloudCircle from '@material-ui/icons/CloudCircle';
 import BuildIcon from '@material-ui/icons/Build';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
+import Button from '@material-ui/core/Button';
 
 export class DiscoverIntegrations extends React.Component {
 
@@ -63,29 +63,38 @@ export class DiscoverIntegrations extends React.Component {
     }
 
     buildList(templates) {
+        const styles = {
+            controls: {
+                marginLeft: "20px"
+            },
+            button: {
+                width: "100%",
+            }
+        };
+
         return (
-            <Grid item>
-                <Typography variant="title">
+            <Grid item style={{width: "100%"}}>
+                <Typography variant="headline" style={{margin: "20px"}}>
                     Discover integrations
                 </Typography>
                 <div>
-                    <List>
+                    <List style={{margin: "0 20px"}}>
                         {
                             templates.map(({title, id}, index) =>
-                                <ListItem key={index}>
-                                    <ListItemAvatar>
-                                        <Avatar style={{backgroundColor: 'black'}}>
-                                            <CloudCircle/>
-                                        </Avatar>
-                                    </ListItemAvatar>
+                                <ListItem key={index} style={{
+                                    backgroundColor: "white",
+                                    marginBottom: "20px",
+                                }}>
                                     <ListItemText
                                         primary={title}
                                         secondary={null}
                                     />
                                     <ListItemSecondaryAction onClick={() => this.handleClick(id)}>
-                                        <IconButton aria-label="Delete">
-                                            <BuildIcon/>
-                                        </IconButton>
+                                        <Button
+                                            style={styles.button}
+                                            variant="contained"
+                                            color="primary">Use
+                                        </Button>
                                     </ListItemSecondaryAction>
                                 </ListItem>
                             )

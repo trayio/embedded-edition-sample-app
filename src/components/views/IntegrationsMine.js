@@ -117,39 +117,49 @@ export class MineIntegrations extends React.Component {
                 width: "100%",
                 marginBottom: "10px"
             }
-        }
+        };
 
-        return <ExpansionPanelDetails>
-
-            <div id="Logs">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                malesuada
-                lacus ex,
-                sit amet blandit leo lobortis eget.
-            </div>
-            <div id="Controls" style={styles.controls}>
-                <Button style={styles.button} onClick={() => this.onClickConfigure(id)} variant="contained"
-                        color="primary">Configure</Button>
-                <Button style={styles.button} onClick={() => this.onClickStop(id)} variant="contained"
-                        color="secondary">Stop</Button>
-                <Button style={styles.button} onClick={() => this.onClickDelete(id)} variant="contained"
-                        color="secondary">Delete</Button>
-            </div>
-
-        </ExpansionPanelDetails>
+        return (
+            <ExpansionPanelDetails>
+                <div className="Logs">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                    malesuada
+                    lacus ex,
+                    sit amet blandit leo lobortis eget.
+                </div>
+                <div className="Controls" style={styles.controls}>
+                    <Button
+                        style={styles.button}
+                        onClick={() => this.onClickConfigure(id)}
+                        variant="contained"
+                        color="primary"
+                    >Configure</Button>
+                    <Button
+                        style={styles.button}
+                        onClick={() => this.onClickStop(id)}
+                        variant="contained"
+                        color="secondary"
+                    >Stop</Button>
+                    <Button
+                        style={styles.button}
+                        onClick={() => this.onClickDelete(id)}
+                        variant="contained"
+                        color="secondary"
+                    >Delete</Button>
+                </div>
+            </ExpansionPanelDetails>
+        );
     }
 
     buildList(templates) {
-        console.log(templates);
         return (
             <div>
-                <Typography variant="title">
+                <Typography variant="headline" style={{marginLeft: "20px", marginTop: "10px"}}>
                     My Workflows
                 </Typography>
                 <div>
                     <div>
                         <List>
-
                             {
                                 templates.map(({name, id}, index) =>
                                     <ListItem key={index}>
@@ -163,7 +173,6 @@ export class MineIntegrations extends React.Component {
                                     </ListItem>
                                 )
                             }
-
                         </List>
                     </div>
 
