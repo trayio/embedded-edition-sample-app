@@ -23,7 +23,8 @@ ReactDOM.render((
             border: "thin gray solid",
             margin: "auto",
             maxWidth: "1200px",
-            width: "100%"
+            width: "100%",
+            marginTop: "20px"
         }
     }>
         <BrowserRouter>
