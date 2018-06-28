@@ -50,7 +50,8 @@ export const queries = {
                         edges {
                             node {
                                 name,
-                                id
+                                id,
+                                enabled,
                             }
                         }
                     }
@@ -138,6 +139,30 @@ export const mutations = {
         const mutation = gql`
             mutation {
                 deleteWorkflow(input: {workflowId: "${workflowID}"}) {
+                    clientMutationId
+                }
+            }
+        `;
+
+        return generateClient(token).mutate({mutation});
+    },
+
+    stopWorkflow: (workflowID, token) => {
+        const mutation = gql`
+            mutation {
+                updateWorkflow(input: {workflowId: "${workflowID}", enabled: true}) {
+                    clientMutationId
+                }
+            }
+        `;
+
+        return generateClient(token).mutate({mutation});
+    },
+
+    startWorkflow: (workflowID, token) => {
+        const mutation = gql`
+            mutation {
+                updateWorkflow(input: {workflowId: "${workflowID}", enabled: false}) {
                     clientMutationId
                 }
             }

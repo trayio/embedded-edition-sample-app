@@ -16,6 +16,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {withTheme} from "@material-ui/core/styles/index";
 
 export class MineIntegrations extends React.Component {
 
@@ -52,8 +53,12 @@ export class MineIntegrations extends React.Component {
         alert(`You clicked CONFIGURE on workflow id ${id}`);
     }
 
-    onClickStop(id) {
+    onClickStart(id) {
+        alert('Implement me!');
+    }
 
+    onClickStop(id) {
+        alert('Implement me!');
     }
 
     onClickDelete(id) {
@@ -108,7 +113,7 @@ export class MineIntegrations extends React.Component {
         </Dialog>
     }
 
-    buildWorkflowDetails(id) {
+    buildWorkflowDetails(id, enabled) {
         const styles = {
             controls: {
                 marginLeft: "10px"
@@ -119,6 +124,11 @@ export class MineIntegrations extends React.Component {
             }
         }
 
+        const startButton = <Button style={styles.button} onClick={() => this.onClickStop(id)} variant="contained"
+                                    color="primary">Start</Button>
+        const stopButton = <Button style={styles.button} onClick={() => this.onClickStop(id)} variant="contained"
+                                   color="secondary">Stop</Button>
+
         return <ExpansionPanelDetails>
 
             <div id="Logs">
@@ -127,11 +137,11 @@ export class MineIntegrations extends React.Component {
                 lacus ex,
                 sit amet blandit leo lobortis eget.
             </div>
+
             <div id="Controls" style={styles.controls}>
                 <Button style={styles.button} onClick={() => this.onClickConfigure(id)} variant="contained"
                         color="primary">Configure</Button>
-                <Button style={styles.button} onClick={() => this.onClickStop(id)} variant="contained"
-                        color="secondary">Stop</Button>
+                {enabled ? stopButton : startButton}
                 <Button style={styles.button} onClick={() => this.onClickDelete(id)} variant="contained"
                         color="secondary">Delete</Button>
             </div>
@@ -141,6 +151,11 @@ export class MineIntegrations extends React.Component {
 
     buildList(templates) {
         console.log(templates);
+        const colors = {
+            positive: this.props.theme.palette.primary.main,
+            negative: this.props.theme.palette.secondary.main,
+        }
+
         return (
             <div>
                 <Typography variant="title">
@@ -151,14 +166,22 @@ export class MineIntegrations extends React.Component {
                         <List>
 
                             {
-                                templates.map(({name, id}, index) =>
+                                templates.map(({name, id, enabled}, index) =>
                                     <ListItem key={index}>
                                         <ExpansionPanel>
                                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                                                <CloudCircle style={{paddingRight: "10px"}}/>
-                                                <Typography>{name}</Typography>
+                                                <CloudCircle/>
+                                                <Typography>{name}
+                                                    <span style={{
+                                                        marginLeft: "5px",
+                                                        backgroundColor: enabled ? colors.positive : colors.negative,
+                                                        color: "white",
+                                                        borderRadius: "5px",
+                                                        padding: "2px",
+                                                    }}>{enabled ? "enabled" : "disabled"}</span>
+                                                </Typography>
                                             </ExpansionPanelSummary>
-                                            {this.buildWorkflowDetails(id)}
+                                            {this.buildWorkflowDetails(id, enabled)}
                                         </ExpansionPanel>
                                     </ListItem>
                                 )
@@ -166,13 +189,13 @@ export class MineIntegrations extends React.Component {
 
                         </List>
                     </div>
-
                 </div>
             </div>
         );
     }
 
     render() {
+
         let data;
 
         if (this.state.loading) {
@@ -193,4 +216,4 @@ export class MineIntegrations extends React.Component {
 
 }
 
-export default MineIntegrations;
+export default withTheme()(MineIntegrations);

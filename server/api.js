@@ -74,7 +74,26 @@ module.exports = function (app) {
             });
     });
 
+    // POST Delete workflow
     app.post('/api/delete', (req, res) => {
+        mutations.deleteWorkflow(req.body.id, req.session.token).then(res => {
+            res.status(200).send(`sucessfully delete workflow ${req.body.id}`);
+        }).catch(err => {
+            res.status(500).send({error: err});
+        })
+    });
+
+    // POST Stop (Disabled) workflow
+    app.post('/api/stop', (req, res) => {
+        mutations.deleteWorkflow(req.body.id, req.session.token).then(res => {
+            res.status(200).send(`sucessfully delete workflow ${req.body.id}`);
+        }).catch(err => {
+            res.status(500).send({error: err});
+        })
+    });
+
+    // POST Start (Enable) workflow
+    app.post('/api/start', (req, res) => {
         mutations.deleteWorkflow(req.body.id, req.session.token).then(res => {
             res.status(200).send(`sucessfully delete workflow ${req.body.id}`);
         }).catch(err => {
