@@ -2,7 +2,7 @@ const https = require('https');
 const express = require('express');
 const request = require('request');
 
-import {get, values, map} from 'lodash';
+import { get, values, map } from 'lodash';
 
 import {
     queries,
@@ -14,7 +14,9 @@ module.exports = function (app) {
     // GET Account:
     app.get('/api/me', (req, res) => {
         queries.me(req.session.token)
-            .then((results) => res.status(200).send(results))
+            .then((results) => {
+                res.status(200).send(results);
+            })
             .catch(err => res.status(500).send(err));
     });
 
@@ -25,7 +27,7 @@ module.exports = function (app) {
                 res.status(200).send({
                     data: map(
                         values(get(results, 'data.viewer.templates.edges')),
-                        x => x.node,
+                        x => x.node
                     ),
                 });
             })
@@ -34,16 +36,18 @@ module.exports = function (app) {
 
     // GET Workflows:
     app.get('/api/workflows', (req, res) => {
-        if (!req.session.token) {
-            res.status(500).send('Missing external user token on session');
+        const externalUserToken = req.session.token;
+
+        if (!externalUserToken) {
+            res.status(500).send('Missing external user auth');
         }
 
-        queries.workflows(req.session.token)
+        queries.workflows(externalUserToken)
             .then(results => {
                 res.status(200).send({
                     data: map(
                         values(get(results, 'data.viewer.workflows.edges')),
-                        x => x.node,
+                        x => x.node
                     ),
                 })
             })
@@ -56,29 +60,22 @@ module.exports = function (app) {
             req.session.token,
             req.body.id,
         )
-            .then(workflow => {
-                return mutations.getGrantTokenForUser(
-                    req.session.user.trayId,
-                    workflow.data.createWorkflowFromTemplate.workflowId,
-                );
-            })
-            .then(({payload, workflowId}) => {
-                res.status(200).send({
-                    data: {
-                        popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
-                    }
-                });
-            })
-            .catch(err => {
-                res.status(500).send(err)
+        .then(workflow => {
+            return mutations.getGrantTokenForUser(
+                req.session.user.trayId,
+                workflow.data.createWorkflowFromTemplate.workflowId,
+            );
+        })
+        .then(({payload, workflowId}) => {
+            res.status(200).send({
+                data: {
+                    popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
+                }
             });
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        });
     });
 
-    app.post('/api/delete', (req, res) => {
-        mutations.deleteWorkflow(req.body.id, req.session.token).then(res => {
-            res.status(200).send(`sucessfully delete workflow ${req.body.id}`);
-        }).catch(err => {
-            res.status(500).send({error: err});
-        })
-    });
 };

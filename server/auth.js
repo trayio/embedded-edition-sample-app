@@ -28,14 +28,10 @@ module.exports = function (app) {
     * session.
     */
     app.post('/api/login', function (req, res) {
-        res.setHeader('Content-Type', 'application/json');
-
         const user = attemptLogin(req);
 
         if (!process.env.MASTER_TOKEN) {
-            res.status(500).send(
-                JSON.stringify({error: 'MASTER_TOKEN (Partner Master Key) missing in Express server env. Make sure to define it before you start Express.'})
-            )
+            res.status(500).send({error: 'MASTER_TOKEN (Partner Master Key) missing in Express server env. Make sure to define it before you start Express.'});
         } else if (user) {
             log({message: 'Logged in with:', object: user});
 
@@ -60,8 +56,6 @@ module.exports = function (app) {
     * the DB.
     */
     app.post('/api/register', function (req, res) {
-        res.setHeader('Content-Type', 'application/json');
-
         if (checkUserExists(req)) {
             log({message: 'Failed to create user, already exists:', object: req.body});
             return res.status(409).send(`User name ${req.body.username} already exists`);
@@ -78,7 +72,7 @@ module.exports = function (app) {
         generateNewUser(req)
             .then(user => {
                 log({message: `successfully created user ${req.body.username}`, object: user});
-                return res.status(200).send(JSON.stringify(user));
+                return res.status(200).send(user);
             })
             .catch(err => {
                 log({message: 'There was an error creating the external Tray user:', object: err});
