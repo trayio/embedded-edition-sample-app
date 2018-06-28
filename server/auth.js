@@ -1,7 +1,6 @@
-
-import { log } from './logging';
-import { get } from 'lodash';
-import { mutations } from "./graphql";
+import {log} from './logging';
+import {get} from 'lodash';
+import {mutations} from "./graphql";
 
 import {
     attemptLogin,
@@ -33,18 +32,22 @@ module.exports = function (app) {
 
         const user = attemptLogin(req);
 
-        if (user) {
-            log({ message: 'Logged in with:', object: user });
+        if (!process.env.MASTER_TOKEN) {
+            res.status(500).send(
+                JSON.stringify({error: 'MASTER_TOKEN (Partner Master Key) missing in Express server env. Make sure to define it before you start Express.'})
+            )
+        } else if (user) {
+            log({message: 'Logged in with:', object: user});
 
             // Attempt to generate the external user token and save to session:
             generateUserAccessToken(req, res, user)
                 .then(_ => res.sendStatus(200))
                 .catch(err => {
-                    log({ message: 'Failed to generate user access token:', object: err });
+                    log({message: 'Failed to generate user access token:', object: err});
                     res.status(500).send(err);
                 });
         } else {
-            log({ message: 'Login failed for user:', object: req.body });
+            log({message: 'Login failed for user:', object: req.body});
             res.sendStatus(401);
         }
     });
@@ -60,7 +63,7 @@ module.exports = function (app) {
         res.setHeader('Content-Type', 'application/json');
 
         if (checkUserExists(req)) {
-            log({ message: 'Failed to create user, already exists:', object: req.body });
+            log({message: 'Failed to create user, already exists:', object: req.body});
             return res.status(409).send(`User name ${req.body.username} already exists`);
         }
 
@@ -68,17 +71,17 @@ module.exports = function (app) {
 
         if (!validation.valid) {
             const errorMsg = `The following params missing in user object, [${validation.errors.join(', ')}]`;
-            log({ message: errorMsg });
+            log({message: errorMsg});
             return res.status(400).send(errorMsg);
         }
 
         generateNewUser(req)
             .then(user => {
-                log({message: `successfully created user ${req.body.username}`, object: user });
+                log({message: `successfully created user ${req.body.username}`, object: user});
                 return res.status(200).send(JSON.stringify(user));
             })
             .catch(err => {
-                log({ message: 'There was an error creating the external Tray user:', object: err });
+                log({message: 'There was an error creating the external Tray user:', object: err});
                 res.status(500).send('There was an error creating the external Tray user:');
             });
     });

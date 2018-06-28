@@ -26,10 +26,6 @@ require('./auth')(app);
 // Setup API router:
 require('./api')(app);
 
-if (!process.env.MASTER_TOKEN) {
-    throw new Error('Your master token must be passed as env variable MASTER_TOKEN to authenticate with tray graphQL api.');
-}
-
 app.listen(process.env.PORT || 3001, () => {
     console.log(`Express started on port ${process.env.PORT || 3001}`);
 });

@@ -88,7 +88,7 @@ export class Login extends React.Component {
                 'Content-Type': 'application/json'
             },
         })
-            .then((res) => {
+            .then(res => {
                 if (res.ok) {
                     auth.authenticate(() => {
                         this.setState(
@@ -99,7 +99,9 @@ export class Login extends React.Component {
                         )
                     });
                 } else {
-                    alert('Could not log in');
+                    res.json().then(body => {
+                        alert(`Login Fail: ${JSON.stringify(body)}`);
+                    });
                 }
             })
             .catch((err) => {
