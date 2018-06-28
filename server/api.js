@@ -2,7 +2,7 @@ const https = require('https');
 const express = require('express');
 const request = require('request');
 
-import { get, values, map } from 'lodash';
+import {get, values, map} from 'lodash';
 
 import {
     queries,
@@ -60,22 +60,46 @@ module.exports = function (app) {
             req.session.token,
             req.body.id,
         )
-        .then(workflow => {
-            return mutations.getGrantTokenForUser(
-                req.session.user.trayId,
-                workflow.data.createWorkflowFromTemplate.workflowId,
-            );
-        })
-        .then(({payload, workflowId}) => {
-            res.status(200).send({
-                data: {
-                    popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
-                }
+            .then(workflow => {
+                return mutations.getGrantTokenForUser(
+                    req.session.user.trayId,
+                    workflow.data.createWorkflowFromTemplate.workflowId,
+                );
+            })
+            .then(({payload, workflowId}) => {
+                res.status(200).send({
+                    data: {
+                        popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
+                    }
+                });
+            })
+            .catch(err => {
+                res.status(500).send(err)
             });
-        })
-        .catch(err => {
-            res.status(500).send(err)
-        });
     });
 
+    // DELETE workflows:
+    app.delete('/api/workflows/:workflowId', (req, res) => {
+        mutations.deleteWorkflow(req.params.workflowId, req.session.token)
+            .then(_ => res.sendStatus(200))
+            .catch(err => res.status(500).send({error: err}));
+    });
+
+    // POST Stop (Disabled) workflow
+    app.post('/api/stop', (req, res) => {
+        mutations.deleteWorkflow(req.body.id, req.session.token).then(res => {
+            res.status(200).send(`sucessfully delete workflow ${req.body.id}`);
+        }).catch(err => {
+            res.status(500).send({error: err});
+        })
+    });
+
+// POST Start (Enable) workflow
+    app.post('/api/start', (req, res) => {
+        mutations.deleteWorkflow(req.body.id, req.session.token).then(res => {
+            res.status(200).send(`sucessfully delete workflow ${req.body.id}`);
+        }).catch(err => {
+            res.status(500).send({error: err});
+        })
+    });
 };

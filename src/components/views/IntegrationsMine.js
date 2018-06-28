@@ -158,7 +158,7 @@ export class MineIntegrations extends React.Component {
 
         return (
             <div>
-                <Typography variant="title">
+                <Typography variant="headline" style={{margin: "20px"}}>
                     My Workflows
                 </Typography>
                 <div>
