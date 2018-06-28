@@ -163,7 +163,7 @@ export class MineIntegrations extends React.Component {
                                     <ListItem key={index}>
                                         <ExpansionPanel>
                                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                                                <CloudCircle/>
+                                                <CloudCircle style={{marginRight: "10px"}}/>
                                                 <Typography>{name}
                                                     <span style={{
                                                         marginLeft: "5px",
