@@ -73,9 +73,14 @@ module.exports = function (app) {
                 }
             });
         })
-        .catch(err => {
-            res.status(500).send(err)
-        });
+        .catch(err => res.status(500).send(err));
+    });
+
+    // DELETE workflows:
+    app.delete('/api/workflows/:workflowId', (req, res) => {
+        mutations.deleteWorkflow(req.params.workflowId, req.session.token)
+            .then(_ => res.sendStatus(200))
+            .catch(err => res.status(500).send({error: err}));
     });
 
 };

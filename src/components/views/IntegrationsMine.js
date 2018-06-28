@@ -63,17 +63,10 @@ export class MineIntegrations extends React.Component {
     }
 
     deleteWorkflow(id) {
-        return fetch('/api/delete', {
+        return fetch(`/api/workflows/${id}`, {
             credentials: 'include',
-            body: JSON.stringify({
-                id: id,
-            }),
-            headers: {
-                'content-type': 'application/json',
-            },
-            method: 'POST',
+            method: 'DELETE',
             credentials: 'include',
-
         });
     }
 
