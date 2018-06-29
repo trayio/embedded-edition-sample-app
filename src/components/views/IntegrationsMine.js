@@ -1,6 +1,7 @@
 import React from 'react';
 import View from '../View';
 import Error from '../Error';
+import Logs from '../Logs';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -15,7 +16,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import {withTheme} from "@material-ui/core/styles/index";
 
 export class MineIntegrations extends React.Component {
@@ -106,7 +106,7 @@ export class MineIntegrations extends React.Component {
         </Dialog>
     }
 
-    buildWorkflowDetails(id, enabled) {
+    buildWorkflowDetails(id, enabled, logs) {
         const styles = {
             controls: {
                 marginLeft: "10px"
@@ -124,11 +124,8 @@ export class MineIntegrations extends React.Component {
 
         return <ExpansionPanelDetails>
 
-            <div id="Logs">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                malesuada
-                lacus ex,
-                sit amet blandit leo lobortis eget.
+            <div id="Logs" style={{width: "100%", maxWidth: "700px"}}>
+                <Logs entries={logs}/>
             </div>
 
             <div id="Controls" style={styles.controls}>
@@ -142,8 +139,8 @@ export class MineIntegrations extends React.Component {
         </ExpansionPanelDetails>
     }
 
-    buildList(templates) {
-        console.log(templates);
+    buildList(workflows) {
+        console.log(workflows);
         const colors = {
             positive: this.props.theme.palette.primary.main,
             negative: this.props.theme.palette.secondary.main,
@@ -159,9 +156,9 @@ export class MineIntegrations extends React.Component {
                         <List>
 
                             {
-                                templates.map(({name, id, enabled}, index) =>
-                                    <ListItem key={index}>
-                                        <ExpansionPanel>
+                                workflows.map(({name, id, enabled, logs}, index) =>
+                                    <ListItem key={index} style={{width: "100%"}}>
+                                        <ExpansionPanel style={{width: "100%"}}>
                                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                                 <CloudCircle style={{marginRight: "10px"}}/>
                                                 <Typography>{name}
@@ -174,7 +171,7 @@ export class MineIntegrations extends React.Component {
                                                     }}>{enabled ? "enabled" : "disabled"}</span>
                                                 </Typography>
                                             </ExpansionPanelSummary>
-                                            {this.buildWorkflowDetails(id, enabled)}
+                                            {this.buildWorkflowDetails(id, enabled, logs)}
                                         </ExpansionPanel>
                                     </ListItem>
                                 )

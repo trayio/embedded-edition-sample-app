@@ -52,6 +52,14 @@ export const queries = {
                                 name,
                                 id,
                                 enabled,
+                                logs {
+                                    edges {
+                                        node {
+                                            currentState,
+                                            created
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
