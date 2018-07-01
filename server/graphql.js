@@ -166,16 +166,4 @@ export const mutations = {
 
         return generateClient(token).mutate({mutation});
     },
-
-    startWorkflow: (workflowID, token) => {
-        const mutation = gql`
-            mutation {
-                updateWorkflow(input: {workflowId: "${workflowID}", enabled: false}) {
-                    clientMutationId
-                }
-            }
-        `;
-
-        return generateClient(token).mutate({mutation});
-    }
 }
