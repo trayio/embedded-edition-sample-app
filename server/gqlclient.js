@@ -1,8 +1,8 @@
 import fetch from "node-fetch";
-import { HttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import {HttpLink} from 'apollo-link-http';
+import {setContext} from 'apollo-link-context';
+import {ApolloClient} from 'apollo-client';
+import {InMemoryCache} from 'apollo-cache-inmemory';
 
 const gqlEndpoint = 'https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql';
 const masterToken = process.env.MASTER_TOKEN;

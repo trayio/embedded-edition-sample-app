@@ -1,17 +1,9 @@
 import {log} from './logging';
 import {get} from 'lodash';
-import {mutations} from "./graphql";
 
-import {
-    attemptLogin,
-    generateUserAccessToken,
-} from './domain/login';
+import {attemptLogin, generateUserAccessToken,} from './domain/login';
 
-import {
-    checkUserExists,
-    generateNewUser,
-    validateRequest,
-} from './domain/registration';
+import {checkUserExists, generateNewUser, validateRequest,} from './domain/registration';
 
 module.exports = function (app) {
 

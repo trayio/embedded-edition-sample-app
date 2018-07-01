@@ -1,17 +1,8 @@
 import React from 'react';
 
-import {
-    Route,
-    Switch,
-    Redirect,
-    BrowserRouter as Router,
-} from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route, Switch,} from 'react-router-dom';
 
-import {
-    Login,
-    Register,
-    PrivateRoute,
-} from "./components/Auth";
+import {Login, PrivateRoute, Register,} from "./components/Auth";
 
 import Mine from "./components/views/IntegrationsMine";
 import Account from "./components/views/Account";

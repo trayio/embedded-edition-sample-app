@@ -1,13 +1,9 @@
 const https = require('https');
 const express = require('express');
-const request = require('request');
 
-import {get, values, map} from 'lodash';
+import {get, map, values} from 'lodash';
 
-import {
-    queries,
-    mutations,
-} from './graphql';
+import {mutations, queries,} from './graphql';
 
 module.exports = function (app) {
 
@@ -15,7 +11,7 @@ module.exports = function (app) {
     app.get('/api/me', (req, res) => {
         queries.me(req.session.token)
             .then((results) => {
-                res.status(200).send(results);
+                res.status(200).send(results.data.viewer.details);
             })
             .catch(err => res.status(500).send(err));
     });

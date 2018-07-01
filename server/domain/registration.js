@@ -2,13 +2,9 @@
 
 import uuidv1 from 'uuid/v1';
 
-import { isNil } from 'lodash';
-import { mutations } from "../graphql";
-import {
-    userExistsInMockDB,
-    insertUserToMockDB,
-    retrieveUserFromMockDB,
-} from '../db';
+import {isNil} from 'lodash';
+import {mutations} from "../graphql";
+import {insertUserToMockDB, retrieveUserFromMockDB, userExistsInMockDB,} from '../db';
 
 /**
  * Validate user object:

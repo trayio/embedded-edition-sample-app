@@ -3,11 +3,7 @@ import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import {
-    Route,
-    Redirect,
-    withRouter
-} from 'react-router-dom';
+import {Redirect, Route, withRouter} from 'react-router-dom';
 
 const auth = {
     isAuthenticated: false,
@@ -99,9 +95,10 @@ export class Login extends React.Component {
                         )
                     });
                 } else {
-                    res.json().then(body => {
-                        alert(`Login Fail: ${JSON.stringify(body)}`);
-                    });
+                    console.log(res);
+                    alert(`Unable to login: ${res.statusText}. 
+                    Did you create a new user?
+                    OEM demo app stores users in-memory and they are lost on restart.`);
                 }
             })
             .catch((err) => {
