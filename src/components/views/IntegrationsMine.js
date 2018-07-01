@@ -53,12 +53,41 @@ export class MineIntegrations extends React.Component {
         alert(`You clicked CONFIGURE on workflow id ${id}`);
     }
 
-    onClickStart(id) {
-        alert('Implement me!');
-    }
+    updateWorkflow(id, enabled) {
 
-    onClickStop(id) {
-        alert('Implement me!');
+        this.setState({
+            loading: true,
+        })
+
+        fetch(`/api/update/${id}`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(
+                {
+                    enabled,
+                    id
+                }
+            ),
+        })
+            .then(res => {
+
+                this.setState({
+                    loading: false,
+                })
+
+                if (res.ok) {
+                    this.loadAllWorkflows();
+                } else {
+                    alert(`Problem with stopping workflow ${id}`);
+                }
+            })
+            .catch(err => {
+                alert(`Problem with stopping workflow ${id}. ${err}`);
+            });
+
     }
 
     onClickDelete(id) {
@@ -71,7 +100,6 @@ export class MineIntegrations extends React.Component {
         return fetch(`/api/workflows/${id}`, {
             credentials: 'include',
             method: 'DELETE',
-            credentials: 'include',
         });
     }
 
@@ -117,9 +145,11 @@ export class MineIntegrations extends React.Component {
             }
         }
 
-        const startButton = <Button style={styles.button} onClick={() => this.onClickStop(id)} variant="contained"
+        const startButton = <Button style={styles.button} onClick={() => this.updateWorkflow(id, true)}
+                                    variant="contained"
                                     color="primary">Start</Button>
-        const stopButton = <Button style={styles.button} onClick={() => this.onClickStop(id)} variant="contained"
+        const stopButton = <Button style={styles.button} onClick={() => this.updateWorkflow(id, false)}
+                                   variant="contained"
                                    color="secondary">Stop</Button>
 
         return <ExpansionPanelDetails>

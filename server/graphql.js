@@ -155,12 +155,12 @@ export const mutations = {
         return generateClient(token).mutate({mutation});
     },
 
-    stopWorkflow: (workflowID, token) => {
+    updateWorkflowStatus: (workflowID, status, token) => {
         const mutation = gql`
             mutation {
-                updateWorkflow(input: {workflowId: "${workflowID}", enabled: true}) {
-                    clientMutationId
-                }
+            updateWorkflow(input: {workflowId: "${workflowID}", enabled: ${status}}) {
+                clientMutationId
+            }
             }
         `;
 

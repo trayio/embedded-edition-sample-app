@@ -85,21 +85,11 @@ module.exports = function (app) {
             .catch(err => res.status(500).send({error: err}));
     });
 
-    // POST Stop (Disabled) workflow
-    app.post('/api/stop', (req, res) => {
-        mutations.deleteWorkflow(req.body.id, req.session.token).then(res => {
-            res.status(200).send(`sucessfully delete workflow ${req.body.id}`);
-        }).catch(err => {
-            res.status(500).send({error: err});
-        })
+    // PUT workflows:
+    app.put('/api/update/:workflowId', (req, res) => {
+        mutations.updateWorkflowStatus(req.params.workflowId, req.body.enabled, req.session.token)
+            .then(_ => res.sendStatus(200))
+            .catch(err => res.status(500).send({error: err}));
     });
 
-// POST Start (Enable) workflow
-    app.post('/api/start', (req, res) => {
-        mutations.deleteWorkflow(req.body.id, req.session.token).then(res => {
-            res.status(200).send(`sucessfully delete workflow ${req.body.id}`);
-        }).catch(err => {
-            res.status(500).send({error: err});
-        })
-    });
 };
