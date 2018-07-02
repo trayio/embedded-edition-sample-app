@@ -63,8 +63,14 @@ export class DiscoverIntegrations extends React.Component {
                 marginLeft: "20px"
             },
             button: {
-                marginRight: "20px",
                 width: "100%",
+            },
+            list: {
+                margin: "10px",
+                backgroundColor: "white",
+            },
+            text: {
+                fontWeight: "bold",
             }
         };
 
@@ -75,15 +81,14 @@ export class DiscoverIntegrations extends React.Component {
                 </Typography>
                 <div>
                     <List
-                        style={{
-                            margin: "10px",
-                            backgroundColor: "white",
-                        }}
+                        disablePadding
+                        style={styles.list}
                     >
                         {
                             templates.map(({title, id}, index) =>
                                 <ListItem divider={index !== templates.length - 1} key={index}>
                                     <ListItemText
+                                        style={styles.text}
                                         primary={title}
                                         secondary={null}
                                     />
