@@ -77,7 +77,7 @@ export class DiscoverIntegrations extends React.Component {
                     style={styles.header}
                 >
                     Discover integrations
-                </Typography>ƒ
+                </Typography>
                 <div>
                     <List
                         disablePadding
