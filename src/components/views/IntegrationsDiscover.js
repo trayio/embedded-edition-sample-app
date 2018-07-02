@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -63,7 +64,7 @@ export class DiscoverIntegrations extends React.Component {
             button: {width: "100%"},
             text: {fontWeight: "bold"},
             grid: {
-                width: "900px",
+                maxWidth: "900px",
                 margin: "20px auto",
             },
             header: {margin: "20px"},
@@ -82,11 +83,8 @@ export class DiscoverIntegrations extends React.Component {
                 >
                     Discover integrations
                 </Typography>
-                <div>
-                    <List
-                        disablePadding
-                        style={styles.list}
-                    >
+                <Paper>
+                    <List style={styles.list}>
                         {
                             templates.map(({title, id}, index) =>
                                 <ListItem
@@ -113,7 +111,7 @@ export class DiscoverIntegrations extends React.Component {
                             )
                         }
                     </List>
-                </div>
+                </Paper>
            </Grid>
        );
     }

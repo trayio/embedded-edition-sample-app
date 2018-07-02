@@ -4,11 +4,14 @@ import Button from '@material-ui/core/Button';
 import {white} from '@material-ui/core/colors/';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Input from '@material-ui/core/Input';
+import Typography from '@material-ui/core/Typography';
 
 class LoginForm extends React.Component {
     render() {
         const {onLogin} = this.props;
         const styles = {
+            field: {marginTop: 10},
+            btnSpan: {marginLeft: 5},
             loginContainer: {
                 backgroundColor: white,
                 minWidth: 320,
@@ -28,23 +31,26 @@ class LoginForm extends React.Component {
                 textAlign: 'center',
                 padding: 10
             },
-            field: {
-                marginTop: 10,
-            },
             loginBtn: {
                 marginTop: 20,
                 float: 'right'
             },
-            btnSpan: {
-                marginLeft: 5
-            },
+            loginHeader: {
+                textAlign: "center",
+                marginBottom: 10,
+            }
         };
 
         return (
             <div>
                 <div style={styles.loginContainer}>
-                    <h3 style={{textAlign: "center"}}>Login to OEM demo app</h3>
                     <Paper style={styles.paper}>
+                        <Typography
+                            style={styles.loginHeader}
+                            variant="headline"
+                        >
+                            Login to OEM demo app
+                        </Typography>
                         <form
                             ref={(elem) => this.form = elem}
                             onSubmit={(e) => {
