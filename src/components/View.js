@@ -14,14 +14,16 @@ class View extends React.Component {
                 fontWeight: 500,
                 fontSize: "1.3rem",
             },
+            container: {backgroundColor: "#F5F5F5", display: "flex"},
+            content: {width: "100%"},
         };
 
         return (
             <div>
                 <div style={styles.header}>OEM Demo Application</div>
-                <div style={{backgroundColor: "#F5F5F5", display: "flex",}}>
+                <div style={styles.container}>
                     <Nav/>
-                    <div style={{width: "100%"}}>
+                    <div style={styles.content}>
                         {this.props.children}
                     </div>
                 </div>

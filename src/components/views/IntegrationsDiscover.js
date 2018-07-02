@@ -59,26 +59,25 @@ export class DiscoverIntegrations extends React.Component {
 
     buildList(templates) {
         const styles = {
-            controls: {
-                marginLeft: "20px"
-            },
-            button: {
-                width: "100%",
-            },
+            controls: {marginLeft: "20px"},
+            button: {width: "100%"},
+            text: {fontWeight: "bold"},
+            grid: {width: "100%"},
+            header: {margin: "20px"},
             list: {
                 margin: "10px",
                 backgroundColor: "white",
             },
-            text: {
-                fontWeight: "bold",
-            }
         };
 
         return (
-            <Grid item style={{width: "100%"}}>
-                <Typography variant="headline" style={{margin: "20px"}}>
+            <Grid item style={styles.grid}>
+                <Typography
+                    variant="headline"
+                    style={styles.header}
+                >
                     Discover integrations
-                </Typography>
+                </Typography>ƒ
                 <div>
                     <List
                         disablePadding
@@ -86,17 +85,24 @@ export class DiscoverIntegrations extends React.Component {
                     >
                         {
                             templates.map(({title, id}, index) =>
-                                <ListItem divider={index !== templates.length - 1} key={index}>
+                                <ListItem
+                                    divider={index !== templates.length - 1}
+                                    key={index}
+                                >
                                     <ListItemText
                                         style={styles.text}
                                         primary={title}
                                         secondary={null}
                                     />
-                                    <ListItemSecondaryAction onClick={() => this.handleClick(id)}>
+                                    <ListItemSecondaryAction
+                                        onClick={() => this.handleClick(id)}
+                                    >
                                         <Button
                                             style={styles.button}
                                             variant="outlined"
-                                            color="primary">Use
+                                            color="primary"
+                                        >
+                                            Use
                                         </Button>
                                     </ListItemSecondaryAction>
                                 </ListItem>
