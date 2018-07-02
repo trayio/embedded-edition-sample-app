@@ -73,7 +73,8 @@ class LoginForm extends React.Component {
 
                             <Button
                                 style={styles.loginBtn}
-                                variant="raised" color="primary"
+                                variant="outlined"
+                                color="primary"
                                 type='submit'
                             >
                                 Login

@@ -19,7 +19,6 @@ export class Account extends React.Component {
 
         fetch('/api/me', {credentials: 'include'}).then(res =>
             res.json().then(body => {
-                    console.log(body);
                     if (res.ok) {
                         this.setState({
                             username: body.username,

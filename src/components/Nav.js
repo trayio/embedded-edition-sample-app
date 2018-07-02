@@ -47,7 +47,6 @@ class NestedList extends React.Component {
                     >
                         <Link to="/account" className={classes.link}>
                             <ListItem button>
-
                                 <ListItemIcon>
                                     <AccountIcon/>
                                 </ListItemIcon>

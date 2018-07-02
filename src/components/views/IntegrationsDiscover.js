@@ -63,6 +63,7 @@ export class DiscoverIntegrations extends React.Component {
                 marginLeft: "20px"
             },
             button: {
+                marginRight: "20px",
                 width: "100%",
             }
         };
@@ -73,13 +74,15 @@ export class DiscoverIntegrations extends React.Component {
                     Discover integrations
                 </Typography>
                 <div>
-                    <List style={{margin: "0 20px"}}>
+                    <List
+                        style={{
+                            margin: "10px",
+                            backgroundColor: "white",
+                        }}
+                    >
                         {
                             templates.map(({title, id}, index) =>
-                                <ListItem key={index} style={{
-                                    backgroundColor: "white",
-                                    marginBottom: "20px",
-                                }}>
+                                <ListItem divider={index !== templates.length - 1} key={index}>
                                     <ListItemText
                                         primary={title}
                                         secondary={null}
@@ -87,7 +90,7 @@ export class DiscoverIntegrations extends React.Component {
                                     <ListItemSecondaryAction onClick={() => this.handleClick(id)}>
                                         <Button
                                             style={styles.button}
-                                            variant="contained"
+                                            variant="outlined"
                                             color="primary">Use
                                         </Button>
                                     </ListItemSecondaryAction>
