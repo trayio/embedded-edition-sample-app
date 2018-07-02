@@ -62,10 +62,14 @@ export class DiscoverIntegrations extends React.Component {
             controls: {marginLeft: "20px"},
             button: {width: "100%"},
             text: {fontWeight: "bold"},
-            grid: {width: "100%"},
+            grid: {
+                width: "900px",
+                margin: "20px auto",
+            },
             header: {margin: "20px"},
             list: {
                 margin: "10px",
+                maxWidth: "1000px",
                 backgroundColor: "white",
             },
         };
