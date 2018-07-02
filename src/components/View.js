@@ -14,7 +14,11 @@ class View extends React.Component {
                 fontWeight: 500,
                 fontSize: "1.3rem",
             },
-            container: {backgroundColor: "#F5F5F5", display: "flex"},
+            container: {
+                backgroundColor: "#F5F5F5",
+                display: "flex",
+                minHeight: 500,
+            },
             content: {width: "100%"},
         };
 
