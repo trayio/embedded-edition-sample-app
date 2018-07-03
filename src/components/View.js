@@ -1,7 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
 import {withTheme} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 
 class View extends React.Component {
     render() {

@@ -1,8 +1,5 @@
 import React from 'react';
-import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
-import {Redirect, Route, withRouter} from 'react-router-dom';
-import Loading from "../Loading";
 
 export default class Register extends React.Component {
     state = {

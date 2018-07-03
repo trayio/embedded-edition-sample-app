@@ -1,7 +1,6 @@
 import React from 'react';
 import View from '../View';
 import Error from '../Error';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
