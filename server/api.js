@@ -3,7 +3,8 @@ const express = require('express');
 
 import {get, map, values} from 'lodash';
 
-import {mutations, queries,} from './graphql';
+import {log} from './logging';
+import {mutations, queries} from './graphql';
 
 module.exports = function (app) {
 
@@ -50,7 +51,7 @@ module.exports = function (app) {
             .catch(err => res.status(500).send(err));
     });
 
-    // GET Workflows:
+    // GET Workflow:
     app.get('/api/workflow/:workflowId', (req, res) => {
         const externalUserToken = req.session.token;
 
@@ -62,8 +63,11 @@ module.exports = function (app) {
             .then(results => {
                 res.status(200).send(
                     get(results, 'data.viewer.workflows.edges[0].node')
-                ).catch(err => res.status(500).send(err));
-            });
+                );
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
     });
 
     // POST Workflows
@@ -86,6 +90,7 @@ module.exports = function (app) {
                 });
             })
             .catch(err => {
+                log({object: err});
                 res.status(500).send(err)
             });
     });

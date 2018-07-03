@@ -17,12 +17,13 @@ class Loading extends React.Component {
             }
         };
 
-        const spinner = <div style={styles.container}>
-            <CircularProgress/>
-        </div>
+        const spinner = (
+            <div style={styles.container}>
+                <CircularProgress/>
+            </div>
+        );
 
-        return this.props.loading ? spinner :
-            this.props.children
+        return this.props.loading ? spinner : this.props.children
     }
 }
 

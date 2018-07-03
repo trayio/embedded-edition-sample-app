@@ -22,12 +22,6 @@ import Workflow from '../Workflow';
 
 export class MineIntegrations extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.loadAllWorkflows = this.loadAllWorkflows.bind(this);
-    }
-
-
     styles = {
         list: {
             margin: "10px",
@@ -48,7 +42,7 @@ export class MineIntegrations extends React.Component {
         this.loadAllWorkflows();
     }
 
-    loadAllWorkflows() {
+    loadAllWorkflows = () => {
         fetch('/api/workflows', {credentials: 'include'}).then(res =>
             res.json().then(body => {
                 if (res.ok) {
@@ -74,9 +68,12 @@ export class MineIntegrations extends React.Component {
                         My Workflows
                     </Typography>
                     {
-                        workflows.map(({name, id, enabled}, index) =>
-                            <Workflow id={id} loadAllWorkflows={this.loadAllWorkflows}/>
-                        )
+                        workflows.map(({id}) => (
+                            <Workflow
+                                id={id}
+                                loadAllWorkflows={this.loadAllWorkflows}
+                            />
+                        ))
                     }
                 </div>
             </div>

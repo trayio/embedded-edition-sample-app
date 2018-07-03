@@ -21,23 +21,22 @@ export class Logs extends React.Component {
         const icon = success ? <SuccessIcon style={{color: "green"}}/> : <FailIcon style={{color: "red"}}/>;
         const title = success ? "Successful Run" : "Failed Run"
 
-        return <ListItem key={`res${index}`}>
-            {icon}<span style={{fontWeight: "bold"}}>{title}</span>: {time}
-        </ListItem>
+        return (
+            <ListItem key={`res${index}`}>
+                {icon}<span style={{fontWeight: "bold"}}>{title}</span>: {time}
+            </ListItem>
+        );
     }
 
     render() {
         const {entries} = this.props;
 
         const edges = entries.edges;
-        console.log(entries);
 
         const data = edges.length < 1 ?
             <div> No results yet</div> :
             <List>
-                {
-                    edges.map((e, index) => this.buildResultItem(e.node, index))
-                }
+                {edges.map((e, index) => this.buildResultItem(e.node, index))}
             </List>
 
         return (
@@ -45,7 +44,7 @@ export class Logs extends React.Component {
                 <h3>Logs</h3>
                 {data}
             </div>
-        )
+        );
     }
 
 }

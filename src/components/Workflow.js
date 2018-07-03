@@ -52,11 +52,8 @@ export class Workflow extends React.Component {
     }
 
     loadWorkflow(id) {
-        fetch(`/api/workflow/${id}`,
-            {
-                credentials: 'include'
-            }
-        ).then(res =>
+        fetch(`/api/workflow/${id}`, {credentials: 'include'})
+        .then(res =>
             res.json().then(body => {
                 console.log(body);
                 if (res.ok) {
@@ -83,38 +80,31 @@ export class Workflow extends React.Component {
         fetch(`/api/update/${id}`, {
             method: 'PATCH',
             credentials: 'include',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(
-                {
-                    enabled,
-                    id
-                }
-            ),
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({ id, enabled }),
         })
-            .then(res => {
+        .then(res => {
 
-                this.setState({
-                    loading: false,
-                })
-
-                if (res.ok) {
-                    this.loadWorkflow(this.props.id);
-                } else {
-                    alert(`Problem with stopping workflow ${id}`);
-                }
-            })
-            .catch(err => {
-                alert(`Problem with stopping workflow ${id}. ${err}`);
+            this.setState({
+                loading: false,
             });
+
+            if (res.ok) {
+                this.loadWorkflow(this.props.id);
+            } else {
+                alert(`Problem with stopping workflow ${id}`);
+            }
+        })
+        .catch(err => {
+            alert(`Problem with stopping workflow ${id}. ${err}`);
+        });
 
     }
 
     onClickDelete(id) {
         this.setState({
-            deleteWorkflow: true
-        })
+            deleteWorkflow: id
+        });
     }
 
     deleteWorkflow(id) {
@@ -125,42 +115,40 @@ export class Workflow extends React.Component {
     }
 
     buildDeleteConfirmDialog() {
-        return <Dialog
-            open={this.state.deleteWorkflow}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    Are you sure you want to delete this workflow?
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => {
-                    const id = this.state.deleteWorkflow;
-                    this.deleteWorkflow(this.props.id).then(res => {
-                        this.setState({deleteWorkflow: false});
-                        this.props.loadAllWorkflows();
-                    })
-                }} color="secondary">
-                    Yes
-                </Button>
-                <Button onClick={() => {
-                    this.setState({deleteWorkflow: false})
-                }} color="primary" autoFocus>
-                    No
-                </Button>
-            </DialogActions>
-        </Dialog>
+        return (
+            <Dialog
+                open={this.state.deleteWorkflow}
+                onClose={this.handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete this workflow?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {
+                        this.deleteWorkflow(this.props.id).then(res => {
+                            this.setState({deleteWorkflow: false});
+                            this.props.loadAllWorkflows();
+                        })
+                    }} color="secondary">
+                        Yes
+                    </Button>
+                    <Button onClick={() => {
+                        this.setState({deleteWorkflow: false})
+                    }} color="primary" autoFocus>
+                        No
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
     }
 
     render() {
-        console.log(this.state.workflow);
         const {id} = this.props;
         const {enabled, logs, name, deleteWorkflow} = this.state;
-
-        console.log(this.state);
 
         const styles = {
             controls: {

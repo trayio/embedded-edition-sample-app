@@ -18,6 +18,7 @@ class View extends React.Component {
                 backgroundColor: "#F5F5F5",
                 display: "flex",
                 minHeight: 500,
+                paddingBottom: 40,
             },
             content: {width: "100%"},
         };

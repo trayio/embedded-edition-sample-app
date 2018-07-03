@@ -2,7 +2,7 @@
 
 import gql from 'graphql-tag';
 
-import {generateClient, masterClient,} from './gqlclient';
+import {generateClient, masterClient} from './gqlclient';
 
 export const queries = {
     me: token => {
@@ -173,9 +173,9 @@ export const mutations = {
     updateWorkflowStatus: (workflowID, status, token) => {
         const mutation = gql`
             mutation {
-            updateWorkflow(input: {workflowId: "${workflowID}", enabled: ${status}}) {
-                clientMutationId
-            }
+                updateWorkflow(input: {workflowId: "${workflowID}", enabled: ${status}}) {
+                    clientMutationId
+                }
             }
         `;
 
