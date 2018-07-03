@@ -101,9 +101,7 @@ export class Workflow extends React.PureComponent {
     }
 
     onClickDelete(id) {
-        this.setState({
-            deleteWorkflow: id
-        });
+        this.setState({deleteWorkflow: id});
     }
 
     deleteWorkflow(id) {
@@ -157,53 +155,77 @@ export class Workflow extends React.PureComponent {
             button: {
                 width: "100%",
                 marginBottom: "10px"
+            },
+            pill: {
+                backgroundColor: enabled ? "#7ebc54" : "#df5252",
+                ...this.styles.pill,
             }
-        }
+        };
 
-        const colors = {
-            positive: '#7ebc54',
-            negative: '#df5252',
-        }
+        const startButton = (
+            <Button
+                style={styles.button}
+                onClick={() => this.updateWorkflow(id, true)}
+                variant="outlined"
+                color="primary"
+            >
+                Start
+            </Button>
+        );
 
-        const startButton = <Button style={styles.button} onClick={() => this.updateWorkflow(id, true)}
-                                    variant="outlined"
-                                    color="primary">Start</Button>
-        const stopButton = <Button style={styles.button} onClick={() => this.updateWorkflow(id, false)}
-                                   variant="outlined"
-                                   color="secondary">Stop</Button>
+        const stopButton = (
+            <Button
+                style={styles.button}
+                onClick={() => this.updateWorkflow(id, false)}
+                variant="outlined"
+                color="secondary"
+            >
+                Stop
+            </Button>
+        );
 
-        return <Loading loading={this.state.loading}>
-            <ExpansionPanel key={id} style={this.styles.item}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                                    <span
-                                        style={
-                                            {
-                                                backgroundColor: enabled ? colors.positive : colors.negative,
-                                                ...this.styles.pill,
-                                            }
-                                        }>{enabled ? "enabled" : "disabled"
-                                    }
-                                        </span>
-                    <Typography style={this.styles.name}>{name}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
 
-                    <div id="Logs" style={{width: "100%", maxWidth: "700px"}}>
-                        <Logs entries={logs}/>
-                    </div>
+        return (
+            <Loading loading={this.state.loading}>
+                <ExpansionPanel key={id} style={this.styles.item}>
 
-                    <div id="Controls" style={styles.controls}>
-                        <Button style={styles.button} onClick={() => this.onClickConfigure(id)} variant="outlined"
-                                color="primary">Configure</Button>
-                        {enabled ? stopButton : startButton}
-                        <Button style={styles.button} onClick={() => this.onClickDelete(id)} variant="outlined"
-                                color="secondary">Delete</Button>
-                    </div>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                        <span style={styles.pill}>{enabled ? "enabled" : "disabled"}</span>
+                        <Typography style={this.styles.name}>{name}</Typography>
+                    </ExpansionPanelSummary>
 
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-            {deleteWorkflow ? this.buildDeleteConfirmDialog(id) : ''}
-        </Loading>
+                    <ExpansionPanelDetails>
+                        <div id="Logs" style={{width: "100%", maxWidth: "700px"}}>
+                            <Logs entries={logs}/>
+                        </div>
+
+                        <div id="Controls" style={styles.controls}>
+                            <Button
+                                style={styles.button}
+                                onClick={() => this.onClickConfigure(id)}
+                                variant="outlined"
+                                color="primary"
+                            >
+                                Configure
+                            </Button>
+
+                            {enabled ? stopButton : startButton}
+
+                            <Button
+                                style={styles.button}
+                                onClick={() => this.onClickDelete(id)}
+                                variant="outlined"
+                                color="secondary"
+                            >
+                                Delete
+                            </Button>
+                        </div>
+
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+                {deleteWorkflow ? this.buildDeleteConfirmDialog(id) : ''}
+            </Loading>
+        );
     }
 
 }
