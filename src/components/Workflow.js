@@ -113,7 +113,7 @@ export class Workflow extends React.Component {
 
     onClickDelete(id) {
         this.setState({
-            deleteWorkflow: id
+            deleteWorkflow: true
         })
     }
 
@@ -139,9 +139,9 @@ export class Workflow extends React.Component {
             <DialogActions>
                 <Button onClick={() => {
                     const id = this.state.deleteWorkflow;
-                    this.deleteWorkflow(id).then(res => {
+                    this.deleteWorkflow(this.props.id).then(res => {
                         this.setState({deleteWorkflow: false});
-                        this.loadAllWorkflows();
+                        this.props.loadAllWorkflows();
                     })
                 }} color="secondary">
                     Yes
@@ -158,7 +158,7 @@ export class Workflow extends React.Component {
     render() {
         console.log(this.state.workflow);
         const {id} = this.props;
-        const {enabled, logs, name} = this.state;
+        const {enabled, logs, name, deleteWorkflow} = this.state;
 
         console.log(this.state);
 
@@ -215,7 +215,7 @@ export class Workflow extends React.Component {
 
                 </ExpansionPanelDetails>
             </ExpansionPanel>
-
+            {deleteWorkflow ? this.buildDeleteConfirmDialog(id) : ''}
         </Loading>
     }
 

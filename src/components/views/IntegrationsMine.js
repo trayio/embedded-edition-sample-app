@@ -22,6 +22,12 @@ import Workflow from '../Workflow';
 
 export class MineIntegrations extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.loadAllWorkflows = this.loadAllWorkflows.bind(this);
+    }
+
+
     styles = {
         list: {
             margin: "10px",
@@ -69,7 +75,7 @@ export class MineIntegrations extends React.Component {
                     </Typography>
                     {
                         workflows.map(({name, id, enabled}, index) =>
-                            <Workflow id={id}/>
+                            <Workflow id={id} loadAllWorkflows={this.loadAllWorkflows}/>
                         )
                     }
                 </div>
