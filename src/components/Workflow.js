@@ -222,4 +222,3 @@ export class Workflow extends React.Component {
 }
 
 export default withTheme()(Workflow);
-3

@@ -35,7 +35,6 @@ export class MineIntegrations extends React.Component {
     state = {
         loading: true,
         error: false,
-        deleteWorkflow: false,
         workflows: [],
     }
 
@@ -61,91 +60,6 @@ export class MineIntegrations extends React.Component {
         );
     }
 
-    onClickConfigure(id) {
-        alert(`You clicked CONFIGURE on workflow id ${id}`);
-    }
-
-    updateWorkflow(id, enabled) {
-
-        this.setState({
-            loading: true,
-        })
-
-        fetch(`/api/update/${id}`, {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(
-                {
-                    enabled,
-                    id
-                }
-            ),
-        })
-            .then(res => {
-
-                this.setState({
-                    loading: false,
-                })
-
-                if (res.ok) {
-                    this.loadAllWorkflows();
-                } else {
-                    alert(`Problem with stopping workflow ${id}`);
-                }
-            })
-            .catch(err => {
-                alert(`Problem with stopping workflow ${id}. ${err}`);
-            });
-
-    }
-
-    onClickDelete(id) {
-        this.setState({
-            deleteWorkflow: id
-        })
-    }
-
-    deleteWorkflow(id) {
-        return fetch(`/api/workflows/${id}`, {
-            credentials: 'include',
-            method: 'DELETE',
-        });
-    }
-
-    buildDeleteConfirmDialog() {
-        return <Dialog
-            open={this.state.deleteWorkflow}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    Are you sure you want to delete this workflow?
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => {
-                    const id = this.state.deleteWorkflow;
-                    this.deleteWorkflow(id).then(res => {
-                        this.setState({deleteWorkflow: false});
-                        this.loadAllWorkflows();
-                    })
-                }} color="secondary">
-                    Yes
-                </Button>
-                <Button onClick={() => {
-                    this.setState({deleteWorkflow: false})
-                }} color="primary" autoFocus>
-                    No
-                </Button>
-            </DialogActions>
-        </Dialog>
-    }
-
     buildList(workflows) {
         return (
             <div>
@@ -167,7 +81,6 @@ export class MineIntegrations extends React.Component {
         return (
             <View>
                 <Loading loading={this.state.loading}>
-                    {this.buildDeleteConfirmDialog()}
                     {this.state.error ?
                         <Error msg={this.state.error}/> :
                         this.buildList(this.state.workflows)
