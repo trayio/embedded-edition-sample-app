@@ -20,7 +20,7 @@ import {withTheme} from "@material-ui/core/styles/index";
 import Loading from '../Loading';
 import Workflow from '../Workflow';
 
-export class MineIntegrations extends React.Component {
+export class MineIntegrations extends React.PureComponent {
 
     styles = {
         list: {
@@ -71,6 +71,7 @@ export class MineIntegrations extends React.Component {
                         workflows.map(({id}) => (
                             <Workflow
                                 id={id}
+                                key={id}
                                 loadAllWorkflows={this.loadAllWorkflows}
                             />
                         ))

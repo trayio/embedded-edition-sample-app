@@ -19,7 +19,7 @@ import Error from './Error';
 import Logs from './Logs';
 import Loading from './Loading';
 
-export class Workflow extends React.Component {
+export class Workflow extends React.PureComponent {
 
     styles = {
         pill: {
@@ -72,10 +72,9 @@ export class Workflow extends React.Component {
     }
 
     updateWorkflow(id, enabled) {
-
         this.setState({
             loading: true,
-        })
+        });
 
         fetch(`/api/update/${id}`, {
             method: 'PATCH',

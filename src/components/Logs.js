@@ -6,7 +6,7 @@ import SuccessIcon from '@material-ui/icons/Done';
 import FailIcon from '@material-ui/icons/Clear';
 import {get} from 'lodash';
 
-export class Logs extends React.Component {
+export class Logs extends React.PureComponent {
 
     state = {
         loading: true,

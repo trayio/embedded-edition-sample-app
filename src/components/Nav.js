@@ -30,7 +30,7 @@ const styles = theme => ({
     }
 });
 
-class NestedList extends React.Component {
+class Nav extends React.PureComponent {
     state = {
         open: true
     };
@@ -96,8 +96,8 @@ class NestedList extends React.Component {
     }
 }
 
-NestedList.propTypes = {
+Nav.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NestedList);
+export default withStyles(styles)(Nav);
