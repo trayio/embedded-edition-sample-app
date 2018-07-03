@@ -86,6 +86,7 @@ export class Workflow extends React.PureComponent {
 
             this.setState({
                 loading: false,
+                enabled: !this.state.enabled,
             });
 
             if (res.ok) {
@@ -183,7 +184,6 @@ export class Workflow extends React.PureComponent {
                 Stop
             </Button>
         );
-
 
         return (
             <Loading loading={this.state.loading}>
