@@ -47,8 +47,6 @@ export const queries = {
                         edges {
                             node {
                                 id,
-                                name,
-                                enabled,
                             }
                         }
                     }

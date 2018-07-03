@@ -21,6 +21,22 @@ import Loading from './Loading';
 
 export class Workflow extends React.Component {
 
+    styles = {
+        pill: {
+            borderRadius: "4px",
+            marginRight: "10px",
+            color: "white",
+            padding: "3px 5px",
+        },
+        item: {
+            width: '100%',
+            border: 'none',
+        },
+        name: {
+            marginTop: '2px'
+        }
+    }
+
     state = {
         loading: true,
         error: false,
@@ -142,7 +158,7 @@ export class Workflow extends React.Component {
     render() {
         console.log(this.state.workflow);
         const {id} = this.props;
-        const {enabled, logs} = this.state;
+        const {enabled, logs, name} = this.state;
 
         console.log(this.state);
 
@@ -157,6 +173,11 @@ export class Workflow extends React.Component {
             }
         }
 
+        const colors = {
+            positive: '#7ebc54',
+            negative: '#df5252',
+        }
+
         const startButton = <Button style={styles.button} onClick={() => this.updateWorkflow(id, true)}
                                     variant="outlined"
                                     color="primary">Start</Button>
@@ -165,24 +186,40 @@ export class Workflow extends React.Component {
                                    color="secondary">Stop</Button>
 
         return <Loading loading={this.state.loading}>
-            <ExpansionPanelDetails>
+            <ExpansionPanel key={id} style={this.styles.item}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                                    <span
+                                        style={
+                                            {
+                                                backgroundColor: enabled ? colors.positive : colors.negative,
+                                                ...this.styles.pill,
+                                            }
+                                        }>{enabled ? "enabled" : "disabled"
+                                    }
+                                        </span>
+                    <Typography style={this.styles.name}>{name}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
 
-                <div id="Logs" style={{width: "100%", maxWidth: "700px"}}>
-                    <Logs entries={logs}/>
-                </div>
+                    <div id="Logs" style={{width: "100%", maxWidth: "700px"}}>
+                        <Logs entries={logs}/>
+                    </div>
 
-                <div id="Controls" style={styles.controls}>
-                    <Button style={styles.button} onClick={() => this.onClickConfigure(id)} variant="outlined"
-                            color="primary">Configure</Button>
-                    {enabled ? stopButton : startButton}
-                    <Button style={styles.button} onClick={() => this.onClickDelete(id)} variant="outlined"
-                            color="secondary">Delete</Button>
-                </div>
+                    <div id="Controls" style={styles.controls}>
+                        <Button style={styles.button} onClick={() => this.onClickConfigure(id)} variant="outlined"
+                                color="primary">Configure</Button>
+                        {enabled ? stopButton : startButton}
+                        <Button style={styles.button} onClick={() => this.onClickDelete(id)} variant="outlined"
+                                color="secondary">Delete</Button>
+                    </div>
 
-            </ExpansionPanelDetails>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+
         </Loading>
     }
 
 }
 
-export default withTheme()(Workflow);3
+export default withTheme()(Workflow);
+3

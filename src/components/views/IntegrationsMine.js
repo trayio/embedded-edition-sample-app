@@ -29,19 +29,6 @@ export class MineIntegrations extends React.Component {
             margin: 'auto',
             marginBottom: '30px',
             fontFamily: "Roboto, Helvetica, Arial, sans-serif"
-        },
-        pill: {
-            borderRadius: "4px",
-            marginRight: "10px",
-            color: "white",
-            padding: "3px 5px",
-        },
-        item: {
-            width: '100%',
-            border: 'none',
-        },
-        name: {
-            marginTop: '2px'
         }
     }
 
@@ -160,11 +147,6 @@ export class MineIntegrations extends React.Component {
     }
 
     buildList(workflows) {
-        const colors = {
-            positive: '#7ebc54',
-            negative: '#df5252',
-        }
-
         return (
             <div>
                 <div style={this.styles.list}>
@@ -173,21 +155,7 @@ export class MineIntegrations extends React.Component {
                     </Typography>
                     {
                         workflows.map(({name, id, enabled}, index) =>
-                            <ExpansionPanel key={id} style={this.styles.item}>
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                                    <span
-                                        style={
-                                            {
-                                                backgroundColor: enabled ? colors.positive : colors.negative,
-                                                ...this.styles.pill,
-                                            }
-                                        }>{enabled ? "enabled" : "disabled"
-                                    }
-                                        </span>
-                                    <Typography style={this.styles.name}>{name}</Typography>
-                                </ExpansionPanelSummary>
-                                <Workflow id={id}/>
-                            </ExpansionPanel>
+                            <Workflow id={id}/>
                         )
                     }
                 </div>
