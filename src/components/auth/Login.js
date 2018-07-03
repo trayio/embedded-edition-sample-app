@@ -68,10 +68,7 @@ export default class Login extends React.Component {
         return (
             <div style={style.container}>
                 <Loading loading={this.state.loading}>
-                    <div>
-                        <p style={style.warning}>You must log in to view the page at {from.pathname}</p>
                         <LoginForm onLogin={this.login}/>
-                    </div>
                 </Loading>
             </div>
         );
