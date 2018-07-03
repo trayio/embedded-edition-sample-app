@@ -1,13 +1,21 @@
 import React from 'react';
 import {withTheme} from '@material-ui/core/styles';
 
+const styles = {
+    container: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "crimson",
+        padding: '0 20px',
+    }
+};
+
 const Error = ({msg}) => (
-    <div>
-        <div style={{border: "thick red solid", color: "red", display: "flex",}}>
-            <div>
-                Error: {JSON.stringify(msg, null, 4)}
-            </div>
-        </div>
+    <div style={styles.container}>
+        <div>{JSON.stringify(msg, null, 4)}</div>
     </div>
 );
 

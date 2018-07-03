@@ -1,7 +1,3 @@
-import React from 'react';
-import View from '../View';
-import Error from '../Error';
-import Logs from '../Logs';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -17,51 +13,39 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import {withTheme} from "@material-ui/core/styles/index";
-import Loading from '../Loading';
-import Workflow from '../Workflow';
+import React from 'react';
+import View from './View';
+import Error from './Error';
+import Logs from './Logs';
+import Loading from './Loading';
 
-export class MineIntegrations extends React.Component {
-
-    styles = {
-        list: {
-            margin: "10px",
-            maxWidth: "1000px",
-            margin: 'auto',
-            marginBottom: '30px',
-            fontFamily: "Roboto, Helvetica, Arial, sans-serif"
-        },
-        pill: {
-            borderRadius: "4px",
-            marginRight: "10px",
-            color: "white",
-            padding: "3px 5px",
-        },
-        item: {
-            width: '100%',
-            border: 'none',
-        },
-        name: {
-            marginTop: '2px'
-        }
-    }
+export class Workflow extends React.Component {
 
     state = {
         loading: true,
         error: false,
         deleteWorkflow: false,
-        workflows: [],
     }
 
     componentDidMount() {
-        this.loadAllWorkflows();
+        this.loadWorkflow(this.props.id);
     }
 
-    loadAllWorkflows() {
-        fetch('/api/workflows', {credentials: 'include'}).then(res =>
+    onClickConfigure(id) {
+        alert(`You clicked CONFIGURE on workflow id ${id}`);
+    }
+
+    loadWorkflow(id) {
+        fetch(`/api/workflow/${id}`,
+            {
+                credentials: 'include'
+            }
+        ).then(res =>
             res.json().then(body => {
+                console.log(body);
                 if (res.ok) {
                     this.setState({
-                        workflows: body.data,
+                        ...body,
                         loading: false,
                     });
                 } else {
@@ -72,10 +56,6 @@ export class MineIntegrations extends React.Component {
                 }
             })
         );
-    }
-
-    onClickConfigure(id) {
-        alert(`You clicked CONFIGURE on workflow id ${id}`);
     }
 
     updateWorkflow(id, enabled) {
@@ -104,7 +84,7 @@ export class MineIntegrations extends React.Component {
                 })
 
                 if (res.ok) {
-                    this.loadAllWorkflows();
+                    this.loadWorkflow(this.props.id);
                 } else {
                     alert(`Problem with stopping workflow ${id}`);
                 }
@@ -159,56 +139,50 @@ export class MineIntegrations extends React.Component {
         </Dialog>
     }
 
-    buildList(workflows) {
-        const colors = {
-            positive: '#7ebc54',
-            negative: '#df5252',
+    render() {
+        console.log(this.state.workflow);
+        const {id} = this.props;
+        const {enabled, logs} = this.state;
+
+        console.log(this.state);
+
+        const styles = {
+            controls: {
+                marginLeft: "10px",
+                float: "right",
+            },
+            button: {
+                width: "100%",
+                marginBottom: "10px"
+            }
         }
 
-        return (
-            <div>
-                <div style={this.styles.list}>
-                    <Typography variant="headline" style={{margin: "20px"}}>
-                        My Workflows
-                    </Typography>
-                    {
-                        workflows.map(({name, id, enabled}, index) =>
-                            <ExpansionPanel key={id} style={this.styles.item}>
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                                    <span
-                                        style={
-                                            {
-                                                backgroundColor: enabled ? colors.positive : colors.negative,
-                                                ...this.styles.pill,
-                                            }
-                                        }>{enabled ? "enabled" : "disabled"
-                                    }
-                                        </span>
-                                    <Typography style={this.styles.name}>{name}</Typography>
-                                </ExpansionPanelSummary>
-                                <Workflow id={id}/>
-                            </ExpansionPanel>
-                        )
-                    }
-                </div>
-            </div>
-        );
-    }
+        const startButton = <Button style={styles.button} onClick={() => this.updateWorkflow(id, true)}
+                                    variant="outlined"
+                                    color="primary">Start</Button>
+        const stopButton = <Button style={styles.button} onClick={() => this.updateWorkflow(id, false)}
+                                   variant="outlined"
+                                   color="secondary">Stop</Button>
 
-    render() {
-        return (
-            <View>
-                <Loading loading={this.state.loading}>
-                    {this.buildDeleteConfirmDialog()}
-                    {this.state.error ?
-                        <Error msg={this.state.error}/> :
-                        this.buildList(this.state.workflows)
-                    }
-                </Loading>
-            </View>
-        );
+        return <Loading loading={this.state.loading}>
+            <ExpansionPanelDetails>
+
+                <div id="Logs" style={{width: "100%", maxWidth: "700px"}}>
+                    <Logs entries={logs}/>
+                </div>
+
+                <div id="Controls" style={styles.controls}>
+                    <Button style={styles.button} onClick={() => this.onClickConfigure(id)} variant="outlined"
+                            color="primary">Configure</Button>
+                    {enabled ? stopButton : startButton}
+                    <Button style={styles.button} onClick={() => this.onClickDelete(id)} variant="outlined"
+                            color="secondary">Delete</Button>
+                </div>
+
+            </ExpansionPanelDetails>
+        </Loading>
     }
 
 }
 
-export default withTheme()(MineIntegrations);
+export default withTheme()(Workflow);3

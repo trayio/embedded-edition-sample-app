@@ -50,6 +50,22 @@ module.exports = function (app) {
             .catch(err => res.status(500).send(err));
     });
 
+    // GET Workflows:
+    app.get('/api/workflow/:workflowId', (req, res) => {
+        const externalUserToken = req.session.token;
+
+        if (!externalUserToken) {
+            res.status(500).send('Missing external user auth');
+        }
+
+        queries.workflow(req.params.workflowId, externalUserToken)
+            .then(results => {
+                res.status(200).send(
+                    get(results, 'data.viewer.workflows.edges[0].node')
+                ).catch(err => res.status(500).send(err));
+            });
+    });
+
     // POST Workflows
     app.post('/api/workflows', (req, res) => {
         mutations.createWorkflowFromTemplate(

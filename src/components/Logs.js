@@ -6,7 +6,7 @@ import SuccessIcon from '@material-ui/icons/Done';
 import FailIcon from '@material-ui/icons/Clear';
 import {get} from 'lodash';
 
-export class MineIntegrations extends React.Component {
+export class Logs extends React.Component {
 
     state = {
         loading: true,
@@ -40,13 +40,14 @@ export class MineIntegrations extends React.Component {
                 }
             </List>
 
-        return (<div>
-            <h3>Logs</h3>
-            {data}
-        </div>)
-
+        return (
+            <div>
+                <h3>Logs</h3>
+                {data}
+            </div>
+        )
     }
 
 }
 
-export default withTheme()(MineIntegrations);
+export default withTheme()(Logs);
