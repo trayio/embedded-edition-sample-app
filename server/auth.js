@@ -36,7 +36,7 @@ module.exports = function (app) {
                 });
         } else {
             log({message: 'Login failed for user:', object: req.body});
-            res.sendStatus(401);
+            res.status(401).send({error: 'User not found. Keep in mind OEM Demo app stores new users in-memory and they are lost on server restart.'});
         }
     });
 

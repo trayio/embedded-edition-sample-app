@@ -10,13 +10,14 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Loading from '../Loading';
 
 export class DiscoverIntegrations extends React.Component {
 
     state = {
         loading: true,
         error: false,
-        templates: {},
+        templates: [],
     }
 
     componentDidMount() {
@@ -112,24 +113,20 @@ export class DiscoverIntegrations extends React.Component {
                         }
                     </List>
                 </Paper>
-           </Grid>
-       );
+            </Grid>
+        );
     }
 
     render() {
-        let data;
-
-        if (this.state.loading) {
-            data = <CircularProgress/>;
-        } else {
-            data = this.state.error ?
-                <Error msg={this.state.error}/> :
-                this.buildList(this.state.templates);
-        }
-
         return (
             <View>
-                {data}
+                <Loading loading={this.state.loading}>
+                    {
+                        this.state.error ?
+                            <Error msg={this.state.error}/> :
+                            this.buildList(this.state.templates)
+                    }
+                </Loading>
             </View>
         );
     }

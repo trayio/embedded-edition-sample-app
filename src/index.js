@@ -15,12 +15,7 @@ const theme = createMuiTheme({
 });
 
 ReactDOM.render((
-    <div style={
-        {
-            border: "thin gray solid",
-            width: "100%",
-        }
-    }>
+    <div>
         <BrowserRouter>
             <MuiThemeProvider theme={theme}>
                 <App/>

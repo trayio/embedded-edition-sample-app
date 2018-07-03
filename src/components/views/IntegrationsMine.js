@@ -17,6 +17,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import {withTheme} from "@material-ui/core/styles/index";
+import Loading from '../Loading';
 
 export class MineIntegrations extends React.Component {
 
@@ -24,7 +25,7 @@ export class MineIntegrations extends React.Component {
         loading: true,
         error: false,
         deleteWorkflow: false,
-        workflows: {},
+        workflows: [],
     }
 
     componentDidMount() {
@@ -215,21 +216,15 @@ export class MineIntegrations extends React.Component {
     }
 
     render() {
-
-        let data;
-
-        if (this.state.loading) {
-            data = <CircularProgress/>;
-        } else {
-            data = this.state.error ?
-                <Error msg={this.state.error}/> :
-                this.buildList(this.state.workflows);
-        }
-
         return (
             <View>
-                {this.buildDeleteConfirmDialog()}
-                {data}
+                <Loading loading={this.state.loading}>
+                    {this.buildDeleteConfirmDialog()}
+                    {this.state.error ?
+                        <Error msg={this.state.error}/> :
+                        this.buildList(this.state.workflows)
+                    }
+                </Loading>
             </View>
         );
     }

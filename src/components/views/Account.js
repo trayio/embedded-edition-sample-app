@@ -4,6 +4,7 @@ import {get} from 'lodash';
 import Error from '../Error';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
+import Loading from '../Loading';
 
 export class Account extends React.Component {
 
@@ -37,33 +38,34 @@ export class Account extends React.Component {
     }
 
     render() {
-        let data;
-        if (this.state.loading) {
-            data = <CircularProgress/>;
-        } else {
-            const bold = {fontWeight: 'bold'};
-            data = this.state.error ?
-                <Error msg={this.state.error}/> :
-                <div>
-                    <Typography variant="headline" style={{margin: "20px"}}>
-                        Your Tray account
-                    </Typography>
-                    <div style={{padding: "10px"}}>
-                        <div>
-                            <span style={bold}>Tray username: </span>
-                            {this.state.username}
-                        </div>
-                        <div>
-                            <span style={bold}>Tray email: </span>
-                            {this.state.email}
-                        </div>
-                    </div>
-                </div>
+        const style = {
+            bold: {
+                fontWeight: 'bold'
+            }
         }
 
         return (
             <View>
-                {data}
+                <Loading loading={this.state.loading}>
+                    {this.state.error ?
+                        <Error msg={this.state.error}/> :
+                        <div>
+                            <Typography variant="headline" style={{margin: "20px"}}>
+                                Your Tray account
+                            </Typography>
+                            <div style={{padding: "10px"}}>
+                                <div>
+                                    <span style={style.bold}>Tray username: </span>
+                                    {this.state.username}
+                                </div>
+                                <div>
+                                    <span style={style.bold}>Tray email: </span>
+                                    {this.state.email}
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </Loading>
             </View>
         );
     }
