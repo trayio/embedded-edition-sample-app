@@ -81,8 +81,8 @@ module.exports = function (app) {
             .catch(err => res.status(500).send({error: err}));
     });
 
-    // PUT workflows:
-    app.put('/api/update/:workflowId', (req, res) => {
+    // PATCH workflows:
+    app.patch('/api/update/:workflowId', (req, res) => {
         mutations.updateWorkflowStatus(req.params.workflowId, req.body.enabled, req.session.token)
             .then(_ => res.sendStatus(200))
             .catch(err => res.status(500).send({error: err}));

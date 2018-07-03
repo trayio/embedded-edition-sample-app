@@ -61,7 +61,7 @@ export class MineIntegrations extends React.Component {
         })
 
         fetch(`/api/update/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             credentials: 'include',
             headers: {
                 'content-type': 'application/json',
