@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
                 top: '20%',
                 left: 0,
                 right: 0,
-                margin: 'auto'
+                margin: 'auto',
             },
             paper: {
                 padding: 20,
@@ -37,7 +37,7 @@ class LoginForm extends React.Component {
             },
             loginHeader: {
                 textAlign: "center",
-                marginBottom: 10,
+                marginBottom: 15,
             }
         };
 

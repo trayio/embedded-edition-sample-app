@@ -51,7 +51,7 @@ export class MineIntegrations extends React.PureComponent {
             <div>
                 <div style={this.styles.list}>
                     <Typography variant="headline" style={{margin: "20px"}}>
-                        My Workflows
+                        My Integrations
                     </Typography>
                     {
                         workflows.map(({id}) => (

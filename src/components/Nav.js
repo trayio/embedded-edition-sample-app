@@ -74,7 +74,7 @@ class Nav extends React.PureComponent {
                                         <ListItemIcon>
                                             <CircleIcon style={{borderRadius: 20}}/>
                                         </ListItemIcon>
-                                        <ListItemText inset primary="Mine"/>
+                                        <ListItemText inset primary="My Integrations" style={{whiteSpace: 'nowrap'}}/>
                                     </ListItem>
                                 </Link>
 
