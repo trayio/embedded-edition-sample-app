@@ -164,11 +164,12 @@ export class Workflow extends React.PureComponent {
             method: 'GET',
             credentials: 'include',
         })
-        .then(res => res.json())
         .then(res => {
-            this.setState({
-                logs: res.data,
-                loadedLogs: true,
+            res.json().then(body => {
+                this.setState({
+                    logs: body.data,
+                    loadedLogs: true,
+                });
             });
         });
     }
