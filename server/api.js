@@ -1,10 +1,6 @@
-const https = require('https');
-const express = require('express');
-
-import {get, map, values} from 'lodash';
-
 import {log} from './logging';
 import {mutations, queries} from './graphql';
+import {get, map, values} from 'lodash';
 
 module.exports = function (app) {
 
@@ -65,9 +61,7 @@ module.exports = function (app) {
                     get(results, 'data.viewer.workflows.edges[0].node')
                 );
             })
-            .catch(err => {
-                res.status(500).send(err)
-            })
+            .catch(err => res.status(500).send(err));
     });
 
     // POST Workflows
@@ -76,11 +70,11 @@ module.exports = function (app) {
             req.session.token,
             req.body.id,
         )
-            .then(workflow => {
-                return mutations.getGrantTokenForUser(
+            .then(workflow =>
+                mutations.getGrantTokenForUser(
                     req.session.user.trayId,
                     workflow.data.createWorkflowFromTemplate.workflowId,
-                );
+                    )
             })
             .then(({payload, workflowId}) => {
                 res.status(200).send({
@@ -89,24 +83,25 @@ module.exports = function (app) {
                     }
                 });
             })
-            .catch(err => {
-                log({object: err});
-                res.status(500).send(err)
-            });
+            .catch(err => res.status(500).send(err));
     });
 
     // DELETE workflows:
     app.delete('/api/workflows/:workflowId', (req, res) => {
         mutations.deleteWorkflow(req.params.workflowId, req.session.token)
             .then(_ => res.sendStatus(200))
-            .catch(err => res.status(500).send({error: err}));
+            .catch(err => res.status(500).send({err}));
     });
 
     // PATCH workflows:
     app.patch('/api/workflows/:workflowId', (req, res) => {
-        mutations.updateWorkflowStatus(req.params.workflowId, req.body.enabled, req.session.token)
+        mutations.updateWorkflowStatus(
+            req.params.workflowId,
+            req.body.enabled,
+            req.session.token
+        )
             .then(_ => res.sendStatus(200))
-            .catch(err => res.status(500).send({error: err}));
+            .catch(err => res.status(500).send({err}));
     });
 
 };
