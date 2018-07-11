@@ -36,7 +36,7 @@ export const queries = {
             }
         `;
 
-        return masterClient.query({query})
+        return masterClient.query({query});
     },
 
     workflows: token => {
@@ -46,7 +46,9 @@ export const queries = {
                     workflows {
                         edges {
                             node {
-                                id,
+                                id
+                                name
+                                enabled
                             }
                         }
                     }
@@ -57,16 +59,13 @@ export const queries = {
         return generateClient(token).query({query});
     },
 
-    workflow: (id, token) => {
+    workflowLogs: (id, token) => {
         const query = gql`
             {
                 viewer {
                     workflows(criteria: {ids: "${id}"}) {
                         edges {
                             node {
-                                name,
-                                id,
-                                enabled,
                                 logs {
                                     edges {
                                         node {
@@ -80,7 +79,8 @@ export const queries = {
                     }
                 }
             }
-        `
+        `;
+
 
         return generateClient(token).query({query});
     },
@@ -96,7 +96,8 @@ export const queries = {
                     }
                 }
             }
-        `
+        `;
+
         return masterClient.query({query});
     }
 };
