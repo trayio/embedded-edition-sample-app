@@ -59,6 +59,27 @@ export const queries = {
         return generateClient(token).query({query});
     },
 
+    workflow: (id, token) => {
+        const query = gql`
+            {
+                viewer {
+                    workflows(criteria: {ids: "${id}"}) {
+                        edges {
+                            node {
+                                id
+                                name
+                                enabled
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+
+        return generateClient(token).query({query});
+    },
+
     workflowLogs: (id, token) => {
         const query = gql`
             {
@@ -69,8 +90,8 @@ export const queries = {
                                 logs {
                                     edges {
                                         node {
-                                            currentState,
                                             created
+                                            currentState
                                         }
                                     }
                                 }

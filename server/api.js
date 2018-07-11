@@ -47,6 +47,23 @@ module.exports = function (app) {
             .catch(err => res.status(500).send(err));
     });
 
+    // GET Workflow:
+    app.get('/api/workflows/:workflowId', (req, res) => {
+        const externalUserToken = req.session.token;
+
+        if (!externalUserToken) {
+            res.status(500).send('Missing external user auth');
+        }
+
+        queries.workflow(req.params.workflowId, externalUserToken)
+            .then(results =>
+                res.status(200).send({
+                    data: getNodesAt(results, 'data.viewer.workflows.edges'),
+                })
+            )
+            .catch(err => res.status(500).send(err));
+    });
+
     // GET Workflow Logs:
     app.get('/api/workflows/:workflowId/logs', (req, res) => {
         const externalUserToken = req.session.token;

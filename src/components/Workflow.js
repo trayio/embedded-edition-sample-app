@@ -12,6 +12,7 @@ import {withTheme} from "@material-ui/core/styles/index";
 import React from 'react';
 import Logs from './Logs';
 import Loading from './Loading';
+import {get} from 'lodash';
 
 export class Workflow extends React.PureComponent {
     styles = {
@@ -35,6 +36,7 @@ export class Workflow extends React.PureComponent {
         loading: false,
         loadedLogs: false,
         deleteWorkflow: false,
+        workflowState: undefined,
     }
 
     onClickConfigure = () => {
@@ -53,22 +55,26 @@ export class Workflow extends React.PureComponent {
     }
 
     loadWorkflow = () => {
-        fetch(`/api/workflow/${this.props.id}`, {credentials: 'include'})
-        .then(res =>
-            res.json().then(body => {
-                if (res.ok) {
-                    this.setState({
-                        ...body,
-                        loading: false,
-                    });
-                } else {
-                    this.setState({
-                        error: body,
-                        loading: false,
-                    });
-                }
-            })
-        );
+        const enabled = get(this.state, 'workflowState', this.props.enabled);
+        this.setState({workflowState: !enabled});
+
+        fetch(`/api/workflows/${this.props.id}`, {credentials: 'include'})
+            .then(res =>
+                res.json().then(body => {
+                    if (res.ok) {
+                        this.setState({
+                            loading: false,
+                            workflowState: body.data[0].enabled,
+                        });
+                    } else {
+                        this.setState({
+                            error: body,
+                            loading: false,
+                            workflowState: !enabled,
+                        });
+                    }
+                })
+            );
     }
 
     updateWorkflowEnabled = () => {
@@ -93,7 +99,6 @@ export class Workflow extends React.PureComponent {
         .then(res => {
             this.setState({
                 loading: false,
-                enabled: !this.state.enabled,
             });
 
             if (res.ok) {
@@ -173,8 +178,10 @@ export class Workflow extends React.PureComponent {
     }
 
     render() {
-        const {id, enabled, name} = this.props;
+        const {id, name} = this.props;
         const {logs, deleteWorkflow, loadedLogs} = this.state;
+
+        const enabled = get(this.state, 'workflowState', this.props.enabled);
 
         const styles = {
             controls: {
