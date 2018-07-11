@@ -1,6 +1,5 @@
 import React from 'react';
 import View from '../View';
-import {get} from 'lodash';
 import Error from '../Error';
 import Typography from '@material-ui/core/Typography';
 import Loading from '../Loading';

@@ -14,7 +14,6 @@ import Logs from './Logs';
 import Loading from './Loading';
 
 export class Workflow extends React.PureComponent {
-
     styles = {
         pill: {
             borderRadius: "4px",
@@ -32,17 +31,14 @@ export class Workflow extends React.PureComponent {
     }
 
     state = {
-        loading: true,
         error: false,
+        loading: false,
+        loadedLogs: false,
         deleteWorkflow: false,
     }
 
-    componentDidMount() {
-        this.loadWorkflow(this.props.id);
-    }
-
-    onClickConfigure(id) {
-        fetch(`/api/workflows/${id}/config`, {
+    onClickConfigure = () => {
+        fetch(`/api/workflows/${this.props.id}/config`, {
             method: 'PATCH',
             credentials: 'include',
         }).then(res => {
@@ -56,8 +52,8 @@ export class Workflow extends React.PureComponent {
         });
     }
 
-    loadWorkflow(id) {
-        fetch(`/api/workflow/${id}`, {credentials: 'include'})
+    loadWorkflow = () => {
+        fetch(`/api/workflow/${this.props.id}`, {credentials: 'include'})
         .then(res =>
             res.json().then(body => {
                 if (res.ok) {
@@ -75,42 +71,48 @@ export class Workflow extends React.PureComponent {
         );
     }
 
-    updateWorkflow(id, enabled) {
+    updateWorkflowEnabled = () => {
+        this.updateWorkflowStatus(true);
+    }
+
+    updateWorkflowDisabled = () => {
+        this.updateWorkflowStatus(false);
+    }
+
+    updateWorkflowStatus = (enabled) => {
         this.setState({
             loading: true,
         });
 
-        fetch(`/api/workflows/${id}`, {
+        fetch(`/api/workflows/${this.props.id}`, {
             method: 'PATCH',
             credentials: 'include',
             headers: {'content-type': 'application/json'},
-            body: JSON.stringify({ id, enabled }),
+            body: JSON.stringify({ id: this.props.id, enabled }),
         })
         .then(res => {
-
             this.setState({
                 loading: false,
                 enabled: !this.state.enabled,
             });
 
             if (res.ok) {
-                this.loadWorkflow(this.props.id);
+                this.loadWorkflow();
             } else {
-                alert(`Problem with stopping workflow ${id}`);
+                alert(`Problem with stopping workflow ${this.props.id}`);
             }
         })
         .catch(err => {
-            alert(`Problem with stopping workflow ${id}. ${err}`);
+            alert(`Problem with stopping workflow ${this.props.id}. ${err}`);
         });
-
     }
 
-    onClickDelete(id) {
-        this.setState({deleteWorkflow: id});
+    onClickDelete = () => {
+        this.setState({deleteWorkflow: this.props.id});
     }
 
-    deleteWorkflow(id) {
-        return fetch(`/api/workflows/${id}`, {
+    deleteWorkflow = () => {
+        return fetch(`/api/workflows/${this.props.id}`, {
             credentials: 'include',
             method: 'DELETE',
         });
@@ -148,9 +150,31 @@ export class Workflow extends React.PureComponent {
         );
     }
 
+    onExpansionChange = () => {
+        if (!this.state.loadedLogs) {
+            this.loadLogs();
+        }
+    }
+
+    loadLogs = () => {
+        fetch(`/api/workflows/${this.props.id}/logs`, {
+            method: 'GET',
+            credentials: 'include',
+        })
+        .then(res => {
+            this.setState({
+                logs: res.logs,
+                loadedLogs: true,
+            });
+        })
+        .catch(err => {
+            alert(`Problem with stopping workflow ${this.props.id}. ${err}`);
+        });
+    }
+
     render() {
-        const {id} = this.props;
-        const {enabled, logs, name, deleteWorkflow} = this.state;
+        const {id, enabled, name} = this.props;
+        const {logs, deleteWorkflow, loadedLogs} = this.state;
 
         const styles = {
             controls: {
@@ -170,7 +194,7 @@ export class Workflow extends React.PureComponent {
         const startButton = (
             <Button
                 style={styles.button}
-                onClick={() => this.updateWorkflow(id, true)}
+                onClick={this.updateWorkflowEnabled}
                 variant="outlined"
                 color="primary"
             >
@@ -181,7 +205,7 @@ export class Workflow extends React.PureComponent {
         const stopButton = (
             <Button
                 style={styles.button}
-                onClick={() => this.updateWorkflow(id, false)}
+                onClick={this.updateWorkflowDisabled}
                 variant="outlined"
                 color="secondary"
             >
@@ -191,8 +215,11 @@ export class Workflow extends React.PureComponent {
 
         return (
             <Loading loading={this.state.loading}>
-                <ExpansionPanel key={id} style={this.styles.item}>
-
+                <ExpansionPanel
+                    key={id}
+                    style={this.styles.item}
+                    onChange={this.onExpansionChange}
+                >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                         <span style={styles.pill}>{enabled ? "enabled" : "disabled"}</span>
                         <Typography style={this.styles.name}>{name}</Typography>
@@ -200,13 +227,16 @@ export class Workflow extends React.PureComponent {
 
                     <ExpansionPanelDetails>
                         <div id="Logs" style={{width: "100%", maxWidth: "700px"}}>
-                            <Logs entries={logs}/>
+                            <Logs
+                                loading={!loadedLogs}
+                                entries={logs}
+                            />
                         </div>
 
                         <div id="Controls" style={styles.controls}>
                             <Button
                                 style={styles.button}
-                                onClick={() => this.onClickConfigure(id)}
+                                onClick={this.onClickConfigure}
                                 variant="outlined"
                                 color="primary"
                             >
@@ -217,7 +247,7 @@ export class Workflow extends React.PureComponent {
 
                             <Button
                                 style={styles.button}
-                                onClick={() => this.onClickDelete(id)}
+                                onClick={this.onClickDelete}
                                 variant="outlined"
                                 color="secondary"
                             >
@@ -227,7 +257,7 @@ export class Workflow extends React.PureComponent {
 
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
-                {deleteWorkflow ? this.buildDeleteConfirmDialog(id) : ''}
+                {deleteWorkflow ? this.buildDeleteConfirmDialog() : ''}
             </Loading>
         );
     }

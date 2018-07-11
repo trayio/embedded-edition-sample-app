@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import SuccessIcon from '@material-ui/icons/Done';
 import FailIcon from '@material-ui/icons/Clear';
 import {get} from 'lodash';
+import Loading from './Loading';
 
 export class Logs extends React.PureComponent {
 
@@ -31,19 +32,17 @@ export class Logs extends React.PureComponent {
     render() {
         const {entries} = this.props;
 
-        const edges = entries.edges;
-
-        const data = edges.length < 1 ?
-            <div> No results yet</div> :
+        const data = get(entries, 'edges.length', 0) < 1 ?
+            <div>No results yet</div> :
             <List>
-                {edges.map((e, index) => this.buildResultItem(e.node, index))}
+                {entries.edges.map((e, index) => this.buildResultItem(e.node, index))}
             </List>
 
         return (
-            <div>
+            <Loading loading={this.props.loading}>
                 <h3>Logs</h3>
                 {data}
-            </div>
+            </Loading>
         );
     }
 

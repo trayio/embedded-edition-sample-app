@@ -54,10 +54,12 @@ export class MineIntegrations extends React.PureComponent {
                         My Integrations
                     </Typography>
                     {
-                        workflows.map(({id}) => (
+                        workflows.map(({id, name, enabled}) => (
                             <Workflow
                                 id={id}
                                 key={id}
+                                name={name}
+                                enabled={enabled}
                                 loadAllWorkflows={this.loadAllWorkflows}
                             />
                         ))
