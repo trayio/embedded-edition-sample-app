@@ -103,7 +103,7 @@ module.exports = function (app) {
     });
 
     // PATCH workflows:
-    app.patch('/api/update/:workflowId', (req, res) => {
+    app.patch('/api/workflows/:workflowId', (req, res) => {
         mutations.updateWorkflowStatus(req.params.workflowId, req.body.enabled, req.session.token)
             .then(_ => res.sendStatus(200))
             .catch(err => res.status(500).send({error: err}));

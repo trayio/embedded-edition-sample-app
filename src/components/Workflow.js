@@ -70,7 +70,7 @@ export class Workflow extends React.PureComponent {
             loading: true,
         });
 
-        fetch(`/api/update/${id}`, {
+        fetch(`/api/workflows/${id}`, {
             method: 'PATCH',
             credentials: 'include',
             headers: {'content-type': 'application/json'},
