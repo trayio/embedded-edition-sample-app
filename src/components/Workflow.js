@@ -42,14 +42,24 @@ export class Workflow extends React.PureComponent {
     }
 
     onClickConfigure(id) {
-        alert(`You clicked CONFIGURE on workflow id ${id}`);
+        fetch(`/api/workflows/${id}/config`, {
+            method: 'PATCH',
+            credentials: 'include',
+        }).then(res => {
+            res.json().then(body => {
+                window.open(
+                    body.data.popupUrl,
+                    '_blank',
+                    'width=500,height=500,scrollbars=no'
+                );
+            });
+        });
     }
 
     loadWorkflow(id) {
         fetch(`/api/workflow/${id}`, {credentials: 'include'})
         .then(res =>
             res.json().then(body => {
-                console.log(body);
                 if (res.ok) {
                     this.setState({
                         ...body,

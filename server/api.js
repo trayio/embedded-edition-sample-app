@@ -75,7 +75,7 @@ module.exports = function (app) {
                     req.session.user.trayId,
                     workflow.data.createWorkflowFromTemplate.workflowId,
                 )
-            })
+            )
             .then(({payload, workflowId}) => {
                 res.status(200).send({
                     data: {
@@ -104,4 +104,19 @@ module.exports = function (app) {
             .catch(err => res.status(500).send({err}));
     });
 
+    // PATCH workflows configuration:
+    app.patch('/api/workflows/:workflowId/config', (req, res) => {
+        mutations.getGrantTokenForUser(
+            req.session.user.trayId,
+            req.params.workflowId,
+        )
+            .then(({payload, workflowId}) => {
+                res.status(200).send({
+                    data: {
+                        popupUrl: `https://app-staging.tray.io/external/configure/prosperworks/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
+                    }
+                });
+            })
+            .catch(err => res.status(500).send({err}));
+    });
 };
