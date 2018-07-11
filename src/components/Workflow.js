@@ -103,8 +103,6 @@ export class Workflow extends React.PureComponent {
 
             if (res.ok) {
                 this.loadWorkflow();
-            } else {
-                alert(`Problem with stopping workflow ${this.props.id}`);
             }
         })
         .catch(err => {
@@ -166,14 +164,12 @@ export class Workflow extends React.PureComponent {
             method: 'GET',
             credentials: 'include',
         })
+        .then(res => res.json())
         .then(res => {
             this.setState({
-                logs: res.logs,
+                logs: res.data,
                 loadedLogs: true,
             });
-        })
-        .catch(err => {
-            alert(`Problem with stopping workflow ${this.props.id}. ${err}`);
         });
     }
 

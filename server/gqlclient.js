@@ -8,15 +8,15 @@ const gqlEndpoint = 'https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/stag
 const masterToken = process.env.MASTER_TOKEN;
 
 const defaultOptions = {
-      watchQuery: {
+    watchQuery: {
         fetchPolicy: 'network-only',
         errorPolicy: 'ignore',
-      },
-      query: {
+    },
+    query: {
         fetchPolicy: 'network-only',
         errorPolicy: 'all',
-      },
-    }
+    },
+};
 
 // Create a Apollo Client Context for a given auth token:
 const authLink = token =>

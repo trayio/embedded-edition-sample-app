@@ -56,11 +56,11 @@ module.exports = function (app) {
         }
 
         queries.workflow(req.params.workflowId, externalUserToken)
-            .then(results =>
+            .then(results => {
                 res.status(200).send({
                     data: getNodesAt(results, 'data.viewer.workflows.edges'),
                 })
-            )
+            })
             .catch(err => res.status(500).send(err));
     });
 
@@ -75,7 +75,7 @@ module.exports = function (app) {
         queries.workflowLogs(req.params.workflowId, externalUserToken)
             .then(results =>
                 res.status(200).send({
-                    data: getNodesAt(results, 'data.viewer.workflows.edges'),
+                    data: getNodesAt(results, 'data.viewer.workflows.edges[0].node.logs.edges'),
                 })
             )
             .catch(err => res.status(500).send(err));

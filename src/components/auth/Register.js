@@ -8,10 +8,7 @@ export default class Register extends React.Component {
         success: false,
     }
 
-    showError = () => this.setState({
-        error: true
-    });
-
+    showError = () => this.setState({ error: true });
 
     register = (data) => {
         fetch('/api/register', {
@@ -27,11 +24,9 @@ export default class Register extends React.Component {
 
                     this.setState({
                         success: true
-                    })
+                    });
 
-                    setTimeout(() => {
-                        window.location = '/login';
-                    }, 3000);
+                    setTimeout(() => window.location = '/login', 1000);
                 } else {
                     this.showError();
                 }

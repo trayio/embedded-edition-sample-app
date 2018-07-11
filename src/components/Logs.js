@@ -17,7 +17,7 @@ export class Logs extends React.PureComponent {
     }
 
     buildResultItem(node, index) {
-        const success = node.currentState === 'successful';
+        const success = node.currentState.toLowerCase() === 'successful';
         const time = new Date(node.created).toUTCString();
         const icon = success ? <SuccessIcon style={{color: "green"}}/> : <FailIcon style={{color: "red"}}/>;
         const title = success ? "Successful Run" : "Failed Run"
@@ -32,10 +32,10 @@ export class Logs extends React.PureComponent {
     render() {
         const {entries} = this.props;
 
-        const data = get(entries, 'edges.length', 0) < 1 ?
+        const data = get(entries, 'length', 0) < 1 ?
             <div>No results yet</div> :
             <List>
-                {entries.edges.map((e, index) => this.buildResultItem(e.node, index))}
+                {entries.map(this.buildResultItem)}
             </List>
 
         return (
