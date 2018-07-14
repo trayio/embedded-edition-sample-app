@@ -14,6 +14,14 @@ import Logs from './Logs';
 import Loading from './Loading';
 import {get} from 'lodash';
 
+import {
+    getLogs,
+    getWorkflow,
+    deleteWorkflow,
+    updateWorkflowConfig,
+    updateWorkflowStatus,
+} from '../api/workflows';
+
 export class Workflow extends React.PureComponent {
     styles = {
         pill: {
@@ -40,17 +48,12 @@ export class Workflow extends React.PureComponent {
     }
 
     onClickConfigure = () => {
-        fetch(`/api/workflows/${this.props.id}/config`, {
-            method: 'PATCH',
-            credentials: 'include',
-        }).then(res => {
-            res.json().then(body => {
-                window.open(
-                    body.data.popupUrl,
-                    '_blank',
-                    'width=500,height=500,scrollbars=no'
-                );
-            });
+        updateWorkflowConfig(this.props.id).then(({body}) => {
+            window.open(
+                body.data.popupUrl,
+                '_blank',
+                'width=500,height=500,scrollbars=no'
+            );
         });
     }
 
@@ -58,23 +61,20 @@ export class Workflow extends React.PureComponent {
         const enabled = get(this.state, 'workflowState', this.props.enabled);
         this.setState({workflowState: !enabled});
 
-        fetch(`/api/workflows/${this.props.id}`, {credentials: 'include'})
-            .then(res =>
-                res.json().then(body => {
-                    if (res.ok) {
-                        this.setState({
-                            loading: false,
-                            workflowState: body.data[0].enabled,
-                        });
-                    } else {
-                        this.setState({
-                            error: body,
-                            loading: false,
-                            workflowState: !enabled,
-                        });
-                    }
-                })
-            );
+        getWorkflow(this.props.id).then(({ok, body}) => {
+            if (ok) {
+                this.setState({
+                    loading: false,
+                    workflowState: body.data[0].enabled,
+                });
+            } else {
+                this.setState({
+                    error: body,
+                    loading: false,
+                    workflowState: !enabled,
+                });
+            }
+        });
     }
 
     updateWorkflowEnabled = () => {
@@ -86,23 +86,13 @@ export class Workflow extends React.PureComponent {
     }
 
     updateWorkflowStatus = (enabled) => {
-        this.setState({
-            loading: true,
-        });
+        this.setState({ loading: true });
 
-        fetch(`/api/workflows/${this.props.id}`, {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify({ id: this.props.id, enabled }),
-        })
-        .then(res => {
-            this.setState({
-                loading: false,
-            });
+        updateWorkflowStatus(this.props.id, enabled).then(({ok}) => {
+            this.setState({ loading: false });
 
-            if (res.ok) {
-                this.loadWorkflow();
+            if (ok) {
+                return this.loadWorkflow();
             }
         })
         .catch(err => {
@@ -115,13 +105,10 @@ export class Workflow extends React.PureComponent {
     }
 
     deleteWorkflow = () => {
-        return fetch(`/api/workflows/${this.props.id}`, {
-            credentials: 'include',
-            method: 'DELETE',
-        });
+        deleteWorkflow(this.props.id);
     }
 
-    buildDeleteConfirmDialog() {
+    buildDeleteConfirmDialog = () => {
         return (
             <Dialog
                 open={this.state.deleteWorkflow}
@@ -160,16 +147,10 @@ export class Workflow extends React.PureComponent {
     }
 
     loadLogs = () => {
-        fetch(`/api/workflows/${this.props.id}/logs`, {
-            method: 'GET',
-            credentials: 'include',
-        })
-        .then(res => {
-            res.json().then(body => {
-                this.setState({
-                    logs: body.data,
-                    loadedLogs: true,
-                });
+        getLogs(this.props.id).then(({body}) => {
+            this.setState({
+                logs: body.data,
+                loadedLogs: true,
             });
         });
     }
