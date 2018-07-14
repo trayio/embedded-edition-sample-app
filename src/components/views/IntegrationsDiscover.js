@@ -11,6 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Loading from '../Loading';
 
+import { useWorkflow } from '../../api/workflows';
+import { listTemplates } from '../../api/templates';
+
 export class DiscoverIntegrations extends React.PureComponent {
 
     state = {
@@ -20,9 +23,9 @@ export class DiscoverIntegrations extends React.PureComponent {
     }
 
     componentDidMount() {
-        fetch('/api/templates', {credentials: 'include'}).then(res =>
-            res.json().then(body => {
-                if (res.ok) {
+        listTemplates()
+            .then(({ok, body}) => {
+                if (ok) {
                     this.setState({
                         templates: body.data,
                         loading: false,
@@ -33,28 +36,16 @@ export class DiscoverIntegrations extends React.PureComponent {
                         loading: false,
                     });
                 }
-            })
-        );
+            });
     }
 
-    handleClick(id) {
-        fetch('/api/workflows', {
-            body: JSON.stringify({
-                id: id,
-            }),
-            headers: {
-                'content-type': 'application/json',
-            },
-            method: 'POST',
-            credentials: 'include',
-        }).then(res => {
-            res.json().then(body => {
-                window.open(
-                    body.data.popupUrl,
-                    '_blank',
-                    'width=500,height=500,scrollbars=no'
-                );
-            });
+    onUseWorkflowClick(id) {
+        useWorkflow(id).then(({body}) => {
+            window.open(
+                body.data.popupUrl,
+                '_blank',
+                'width=500,height=500,scrollbars=no'
+            );
         });
     }
 
@@ -97,7 +88,7 @@ export class DiscoverIntegrations extends React.PureComponent {
                                         secondary={null}
                                     />
                                     <ListItemSecondaryAction
-                                        onClick={() => this.handleClick(id)}
+                                        onClick={() => this.onUseWorkflowClick(id)}
                                     >
                                         <Button
                                             style={styles.button}

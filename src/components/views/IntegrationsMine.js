@@ -6,6 +6,8 @@ import {withTheme} from "@material-ui/core/styles/index";
 import Loading from '../Loading';
 import Workflow from '../Workflow';
 
+import { listWorkflows } from '../../api/workflows';
+
 export class MineIntegrations extends React.PureComponent {
 
     styles = {
@@ -29,21 +31,19 @@ export class MineIntegrations extends React.PureComponent {
     }
 
     loadAllWorkflows = () => {
-        fetch('/api/workflows', {credentials: 'include'}).then(res =>
-            res.json().then(body => {
-                if (res.ok) {
-                    this.setState({
-                        workflows: body.data,
-                        loading: false,
-                    });
-                } else {
-                    this.setState({
-                        error: body,
-                        loading: false,
-                    });
-                }
-            })
-        );
+        listWorkflows().then(({ok, body}) => {
+            if (ok) {
+                this.setState({
+                    workflows: body.data,
+                    loading: false,
+                });
+            } else {
+                this.setState({
+                    error: body,
+                    loading: false,
+                });
+            }
+        });
     }
 
     buildList(workflows) {

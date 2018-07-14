@@ -4,6 +4,8 @@ import Error from '../Error';
 import Typography from '@material-ui/core/Typography';
 import Loading from '../Loading';
 
+import { me } from '../../api/me';
+
 export class Account extends React.PureComponent {
 
     state = {
@@ -15,32 +17,28 @@ export class Account extends React.PureComponent {
     }
 
     componentDidMount() {
-
-        fetch('/api/me', {credentials: 'include'}).then(res =>
-            res.json().then(body => {
-                    if (res.ok) {
-                        this.setState({
-                            username: body.username,
-                            email: body.email,
-                            loading: false,
-                        });
-                    } else {
-                        this.setState({
-                            error: res.statusText,
-                            loading: false,
-                        });
-                    }
-                }
-            )
-        );
+        me().then(({ok, body, statusText}) => {
+            if (ok) {
+                this.setState({
+                    username: body.username,
+                    email: body.email,
+                    loading: false,
+                });
+            } else {
+                this.setState({
+                    error: statusText,
+                    loading: false,
+                });
+            }
+        });
     }
 
     render() {
         const style = {
             bold: {
                 fontWeight: 'bold'
-            }
-        }
+            },
+        };
 
         return (
             <View>

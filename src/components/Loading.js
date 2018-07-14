@@ -23,7 +23,7 @@ class Loading extends React.Component {
             </div>
         );
 
-        return this.props.loading ? spinner : this.props.children
+        return this.props.loading ? spinner : this.props.children;
     }
 }
 
