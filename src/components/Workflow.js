@@ -104,9 +104,7 @@ export class Workflow extends React.PureComponent {
         this.setState({deleteWorkflow: this.props.id});
     }
 
-    deleteWorkflow = () => {
-        deleteWorkflow(this.props.id);
-    }
+    deleteWorkflow = () => deleteWorkflow(this.props.id);
 
     buildDeleteConfirmDialog = () => {
         return (

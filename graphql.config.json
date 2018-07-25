@@ -8,7 +8,7 @@
 
     "README_request" : "To request the schema from a url instead, remove the 'file' JSON property above (and optionally delete the default graphql.schema.json file).",
     "request": {
-      "url" : "https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql",
+      "url" : "https://tray.io/graphql",
       "method" : "POST",
       "README_postIntrospectionQuery" : "Whether to POST an introspectionQuery to the url. If the url always returns the schema JSON, set to false and consider using GET",
       "postIntrospectionQuery" : true,
@@ -26,7 +26,7 @@
   "endpoints" : [
     {
       "name": "TrayOEM",
-      "url": "https://54srzzin5j.execute-api.eu-west-1.amazonaws.com/staging/graphql",
+      "url": "https://tray.io/graphql",
       "options" : {
         "headers": {
           "user-agent" : "JS GraphQL"
