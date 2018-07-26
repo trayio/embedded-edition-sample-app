@@ -22,15 +22,9 @@ module.exports = function (app) {
     app.post('/api/login', function (req, res) {
         const user = attemptLogin(req);
 
-        if (!process.env.MASTER_TOKEN) {
+        if (!res.headersSent && (!process.env.MASTER_TOKEN || !process.env.PARTNER)) {
             res.status(500).send({
-                error: 'MASTER_TOKEN (Partner Master Key) missing in Express server env. Make sure to define it before you start Express.'
-            });
-        }
-
-        if (!process.env.PARTNER) {
-            res.status(500).send({
-                error: 'PARTNER (Partner NAME) missing in Express server env. Make sure to define it before you start Express (eg run "export PARTNER=prosperworks" before running "npm run api")'
+                error: 'MASTER_TOKEN (Partner Master Key) or PARTNER (Partner NAME) missing in Express server env. Make sure to define it before you start Express.'
             });
         }
 
