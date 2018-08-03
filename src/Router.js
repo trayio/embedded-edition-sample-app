@@ -5,6 +5,7 @@ import Register from "./components/auth/Register";
 import {PrivateRoute} from "./components/auth/Auth";
 
 import Mine from "./components/views/IntegrationsMine";
+import Demo from "./components/views/Demo";
 import Account from "./components/views/Account";
 import Discover from "./components/views/IntegrationsDiscover";
 
@@ -16,6 +17,7 @@ const App = () => (
             </Switch>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
+            <Route path="/demo" component={Demo}/>
             <PrivateRoute path="/account" component={Account}/>
             <PrivateRoute path="/integrations/discover" component={Discover}/>
             <PrivateRoute path="/integrations/mine" component={Mine}/>
