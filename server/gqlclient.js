@@ -4,7 +4,7 @@ import {setContext} from 'apollo-link-context';
 import {ApolloClient} from 'apollo-client';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 
-const gqlEndpoint = 'https://tray.io/graphql';
+const gqlEndpoint = process.env.ENDPOINT;
 const masterToken = process.env.MASTER_TOKEN;
 
 const defaultOptions = {
