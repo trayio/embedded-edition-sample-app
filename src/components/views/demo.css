@@ -1,0 +1,69 @@
+
+.header {
+    color: rgb(21, 27, 38);
+    font-size: 13px;
+    font-family: "Helvetica", sans-serif;
+    margin-bottom: 0;
+}
+
+a {
+    text-decoration: none;
+    font-size: 13px;
+    color: #14aaf5;
+}
+
+a:hover {
+    color: #32c1ff;
+    text-decoration: underline;
+}
+
+.integration-name {
+    font-weight: 600;
+}
+
+.activate {
+    float: right;
+    color: rgb(183, 191, 198);
+    font-size: 13px;
+}
+
+.activate:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+p {
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0;
+}
+
+.footer {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #e0e6e8;
+}
+
+.integration-container {
+    padding: 5px 0;
+}
+
+.deactivate {
+    float: right;
+}
+
+.deactivate:hover {
+    cursor: pointer;
+}
+
+.workflow-header {
+    color: #848f99;
+    font-size: 11px;
+    border-bottom: 1px solid #e0e6e8;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.app-name {
+    margin-bottom: 5px;
+}
