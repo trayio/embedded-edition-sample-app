@@ -52,7 +52,12 @@ p {
     float: right;
 }
 
-.deactivate:hover {
+.reconfigure {
+    margin-right: 5px;
+    float: right;
+}
+
+.reconfigure:hover, .deactivate:hover {
     cursor: pointer;
 }
 

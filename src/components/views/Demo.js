@@ -4,7 +4,7 @@ import Error from '../Error';
 import Loading from '../Loading';
 
 import { listTemplates } from '../../api/templates';
-import { listWorkflows, useWorkflow, deleteWorkflow } from '../../api/workflows';
+import { listWorkflows, useWorkflow, deleteWorkflow, updateWorkflowConfig } from '../../api/workflows';
 
 import './demo.css';
 
@@ -41,18 +41,24 @@ export class Demo extends React.PureComponent {
     }
 
     calculateWorkflowSize() {
-        if (!this.state.workflows || !this.state.workflows.length) return 0;
+        if (!this.state.workflows || !this.state.workflows.length) {
+            return 0;
+        }
 
         return 40 + this.state.workflows.length * 18;
     }
 
     calculateTemplateSize() {
-        if (!this.state.templates || !this.state.templates.length) return 0;
+        if (!this.state.templates || !this.state.templates.length) {
+            return 0;
+        }
+
         return this.state.templates.length * 20;
     }
 
     calculateSize() {
-        return 129 + this.calculateWorkflowSize() + this.calculateTemplateSize();
+        const standardContentHeight = 129;
+        return standardContentHeight + this.calculateWorkflowSize() + this.calculateTemplateSize();
     }
 
     onClickActivateIntegration = id => {
@@ -65,6 +71,24 @@ export class Demo extends React.PureComponent {
             listWorkflows().then(({body}) => {
                 this.setState({workflows: body.data, loadingWorkflows: false});
             });
+        });
+    }
+
+    onClickDeactivateIntegration = id => {
+        deleteWorkflow(id).then(() => {
+            listWorkflows().then(({body}) => {
+                this.setState({workflows: body.data, loadingWorkflows: false});
+            });
+        });
+    }
+
+    onReconfigureIntegration = id => {
+        updateWorkflowConfig(id).then(({body}) => {
+            window.open(
+                body.data.popupUrl,
+                '_blank',
+                'width=500,height=500,scrollbars=no'
+            );
         });
     }
 
@@ -103,14 +127,16 @@ export class Demo extends React.PureComponent {
                             </a>
                             <a
                                 className="deactivate"
-                                onClick={() => {
-                                    deleteWorkflow(w.id).then(() => {
-                                        listWorkflows().then(({body}) => {
-                                            this.setState({workflows: body.data, loadingWorkflows: false});
-                                        });
-                                    })
-                                }}
-                            >Deactivate</a>
+                                onClick={() => this.onClickDeactivateIntegration(w.id)}
+                            >
+                                Deactivate
+                            </a>
+                            <a
+                                className="reconfigure"
+                                onClick={() => this.onReconfigureIntegration(w.id)}
+                            >
+                                Reconfigure
+                            </a>
                         </div>
                     );
                 })}
