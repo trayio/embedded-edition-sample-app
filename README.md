@@ -6,7 +6,6 @@ Tray.io Embedded Edition sample application
   * [Intro](#trayio-embedded-edition-sample-application)
   * [Important concepts in Tray.io Embedded Edition](#important-concepts-in-trayio-embedded-edition)
   * [Setting up and running](#setting-up-and-running-the-sample-application)
-  * [Implementation Details](#implementations-details)
 
 ## Intro
 In this repo is a sample webapp which runs on top of the Tray.io Embedded Edition API - this is an application which simply allows you to create new external users linked to your Tray.io partner account, and allow them to create and configure the public Workflow Templates that exist on your Tray.io partner account.
@@ -92,3 +91,37 @@ You can see the query + mutation definitions in the file `server/graphql.js`. Fo
 ```
 
 This query fetches all templates for the given master token and provides the id and title fields. In order to make this query you must pass your Tray.io API master token, we have some middleware which is using the Apollo Relay client imported from the `server/gqlclient.js`.
+
+To create side effects through the GraphQL API you must run a mutation. For example to create a workflow from a template for a given external user, the mutation is defined as the code below:
+
+```
+    createWorkflowFromTemplate: (userToken, templateId) => {
+        const mutation = gql`
+            mutation {
+                createWorkflowFromTemplate(input: {templateId: "${templateId}"}) {
+                    workflowId
+                }
+            }
+        `;
+
+        return generateClient(userToken).mutate({mutation});
+    },
+```
+
+This code runs the createWorkflowFromTemplate mutation with the `templateId` template variable passed in to determine which template to copy. It's run using a client that is generated from the user token, which is the user that will receive the new workflow.
+
+In order to run user mutations or queries you will have to generate a user access token, so before running the mutation above you would have to run the `authorize` mutation with the required users trayId:
+
+```
+    authorize: trayId => {
+        const mutation = gql`
+            mutation {
+                authorize(input: {userId: "${trayId}"}) {
+                    accessToken
+                }
+            }
+        `;
+
+        return masterClient.mutate({mutation});
+    },
+```
