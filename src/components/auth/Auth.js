@@ -7,14 +7,14 @@ export const auth = {
     authenticate(cb) {
         this.isAuthenticated = true
         if (typeof cb === 'function') {
-            cb(true)
+            cb(true);
         }
     },
 
     signout(cb) {
         fetch('/api/logout', {
             method: 'POST',
-            credentials: 'include'
+            credentials: 'include',
         })
             .then((res) => {
                 this.isAuthenticated = false;
@@ -32,18 +32,6 @@ export const auth = {
             });
     }
 };
-
-export const AuthButton = withRouter(({history}) => (
-    auth.isAuthenticated ? (
-        <p>
-            Welcome! <button onClick={() => {
-            auth.signout(() => history.push('/'))
-        }}>Sign out</button>
-        </p>
-    ) : (
-        <p>You are not logged in.</p>
-    )
-));
 
 export const PrivateRoute = ({component: Component, ...rest}) => (
     <Route {...rest} render={props => (
