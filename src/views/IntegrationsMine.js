@@ -31,19 +31,20 @@ export class MineIntegrations extends React.PureComponent {
     }
 
     loadAllWorkflows = () => {
-        listWorkflows().then(({ok, body}) => {
-            if (ok) {
-                this.setState({
-                    workflows: body.data,
-                    loading: false,
-                });
-            } else {
-                this.setState({
-                    error: body,
-                    loading: false,
-                });
-            }
-        });
+        listWorkflows()
+            .then(({ok, body}) => {
+                if (ok) {
+                    this.setState({
+                        workflows: body.data,
+                        loading: false,
+                    });
+                } else {
+                    this.setState({
+                        error: body,
+                        loading: false,
+                    });
+                }
+            });
     }
 
     buildList(workflows) {

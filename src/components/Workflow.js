@@ -4,14 +4,11 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import {withTheme} from "@material-ui/core/styles/index";
 import React from 'react';
 import Logs from './Logs';
 import Loading from './Loading';
+import DeleteDialog from './DeleteDialog';
 import {get} from 'lodash';
 
 import {
@@ -23,28 +20,12 @@ import {
 } from '../api/workflows';
 
 export class Workflow extends React.PureComponent {
-    styles = {
-        pill: {
-            borderRadius: "4px",
-            marginRight: "10px",
-            color: "white",
-            padding: "3px 5px",
-        },
-        item: {
-            width: '100%',
-            border: 'none',
-        },
-        name: {
-            marginTop: '2px'
-        }
-    }
-
     state = {
         error: false,
         loading: false,
         loadedLogs: false,
-        deleteWorkflow: false,
         workflowState: undefined,
+        showDeleteDialog: false,
     }
 
     onClickConfigure = () => {
@@ -100,42 +81,12 @@ export class Workflow extends React.PureComponent {
         });
     }
 
-    onClickDelete = () => {
-        this.setState({deleteWorkflow: this.props.id});
+    onCloseDialog = () => {
+        this.setState({showDeleteDialog: false});
     }
 
-    deleteWorkflow = () => deleteWorkflow(this.props.id);
-
-    buildDeleteConfirmDialog = () => {
-        return (
-            <Dialog
-                open={this.state.deleteWorkflow}
-                onClose={this.handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete this workflow?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {
-                        this.deleteWorkflow(this.props.id).then(res => {
-                            this.setState({deleteWorkflow: false});
-                            this.props.loadAllWorkflows();
-                        })
-                    }} color="secondary">
-                        Yes
-                    </Button>
-                    <Button onClick={() => {
-                        this.setState({deleteWorkflow: false})
-                    }} color="primary" autoFocus>
-                        No
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
+    onShowDeleteDialog = () => {
+        this.setState({showDeleteDialog: true});
     }
 
     onExpansionChange = () => {
@@ -153,6 +104,37 @@ export class Workflow extends React.PureComponent {
         });
     }
 
+    renderWorkflowStatusButtons = enabled => {
+        const styles = {
+            width: "100%",
+            marginBottom: "10px"
+        };
+
+        const startButton = (
+            <Button
+                style={styles}
+                onClick={this.updateWorkflowEnabled}
+                variant="outlined"
+                color="primary"
+            >
+                Start
+            </Button>
+        );
+
+        const stopButton = (
+            <Button
+                style={styles}
+                onClick={this.updateWorkflowDisabled}
+                variant="outlined"
+                color="secondary"
+            >
+                Stop
+            </Button>
+        );
+
+        return enabled ? stopButton : startButton;
+    }
+
     render() {
         const {id, name} = this.props;
         const {logs, deleteWorkflow, loadedLogs} = this.state;
@@ -164,52 +146,47 @@ export class Workflow extends React.PureComponent {
                 marginLeft: "10px",
                 float: "right",
             },
+            pill: {
+                backgroundColor: enabled ? "#7ebc54" : "#df5252",
+                borderRadius: "4px",
+                marginRight: "10px",
+                color: "white",
+                padding: "3px 5px",
+            },
+            item: {
+                width: '100%',
+                border: 'none',
+            },
+            name: {
+                marginTop: '2px'
+            },
             button: {
                 width: "100%",
                 marginBottom: "10px"
             },
-            pill: {
-                backgroundColor: enabled ? "#7ebc54" : "#df5252",
-                ...this.styles.pill,
-            }
         };
-
-        const startButton = (
-            <Button
-                style={styles.button}
-                onClick={this.updateWorkflowEnabled}
-                variant="outlined"
-                color="primary"
-            >
-                Start
-            </Button>
-        );
-
-        const stopButton = (
-            <Button
-                style={styles.button}
-                onClick={this.updateWorkflowDisabled}
-                variant="outlined"
-                color="secondary"
-            >
-                Stop
-            </Button>
-        );
 
         return (
             <Loading loading={this.state.loading}>
                 <ExpansionPanel
                     key={id}
-                    style={this.styles.item}
+                    style={styles.item}
                     onChange={this.onExpansionChange}
                 >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                        <span style={styles.pill}>{enabled ? "enabled" : "disabled"}</span>
-                        <Typography style={this.styles.name}>{name}</Typography>
+                        <span style={styles.pill}>
+                            {enabled ? "enabled" : "disabled"}
+                        </span>
+                        <Typography style={styles.name}>
+                            {name}
+                        </Typography>
                     </ExpansionPanelSummary>
 
                     <ExpansionPanelDetails>
-                        <div id="Logs" style={{width: "100%", maxWidth: "700px"}}>
+                        <div
+                            id="Logs"
+                            style={{width: "100%", maxWidth: "700px"}}
+                        >
                             <Logs
                                 loading={!loadedLogs}
                                 entries={logs}
@@ -226,11 +203,11 @@ export class Workflow extends React.PureComponent {
                                 Configure
                             </Button>
 
-                            {enabled ? stopButton : startButton}
+                            {this.renderWorkflowStatusButtons(enabled)}
 
                             <Button
                                 style={styles.button}
-                                onClick={this.onClickDelete}
+                                onClick={this.onShowDeleteDialog}
                                 variant="outlined"
                                 color="secondary"
                             >
@@ -240,7 +217,13 @@ export class Workflow extends React.PureComponent {
 
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
-                {deleteWorkflow ? this.buildDeleteConfirmDialog() : ''}
+
+                <DeleteDialog
+                    id={this.props.id}
+                    visible={this.state.showDeleteDialog}
+                    onCloseDialog={this.onCloseDialog}
+                    reload={this.props.loadAllWorkflows}
+                />
             </Loading>
         );
     }
