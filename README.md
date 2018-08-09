@@ -14,8 +14,8 @@ There are a few key things we should define to understand how to integrate Embed
 
 #### Integration details:
 
-* Embedded Edition GraphQL API
-* Using the Tray.io configurator and authentication UIs from within your application
+* [https://tray.io/docs/article/partner-api-intro](Embedded Edition GraphQL API)
+* [https://tray.io/docs/article/embedded-external-configuration](Using the Tray.io configurator and authentication UIs from within your application)
 * Authenticating your external users
 
 ## Setting up and running the sample application
