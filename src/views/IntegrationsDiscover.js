@@ -1,6 +1,6 @@
 import React from 'react';
-import View from '../View';
-import Error from '../Error';
+import View from '../components/View';
+import Error from '../components/Error';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -9,10 +9,10 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Loading from '../Loading';
+import Loading from '../components/Loading';
 
-import { useWorkflow } from '../../api/workflows';
-import { listTemplates } from '../../api/templates';
+import { useWorkflow } from '../api/workflows';
+import { listTemplates } from '../api/templates';
 
 export class DiscoverIntegrations extends React.PureComponent {
 

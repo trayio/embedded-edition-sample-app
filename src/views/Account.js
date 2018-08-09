@@ -1,10 +1,10 @@
 import React from 'react';
-import View from '../View';
-import Error from '../Error';
+import View from '../components/View';
+import Error from '../components/Error';
 import Typography from '@material-ui/core/Typography';
-import Loading from '../Loading';
+import Loading from '../components/Loading';
 
-import { me } from '../../api/me';
+import { me } from '../api/me';
 
 export class Account extends React.PureComponent {
 

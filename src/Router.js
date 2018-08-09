@@ -4,9 +4,9 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import {PrivateRoute} from "./components/auth/Auth";
 
-import Mine from "./components/views/IntegrationsMine";
-import Account from "./components/views/Account";
-import Discover from "./components/views/IntegrationsDiscover";
+import Mine from "./views/IntegrationsMine";
+import Account from "./views/Account";
+import Discover from "./views/IntegrationsDiscover";
 
 const App = () => (
     <Router>
