@@ -17,7 +17,7 @@ There are a few key things we should define to understand how to integrate Embed
 #### System components:
 
 ##### Your Partner Account
-This is the Tray.io account we will provide for the purposes of setting up your integration to Tray.io. You will have to create any workflow templates that you would like your users to use on this account. When you sign up an external user to Tray.io through your system, they will be considered to be a user linked to this accounts team.
+This is the Tray.io account we will provide for the purposes of setting up your integration to Tray.io. You will have to create any workflow templates that you would like your users to use on this account. When you sign up an external user to Tray.io through your system, they will be considered to be a user linked to this account's team.
 
 ##### Your Partner Accounts Templates
 
@@ -48,8 +48,8 @@ npm install
 You must also ensure that a few variables are available in your environment:
 
 ```
-MASTER_TOKEN=<your partner token>
-PARTNER=<your partner name (used to enable custom stylesheets in the Tray.io configurator)>
+TRAY_MASTER_TOKEN=<your partner token>
+TRAY_PARTNER=<your partner name (used to enable custom stylesheets in the Tray.io configurator)>
 HTTPS=<true | false depending if you want to run local app with SSL>
 ```
 
