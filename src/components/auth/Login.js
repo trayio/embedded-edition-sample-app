@@ -52,8 +52,8 @@ export default class Login extends React.Component {
             warning: {
                 textAlign: "center",
                 border: "none",
-            }
-        }
+            },
+        };
 
         const {from} = this.props.location.state || {from: {pathname: '/'}};
         const {redirectToReferrer} = this.state;

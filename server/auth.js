@@ -22,9 +22,9 @@ module.exports = function (app) {
     app.post('/api/login', function (req, res) {
         const user = attemptLogin(req);
 
-        if (!res.headersSent && (!process.env.MASTER_TOKEN || !process.env.PARTNER)) {
+        if (!res.headersSent && (!process.env.TRAY_MASTER_TOKEN || !process.env.TRAY_PARTNER)) {
             res.status(500).send({
-                error: 'MASTER_TOKEN (Partner Master Key) or PARTNER (Partner NAME) missing in Express server env. Make sure to define it before you start Express.'
+                error: 'TRAY_MASTER_TOKEN (Partner Master Key) or TRAY_PARTNER (Partner NAME) missing in Express server env. Make sure to define it before you start Express.'
             });
         }
 

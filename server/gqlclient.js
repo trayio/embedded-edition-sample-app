@@ -4,8 +4,8 @@ import {setContext} from 'apollo-link-context';
 import {ApolloClient} from 'apollo-client';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 
-const gqlEndpoint = process.env.ENDPOINT;
-const masterToken = process.env.MASTER_TOKEN;
+const gqlEndpoint = process.env.TRAY_ENDPOINT;
+const masterToken = process.env.TRAY_MASTER_TOKEN;
 
 const defaultOptions = {
     watchQuery: {
