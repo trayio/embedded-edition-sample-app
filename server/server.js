@@ -29,5 +29,5 @@ require('./auth')(app);
 require('./api')(app);
 
 app.listen(process.env.PORT || 3001, () => {
-    console.log(`Express started on port ${process.env.PORT || 3001} with Graphql endpoint ${process.env.ENDPOINT}`);
+    console.log(`Express started on port ${process.env.PORT || 3001} with Graphql endpoint ${process.env.TRAY_ENDPOINT}`);
 });
