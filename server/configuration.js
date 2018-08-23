@@ -9,18 +9,18 @@ export const setEnvironment = () => {
         case 'stg':
         case 'staging':
             console.log(`ENDPOINT passed as Staging`);
-            process.env.ENDPOINT = stagingGraphqlEndpoint;
+            process.env.TRAY_ENDPOINT = stagingGraphqlEndpoint;
             process.env.APP_URL = appUrlStaging;
             break;
         case 'prod':
         case 'production':
             console.log(`ENDPOINT passed as Production`);
-            process.env.ENDPOINT = productionGraphqlEndpoint;
+            process.env.TRAY_ENDPOINT = productionGraphqlEndpoint;
             process.env.APP_URL = appUrlProd;
             break;
         default:
             console.log(`No valid ENDPOINT was passed. Defaulting to Prod ${productionGraphqlEndpoint}`);
-            process.env.ENDPOINT = productionGraphqlEndpoint;
+            process.env.TRAY_ENDPOINT = productionGraphqlEndpoint;
             process.env.APP_URL = appUrlProd;
             break;
     }
