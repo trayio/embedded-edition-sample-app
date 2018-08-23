@@ -5,7 +5,7 @@ export const setEnvironment = () => {
     const appUrlStaging = 'https://app-staging.tray.io';
     const appUrlProd = 'https://app.tray.io';
 
-    switch (process.env.ENDPOINT) {
+    switch (process.env.TRAY_ENDPOINT) {
         case 'stg':
         case 'staging':
             console.log(`ENDPOINT passed as Staging`);
