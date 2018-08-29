@@ -145,9 +145,7 @@ export const mutations = {
             }
         `;
 
-        const userClient = generateClient(userToken);
-
-        return userClient.mutate({mutation});
+        return generateClient(userToken).mutate({mutation});
     },
 
     createExternalUser: (uuid, name) => {

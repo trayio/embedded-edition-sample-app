@@ -96,7 +96,7 @@ module.exports = function (app) {
             .then(({payload, workflowId}) => {
                 res.status(200).send({
                     data: {
-                        popupUrl: `https://app.tray.io/external/configure/${process.env.PARTNER}/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
+                        popupUrl: `${process.env.TRAY_APP_URL}/external/configure/${process.env.TRAY_PARTNER}/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
                     }
                 });
             })
@@ -130,7 +130,7 @@ module.exports = function (app) {
             .then(({payload, workflowId}) => {
                 res.status(200).send({
                     data: {
-                        popupUrl: `https://app.tray.io/external/configure/${process.env.PARTNER}/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
+                        popupUrl: `${process.env.TRAY_APP_URL}/external/configure/${process.env.TRAY_PARTNER}/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
                     }
                 });
             })

@@ -22,18 +22,6 @@ module.exports = function (app) {
     app.post('/api/login', function (req, res) {
         const user = attemptLogin(req);
 
-        if (!process.env.MASTER_TOKEN) {
-            res.status(500).send({
-                error: 'MASTER_TOKEN (Partner Master Key) missing in Express server env. Make sure to define it before you start Express.'
-            });
-        }
-
-        if (!process.env.PARTNER) {
-            res.status(500).send({
-                error: 'PARTNER (Partner NAME) missing in Express server env. Make sure to define it before you start Express (eg run "export PARTNER=prosperworks" before running "npm run api")'
-            });
-        }
-
         if (user && (!user.uuid || !user.trayId)) {
             res.status(500).send({
                 error: `Unable to login. User "${user.username}" found locally is missing one or more of following required fields: uuid, trayId`
