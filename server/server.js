@@ -20,6 +20,8 @@ app.use(function (req, res, next) {
 // Configure Express application:
 app.use(require('morgan')('tiny'));
 
+require('./configuration').setEnvironment();
+
 // Authentication and Authorization Middleware:
 require('./auth')(app);
 
@@ -27,5 +29,5 @@ require('./auth')(app);
 require('./api')(app);
 
 app.listen(process.env.PORT || 3001, () => {
-    console.log(`Express started on port ${process.env.PORT || 3001}`);
+    console.log(`Express started on port ${process.env.PORT || 3001} with Graphql endpoint ${process.env.TRAY_ENDPOINT}`);
 });

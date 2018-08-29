@@ -19,7 +19,6 @@ class RegisterForm extends React.Component {
                 maxWidth: 400,
                 height: 'auto',
                 position: 'absolute',
-                top: '20%',
                 left: 0,
                 right: 0,
                 margin: 'auto'
