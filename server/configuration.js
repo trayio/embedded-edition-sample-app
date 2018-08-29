@@ -24,4 +24,17 @@ export const setEnvironment = () => {
             process.env.TRAY_APP_URL = appUrlProd;
             break;
     }
+
+    //Make sure user has passed all required ENV variables before we start server
+    if (!process.env.TRAY_MASTER_TOKEN || !process.env.TRAY_PARTNER) {
+        console.error('\x1b[35m',
+            `\nOne or both of following required env parameters are missing:
+            TRAY_MASTER_TOKEN (Partner Master Key)
+            TRAY_PARTNER (Partner NAME)
+            Make sure they are defined as env variables and start API again.
+            NOTE: Make sure the names use the TRAY_ prefix e.g. TRAY_MASTER_TOKEN as opposed to MASTER_TOKEN\n`
+        );
+        process.exit(-1);
+    }
+
 }
