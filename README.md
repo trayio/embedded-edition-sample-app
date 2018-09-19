@@ -51,10 +51,9 @@ In order to setup your environment variables and run the application, you then h
 TRAY_ENDPOINT=prod
 TRAY_MASTER_TOKEN=<your partner token>
 TRAY_PARTNER=<your partner name (used to enable custom stylesheets in the Tray.io configurator)>
-HTTPS=<true | false depending if you want to run local app with SSL>
 ```
 
-The script will have the following defaults:
+The script will have the following defaults and then run the required node processes (npm scripts api and start):
 
 ```
 TRAY_ENDPOINT=prod
