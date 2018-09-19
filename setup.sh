@@ -14,15 +14,15 @@ cleanup() {
     echo ""
     echo "Killing node processes - please enter your machine password if asked to run with sudo:";
 
-    PORTA=$(lsof -t -i:3000)
-    PORTB=$(lsof -t -i:3001)
+    PORT_A=$(lsof -t -i:3000)
+    PORT_B=$(lsof -t -i:3001)
 
-    if [ -n $PORTA ]; then
-        kill $PORTA || sudo kill -9 $PORTA &> /dev/null;
+    if [ -n $PORT_A ]; then
+        kill $PORT_A || sudo kill -9 $PORT_A &> /dev/null;
     fi
 
-    if [ -n $PORTB ]; then
-        kill $PORTB || sudo kill -9 $PORTB &> /dev/null;
+    if [ -n $PORT_B ]; then
+        kill $PORT_B || sudo kill -9 $PORT_B &> /dev/null;
     fi
 
     echo "Processes successfully killed"
