@@ -45,24 +45,21 @@ To set up and run the sample application first you must install the packages:
 npm install
 ```
 
-You must also ensure that a few variables are available in your environment:
+In order to setup your environment variables and run the application, you then have to run `. ./setup.sh`
 
 ```
+TRAY_ENDPOINT=prod
 TRAY_MASTER_TOKEN=<your partner token>
 TRAY_PARTNER=<your partner name (used to enable custom stylesheets in the Tray.io configurator)>
 HTTPS=<true | false depending if you want to run local app with SSL>
 ```
 
-You can then run the application server using:
+The script will have the following defaults:
 
 ```
-npm run api
-```
-
-And in a seperate session run the web server using:
-
-```
-npm start
+TRAY_ENDPOINT=prod
+TRAY_PARTNER=asana
+TRAY_MASTER_TOKEN=<When you successfully run the script, it will store your token in .token and read a default value from there>
 ```
 
 ## Implementation details
