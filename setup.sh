@@ -10,6 +10,31 @@ if [ -e ".token" ]; then
     MASTER_TOKEN=${MASTER_TOKEN:-$(cat .token)}
 fi
 
+cleanup() {
+    echo ""
+    echo "Killing node processes - please enter your machine password if asked to run with sudo:";
+
+    PORT_A=$(lsof -t -i:3000)
+    PORT_B=$(lsof -t -i:3001)
+
+    if [ -n $PORT_A ]; then
+        kill $PORT_A || sudo kill -9 $PORT_A &> /dev/null;
+    fi
+
+    if [ -n $PORT_B ]; then
+        kill $PORT_B || sudo kill -9 $PORT_B &> /dev/null;
+    fi
+
+    echo "Processes successfully killed"
+}
+
+exit() {
+    cleanup;
+    trap - SIGINT EXIT
+    kill -- -$$
+    kill -- -$(pgrep setup.sh)
+}
+
 if [ -z "$MASTER_TOKEN" ]; then
     echo ""
     echo "Error: Please run the script with your partner account master token"
@@ -25,7 +50,8 @@ else
     echo "$MASTER_TOKEN" >> .token
 
     # Run api and app:
-    sudo kill -9 $(lsof -i:3000 -t);
-    sudo kill -9 $(lsof -i:3001 -t);
+    cleanup;
     yarn run api & yarn run start
 fi
+
+trap exit SIGINT EXIT
