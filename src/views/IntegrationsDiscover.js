@@ -40,12 +40,18 @@ export class DiscoverIntegrations extends React.PureComponent {
     }
 
     onUseWorkflowClick(id) {
+        // Must open window from user interaction code otherwise it is likely
+        // to be blocked by a popup blocker:
+        const configWindow = window.open(
+            undefined,
+            '_blank',
+            'width=500,height=500,scrollbars=no',
+        );
+
         useWorkflow(id).then(({body}) => {
-            window.open(
-                body.data.popupUrl,
-                '_blank',
-                'width=500,height=500,scrollbars=no'
-            );
+            // After we generate the popup URL, set it to the previously opened
+            // window:
+            configWindow.location = body.data.popupUrl;
         });
     }
 
