@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "TrayOEM": {
+      "schemaPath": "graphql.schema.json",
+      "extensions": {
+        "endpoints": {
+          "default": "https://staging.tray.io/graphql"
+        }
+      }
+    }
+  }
+}
