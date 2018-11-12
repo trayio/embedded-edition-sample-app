@@ -39,6 +39,66 @@ export const queries = {
         return masterClient.query({query});
     },
 
+    solutions: () => {
+        const query = gql`
+            {
+                viewer {
+                    solutions {
+                        edges {
+                            node {
+                                id
+                                title
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+        return masterClient.query({query});
+    },
+
+    solutionInstances: token => {
+        const query = gql`
+            {
+                viewer {
+                    solutionInstances {
+                        edges {
+                            node {
+                                id
+                                name
+                                enabled
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+        return generateClient(token).query({query});
+    },
+
+    solutionInstance: (id, token) => {
+        const query = gql`
+            {
+                viewer {
+                    solutionInstances(criteria: {ids: "${id}"}) {
+                        edges {
+                            node {
+                                id
+                                name
+                                enabled
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+
+        return generateClient(token).query({query});
+    },
+
     workflows: token => {
         const query = gql`
             {
@@ -134,6 +194,21 @@ export const mutations = {
         `;
 
         return masterClient.mutate({mutation});
+    },
+
+    createSolutionInstance: (userToken, solutionId, name) => {
+        console.log(userToken, solutionId, name);
+        const mutation = gql`
+            mutation {
+                createSolutionInstance(input: {solutionId: "${solutionId}", instanceName: "${name}", authValues: [], configValues: []}) {
+                    solutionInstance {
+                        id
+                    }
+                }
+            }
+        `;
+
+        return generateClient(userToken).mutate({mutation});
     },
 
     createWorkflowFromTemplate: (userToken, templateId) => {

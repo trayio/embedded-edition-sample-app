@@ -7,6 +7,8 @@ import {PrivateRoute} from "./components/auth/Auth";
 import Mine from "./views/IntegrationsMine";
 import Account from "./views/Account";
 import Discover from "./views/IntegrationsDiscover";
+import SolutionsDiscover from "./views/SolutionsDiscover";
+import SolutionsMine from "./views/SolutionsMine";
 
 const App = () => (
     <Router>
@@ -19,6 +21,8 @@ const App = () => (
             <PrivateRoute path="/account" component={Account}/>
             <PrivateRoute path="/integrations/discover" component={Discover}/>
             <PrivateRoute path="/integrations/mine" component={Mine}/>
+            <PrivateRoute path="/solutions/discover" component={SolutionsDiscover}/>
+            <PrivateRoute path="/solutions/mine" component={SolutionsMine}/>
         </div>
     </Router>
 );

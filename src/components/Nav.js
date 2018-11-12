@@ -19,7 +19,6 @@ const styles = theme => ({
         height: '100%',
         maxWidth: 250,
         backgroundColor: theme.palette.background.paper,
-        height: '100%',
         paddingBottom: 40,
     },
     nested: {
@@ -32,11 +31,16 @@ const styles = theme => ({
 
 class Nav extends React.PureComponent {
     state = {
-        open: true
+        integrationsOpen: true,
+        solutionsOpen: true,
     };
 
-    handleClick = () => {
-        this.setState({open: !this.state.open});
+    handleIntegrationsClick = () => {
+        this.setState({integrationsOpen: !this.state.integrationsOpen});
+    };
+
+    handleSolutionsClick = () => {
+        this.setState({solutionsOpen: !this.state.solutionsOpen});
     };
 
     render() {
@@ -58,15 +62,15 @@ class Nav extends React.PureComponent {
                             </ListItem>
                         </Link>
 
-                        <ListItem button onClick={this.handleClick}>
+                        <ListItem button onClick={this.handleIntegrationsClick}>
                             <ListItemIcon>
                                 <PlugIcon/>
                             </ListItemIcon>
                             <ListItemText inset primary="Integrations"/>
-                            {this.state.open ? <ExpandLess/> : <ExpandMore/>}
+                            {this.state.integrationsOpen ? <ExpandLess/> : <ExpandMore/>}
                         </ListItem>
 
-                        <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                        <Collapse in={this.state.integrationsOpen} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
 
                                 <Link className={classes.link} to="/integrations/mine">
@@ -79,6 +83,38 @@ class Nav extends React.PureComponent {
                                 </Link>
 
                                 <Link className={classes.link} to="/integrations/discover">
+                                    <ListItem button className={classes.nested}>
+                                        <ListItemIcon>
+                                            <CircleIcon style={{borderRadius: 20}}/>
+                                        </ListItemIcon>
+                                        <ListItemText inset primary="Discover"/>
+                                    </ListItem>
+                                </Link>
+
+                            </List>
+                        </Collapse>
+
+                        <ListItem button onClick={this.handleSolutionsClick}>
+                            <ListItemIcon>
+                                <PlugIcon/>
+                            </ListItemIcon>
+                            <ListItemText inset primary="Solutions"/>
+                            {this.state.solutionsOpen ? <ExpandLess/> : <ExpandMore/>}
+                        </ListItem>
+
+                        <Collapse in={this.state.solutionsOpen} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+
+                                <Link className={classes.link} to="/solutions/mine">
+                                    <ListItem button className={classes.nested}>
+                                        <ListItemIcon>
+                                            <CircleIcon style={{borderRadius: 20}}/>
+                                        </ListItemIcon>
+                                        <ListItemText inset primary="My Instances" style={{whiteSpace: 'nowrap'}}/>
+                                    </ListItem>
+                                </Link>
+
+                                <Link className={classes.link} to="/solutions/discover">
                                     <ListItem button className={classes.nested}>
                                         <ListItemIcon>
                                             <CircleIcon style={{borderRadius: 20}}/>
