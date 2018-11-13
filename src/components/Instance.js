@@ -80,9 +80,6 @@ export class Instance extends React.PureComponent {
         });
     };
 
-    onExpansionChange = () => {
-    };
-
     render() {
         const {id, name} = this.props;
 
@@ -118,7 +115,6 @@ export class Instance extends React.PureComponent {
                 <ExpansionPanel
                     key={id}
                     style={styles.item}
-                    onChange={this.onExpansionChange}
                 >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                         <span style={styles.pill}>
