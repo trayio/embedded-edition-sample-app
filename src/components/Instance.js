@@ -31,14 +31,21 @@ export class Instance extends React.PureComponent {
 
         // Listen to popup messages
         let configFinished = false;
+        let configCanceled = false;
         const onmessage = e => {
             if (e.data.type === 'tray.configPopup.error') {
                 // Handle popup error message
                 alert(`Error: ${e.data.err}`);
             }
+            if (e.data.type === 'tray.configPopup.cancel') {
+                // Handle popup canceled message
+                configCanceled = true;
+                configWindow.close();
+            }
             if (e.data.type === 'tray.configPopup.finish') {
                 // Handle popup finish message
                 configFinished = true;
+                configWindow.close();
             }
         }
         window.addEventListener('message', onmessage);
@@ -50,10 +57,14 @@ export class Instance extends React.PureComponent {
         const checkWindow = () => {
             if (configWindow.closed) {
                 // Handle popup closing
-                if (!configFinished) {
-                    alert('Configuration not finished');
-                } else {
+                if (configFinished) {
                     console.log('Configuration finished');
+                }
+                else if (configCanceled) {
+                    console.log('Configuration canceled');
+                }
+                else {
+                    alert('Configuration not finished');
                 }
                 window.removeEventListener('message', onmessage);
             } else {
