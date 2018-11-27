@@ -28,6 +28,20 @@ export const createSolutionInstance = (id, name) =>
         body: await res.json(),
     }));
 
+export const updateSolutionInstance = (solutionInstanceId, enabled) =>
+    fetch(`/api/solutionInstance/${solutionInstanceId}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            enabled: enabled,
+        }),
+    }).then(async res => ({
+        ok: res.ok,
+    }));
+
 export const updateSolutionInstanceConfig = solutionInstanceId =>
     fetch(`/api/solutionInstance/${solutionInstanceId}/config`, {
         method: 'PATCH',

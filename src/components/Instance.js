@@ -11,6 +11,7 @@ import {get} from 'lodash';
 
 import {
     updateSolutionInstanceConfig,
+    updateSolutionInstance,
 } from '../api/solutions';
 
 export class Instance extends React.PureComponent {
@@ -70,13 +71,20 @@ export class Instance extends React.PureComponent {
             } else {
                 setTimeout(checkWindow, CHECK_TIMEOUT);
             }
-        }
+        };
         checkWindow();
 
         updateSolutionInstanceConfig(this.props.id).then(({body}) => {
             // After we generate the popup URL, set it to the previously opened
             // window:
             configWindow.location = body.data.popupUrl;
+        });
+    };
+
+    onClickEnable = () => {
+        const enabled = get(this.state, 'instanceState', this.props.enabled);
+        updateSolutionInstance(this.props.id, !enabled).then(()=>{
+            this.setState({instanceState: !enabled});
         });
     };
 
@@ -127,6 +135,14 @@ export class Instance extends React.PureComponent {
 
                     <ExpansionPanelDetails>
                         <div id="Controls" style={styles.controls}>
+                            <Button
+                                style={styles.button}
+                                onClick={this.onClickEnable}
+                                variant="outlined"
+                                color="primary"
+                            >
+                                {enabled ? 'Disable' : 'Enable'}
+                            </Button>
                             <Button
                                 style={styles.button}
                                 onClick={this.onClickConfigure}

@@ -83,6 +83,18 @@ module.exports = function (app) {
             });
     });
 
+    app.patch('/api/solutionInstance/:solutionInstanceId', (req, res) => {
+        // PATCH solution instance:
+        mutations.updateSolutionInstance(
+            req.session.token,
+            req.params.solutionInstanceId,
+            req.body.enabled
+        )
+            .then(() => res.sendStatus(200))
+            .catch(err => res.status(500).send({err}));
+    });
+
+
     // PATCH Solution Instance configuration:
     app.patch('/api/solutionInstance/:solutionInstanceId/config', (req, res) => {
         mutations.getGrantTokenForUser(

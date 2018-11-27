@@ -211,6 +211,18 @@ export const mutations = {
         return generateClient(userToken).mutate({mutation});
     },
 
+    updateSolutionInstance: (userToken, solutionInstanceId, enabled ) => {
+        const mutation = gql`
+            mutation {
+                updateSolutionInstance(input: {solutionInstanceId: "${solutionInstanceId}", enabled: ${enabled}}) {
+                    clientMutationId
+                }
+            }
+        `;
+
+        return generateClient(userToken).mutate({mutation});
+    },
+
     createWorkflowFromTemplate: (userToken, templateId) => {
         const mutation = gql`
             mutation {
