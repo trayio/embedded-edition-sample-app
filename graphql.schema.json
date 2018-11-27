@@ -357,46 +357,6 @@
                     "ofType": null
                   },
                   "defaultValue": null
-                },
-                {
-                  "name": "first",
-                  "description": "",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "last",
-                  "description": "",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "before",
-                  "description": "",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "after",
-                  "description": "",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "defaultValue": null
                 }
               ],
               "type": {
@@ -1008,6 +968,22 @@
             },
             {
               "name": "userFullName",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userEmail",
               "description": "",
               "args": [],
               "type": {
@@ -1814,24 +1790,6 @@
                 }
               },
               "defaultValue": null
-            },
-            {
-              "name": "serviceNames",
-              "description": "",
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                }
-              },
-              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -2091,7 +2049,17 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "namePrefix",
+              "name": "name",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "owner",
               "description": "",
               "type": {
                 "kind": "SCALAR",
@@ -3294,6 +3262,68 @@
               "deprecationReason": null
             },
             {
+              "name": "updateSolutionInstance",
+              "description": "",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "UpdateSolutionInstanceInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "UpdateSolutionInstancePayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "removeSolutionInstance",
+              "description": "",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "RemoveSolutionInstanceInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "RemoveSolutionInstancePayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "createWorkflowFromTemplate",
               "description": "Create a workflow from the given template",
               "args": [
@@ -3963,7 +3993,7 @@
         {
           "kind": "INPUT_OBJECT",
           "name": "CreateSolutionInstanceInput",
-          "description": "Input to create an solution instance",
+          "description": "Input to create a solution instance",
           "fields": null,
           "inputFields": [
             {
@@ -3996,21 +4026,17 @@
             },
             {
               "name": "authValues",
-              "description": "init user authentication values",
+              "description": "Init user authentication values provided by partner",
               "type": {
-                "kind": "NON_NULL",
+                "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "LIST",
+                  "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "AuthValue",
-                      "ofType": null
-                    }
+                    "kind": "INPUT_OBJECT",
+                    "name": "AuthValue",
+                    "ofType": null
                   }
                 }
               },
@@ -4018,21 +4044,17 @@
             },
             {
               "name": "configValues",
-              "description": "init config values",
+              "description": "Init config values provided by partner",
               "type": {
-                "kind": "NON_NULL",
+                "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "LIST",
+                  "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "ConfigValue",
-                      "ofType": null
-                    }
+                    "kind": "INPUT_OBJECT",
+                    "name": "ConfigValue",
+                    "ofType": null
                   }
                 }
               },
@@ -4158,6 +4180,194 @@
               "isDeprecated": false,
               "deprecationReason": null
             },
+            {
+              "name": "clientMutationId",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateSolutionInstanceInput",
+          "description": "Input to update an solution instance",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "solutionInstanceId",
+              "description": "ID of the solution instance",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "instanceName",
+              "description": "Name of the solution instance",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "enabled",
+              "description": "Enabled state of the solution instance",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "authValues",
+              "description": "User authentication values provided by partner",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "AuthValue",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "configValues",
+              "description": "Config values provided by partner",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ConfigValue",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "clientMutationId",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UpdateSolutionInstancePayload",
+          "description": "Result of update of the solution instance",
+          "fields": [
+            {
+              "name": "solutionInstance",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "SolutionInstance",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "clientMutationId",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "RemoveSolutionInstanceInput",
+          "description": "Input to remove a solution instance",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "solutionInstanceId",
+              "description": "ID of the solution instance",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "clientMutationId",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "RemoveSolutionInstancePayload",
+          "description": "Result of removing a solution instance",
+          "fields": [
             {
               "name": "clientMutationId",
               "description": "",
@@ -4772,7 +4982,7 @@
             },
             {
               "name": "hidden",
-              "description": "Controls if authentication should have only one instance and be hidden in UI. Default is false.",
+              "description": "Controls if authentication should be hidden in UI. Default is false.",
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
@@ -5808,7 +6018,7 @@
   "extensions": {
     "graphql-config": {
       "source": "https://staging.tray.io/graphql",
-      "timestamp": "Mon Nov 12 2018 11:58:56 GMT+0000 (GMT)"
+      "timestamp": "Mon Nov 26 2018 16:53:01 GMT+0000 (GMT)"
     }
   }
 }
