@@ -30,6 +30,88 @@ module.exports = function (app) {
             .catch(err => res.status(500).send(err));
     });
 
+    // GET Solutions:
+    app.get('/api/solutions', (req, res) => {
+        queries.solutions()
+            .then((results) => {
+                res.status(200).send({
+                    data: getNodesAt(results, 'data.viewer.solutions.edges')
+                });
+            })
+            .catch(err => res.status(500).send(err));
+    });
+
+    // GET Solution Instances:
+    app.get('/api/solutionInstances', (req, res) => {
+        const externalUserToken = req.session.token;
+
+        if (!externalUserToken) {
+            res.status(500).send('Missing external user auth');
+        }
+
+        queries.solutionInstances(externalUserToken)
+            .then(results => {
+                res.status(200).send({
+                    data: getNodesAt(results, 'data.viewer.solutionInstances.edges'),
+                });
+            })
+            .catch(err => res.status(500).send(err));
+    });
+
+    // POST Solution Instances
+    app.post('/api/solutionInstances', (req, res) => {
+        mutations.createSolutionInstance(
+            req.session.token,
+            req.body.id,
+            req.body.name,
+        )
+            .then(solutionInstance => {
+                return mutations.getGrantTokenForUser(
+                    req.session.user.trayId,
+                ).then(({payload}) => {
+                    const solutionInstanceId = solutionInstance.data.createSolutionInstance.solutionInstance.id;
+                    const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
+                    res.status(200).send({
+                        data: {
+                            popupUrl: `${process.env.TRAY_APP_URL}/external/solutions/${process.env.TRAY_PARTNER}/configure/${solutionInstanceId}?code=${authorizationCode}`
+                        }
+                    });
+                })
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            });
+    });
+
+    app.patch('/api/solutionInstance/:solutionInstanceId', (req, res) => {
+        // PATCH solution instance:
+        mutations.updateSolutionInstance(
+            req.session.token,
+            req.params.solutionInstanceId,
+            req.body.enabled
+        )
+            .then(() => res.sendStatus(200))
+            .catch(err => res.status(500).send({err}));
+    });
+
+
+    // PATCH Solution Instance configuration:
+    app.patch('/api/solutionInstance/:solutionInstanceId/config', (req, res) => {
+        mutations.getGrantTokenForUser(
+            req.session.user.trayId,
+            req.params.solutionInstanceId,
+        )
+            .then(({payload}) => {
+                const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
+                res.status(200).send({
+                    data: {
+                        popupUrl: `${process.env.TRAY_APP_URL}/external/solutions/${process.env.TRAY_PARTNER}/configure/${req.params.solutionInstanceId}?code=${authorizationCode}`
+                    }
+                });
+            })
+            .catch(err => res.status(500).send({err}));
+    });
+
     // GET Workflows:
     app.get('/api/workflows', (req, res) => {
         const externalUserToken = req.session.token;
