@@ -43,7 +43,7 @@ When an external user configures a Solution, a copy of that Solution will be cre
 
 * [Embedded Edition GraphQL API](https://tray.io/docs/article/partner-api-intro)
 * [Using the Tray.io configurator and authentication UIs from within your application](https://tray.io/docs/article/embedded-external-configuration)
-* Authenticating your external users
+* [Authenticating your external users](https://github.com/trayio/embedded-edition-sample-app#authenticating-your-external-users)
 
 ## Setting up and running the sample application
 
@@ -72,13 +72,13 @@ TRAY_MASTER_TOKEN=<When you successfully run the script, it will store your toke
 ## Implementation details
 
 #### Making queries and executing mutations on the GQL API
-You can see the query + mutation definitions in the file `server/graphql.js`. For example the templates listing query is defined as the code below:
+You can see the query + mutation definitions in the file `server/graphql.js`. For example the Solutions listing query for a partner account is defined as the code below:
 ```
     templates: () => {
         const query = gql`
             {
                 viewer {
-                    templates {
+                    solutions {
                         edges {
                             node {
                                 id
@@ -94,16 +94,22 @@ You can see the query + mutation definitions in the file `server/graphql.js`. Fo
     }
 ```
 
-This query fetches all templates for the given master token and provides the id and title fields. In order to make this query you must pass your Tray.io API master token, we have some middleware which is using the Apollo Relay client imported from the `server/gqlclient.js`.
+This query fetches all Solutions for the given master token and provides the id and title fields. In order to make this query you must pass your Tray.io Partner Accounts API master token, we have some middleware which is using the Apollo Relay client imported from the `server/gqlclient.js`.
 
-To create side effects through the GraphQL API you must run a mutation. For example to create a workflow from a template for a given external user, the mutation is defined as the code below:
+To create side effects through the GraphQL API you must run a mutation. For example to create a Solution Instance from a Solution for a given external user, the mutation is defined as the code below:
 
 ```
     createWorkflowFromTemplate: (userToken, templateId) => {
         const mutation = gql`
             mutation {
-                createWorkflowFromTemplate(input: {templateId: "${templateId}"}) {
-                    workflowId
+                createSolutionInstance(
+                input: {
+                    solutionId: "${solutionId}",
+                    instanceName: "${name}",
+                }) {
+                    solutionInstance {
+                        id
+                    }
                 }
             }
         `;
@@ -112,7 +118,9 @@ To create side effects through the GraphQL API you must run a mutation. For exam
     },
 ```
 
-This code runs the createWorkflowFromTemplate mutation with the `templateId` template variable passed in to determine which template to copy. It's run using a client that is generated from the user token, which is the user that will receive the new workflow.
+This code runs the createSolutionInstance mutation with the `solutionId` template variable passed in to determine which Solution to copy over to the External User account. It's run using a client that is generated from the user token, which is the user that will receive the new Solution Instance.
+
+#### Authenticating your external users
 
 In order to run user mutations or queries you will have to generate a user access token, so before running the mutation above you would have to run the `authorize` mutation with the required users trayId:
 
