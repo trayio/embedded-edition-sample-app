@@ -35,9 +35,9 @@ Your Solutions will be available to list and edit through the Tray.io GraphQL AP
 
 In order for your users to take advantage of the Tray.io platform, they must have a Tray account. We have set up a system to provision Tray.io accounts which will be linked to the team of your Partner user.
 
-##### Your External Users Workflows
+##### Your External Users Solution Instances
 
-When an external user creates a workflow from a template, a copy of that template will be created in that accounts workflow list. The workflow must then be configured and enabled with your users SaaS authentications for the services used within that template.
+When an external user configures a Solution, a copy of that Solution will be created in that accounts Solution instance list. Their Solution Instance must then be configured and enabled with your users application Authentications for the services used within that Solution.
 
 #### Integration details:
 
