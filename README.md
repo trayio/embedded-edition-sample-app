@@ -19,9 +19,17 @@ There are a few key things we should define to understand how to integrate Embed
 ##### Your Partner Account
 This is the Tray.io account we will provide for the purposes of setting up your integration to Tray.io. You will have to create any workflow templates that you would like your users to use on this account. When you sign up an external user to Tray.io through your system, they will be considered to be a user linked to this account's team.
 
-##### Your Partner Accounts Templates
+##### Your Partner Accounts Workflows
 
-Your Templates will be available to list and edit through the Tray.io GraphQL API for usage in your application.
+Workflows allow you to build automation within Tray by linking a series of steps. Each step will have a connector that can authenticate and run API calls against a certain service, or transform some data existing from previous steps in the workflow.
+
+##### Your Partner Accounts Projects
+
+Projects allow you to package one or more workflows together, in order to be able to provide a solution in your application.
+
+##### Your Partner Accounts Solutions
+
+Your Solutions will be available to list and edit through the Tray.io GraphQL API for usage in your application. These are built from Projects, and will be what your External Users configure to get a version of your Project that is linked to their own API Authentications and custom configuration values for the workflows used.
 
 ##### Your Partner Accounts External Users
 
