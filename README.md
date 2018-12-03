@@ -103,10 +103,11 @@ To create side effects through the GraphQL API you must run a mutation. For exam
         const mutation = gql`
             mutation {
                 createSolutionInstance(
-                input: {
-                    solutionId: "${solutionId}",
-                    instanceName: "${name}",
-                }) {
+                    input: {
+                        solutionId: "${solutionId}",
+                        instanceName: "${name}",
+                    }
+                ) {
                     solutionInstance {
                         id
                     }
