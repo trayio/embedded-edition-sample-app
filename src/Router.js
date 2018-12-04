@@ -14,7 +14,7 @@ const App = () => (
     <Router>
         <div>
             <Switch>
-                <RedirectMain />
+                <RedirectMain exact from="/"/>
             </Switch>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>

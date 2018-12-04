@@ -6,9 +6,6 @@ import Input from '@material-ui/core/Input';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class RegisterForm extends React.Component {
-    state = {
-        loading: false,
-    }
 
     render() {
         const {onRegister} = this.props;
@@ -21,7 +18,7 @@ class RegisterForm extends React.Component {
                 position: 'absolute',
                 left: 0,
                 right: 0,
-                margin: 'auto'
+                margin: '30px auto'
             },
             paper: {
                 padding: 20,
@@ -47,29 +44,28 @@ class RegisterForm extends React.Component {
             <div>
                 <div style={styles.loginContainer}>
                     <Paper style={styles.paper}>
-                        {this.state.loading ?
+                        {this.props.loading ?
                             <div style={{textAlign: "center"}}>
                                 <CircularProgress/>
                             </div> :
                             <form
                                 ref={(elem) => this.form = elem}
                                 onSubmit={e => {
-                                    this.setState({
-                                        loading: true
-                                    })
-                                    console.log('---ONSUBMIT---');
                                     e.preventDefault();
-                                    return onRegister({
-                                            name: this.nameElem.value,
-                                            username: this.usernameElem.value,
-                                            password: this.passwordElem.value,
-                                        },
-                                    );
+                                    this.form.validateFields();
+                                    if (this.form.isValid()) {
+                                        return onRegister({
+                                                name: this.nameElem.value,
+                                                username: this.usernameElem.value,
+                                                password: this.passwordElem.value,
+                                            },
+                                        );
+                                    }
                                 }
                                 }
                             >
 
-                                <h3 style={{textAlign: "center", padding: "30px"}}> New User Form </h3>
+                                <h3 style={{textAlign: "center"}}> New User Form </h3>
 
                                 <Input
                                     inputRef={(input) => this.nameElem = input}
@@ -78,6 +74,7 @@ class RegisterForm extends React.Component {
                                     placeholder="Full Name"
                                     fullWidth={true}
                                     style={{marginBottom: 10}}
+                                    required
                                 />
 
                                 <Input
@@ -86,6 +83,7 @@ class RegisterForm extends React.Component {
                                     placeholder="Username"
                                     fullWidth={true}
                                     style={{marginBottom: 10}}
+                                    required
                                 />
 
                                 <Input
@@ -94,6 +92,7 @@ class RegisterForm extends React.Component {
                                     placeholder="Password"
                                     fullWidth={true}
                                     type="password"
+                                    required
                                 />
 
                                 <Button

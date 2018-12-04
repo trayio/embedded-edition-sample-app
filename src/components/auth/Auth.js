@@ -46,10 +46,10 @@ export const PrivateRoute = ({component: Component, ...rest}) => (
     )}/>
 );
 
-export const RedirectMain = () => (
+export const RedirectMain = (props) => (
     auth.isAuthenticated ? (
-        <Redirect exact from="/" to="/integrations/discover"/>
+        <Redirect {...props} to="/integrations/discover"/>
     ) : (
-        <Redirect exact from="/" to="/login"/>
+        <Redirect {...props} to="/login"/>
     )
 );
