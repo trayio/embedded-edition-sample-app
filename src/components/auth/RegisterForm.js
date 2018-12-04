@@ -6,9 +6,6 @@ import Input from '@material-ui/core/Input';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class RegisterForm extends React.Component {
-    state = {
-        loading: false,
-    }
 
     render() {
         const {onRegister} = this.props;
@@ -47,17 +44,13 @@ class RegisterForm extends React.Component {
             <div>
                 <div style={styles.loginContainer}>
                     <Paper style={styles.paper}>
-                        {this.state.loading ?
+                        {this.props.loading ?
                             <div style={{textAlign: "center"}}>
                                 <CircularProgress/>
                             </div> :
                             <form
                                 ref={(elem) => this.form = elem}
                                 onSubmit={e => {
-                                    this.setState({
-                                        loading: true
-                                    })
-                                    console.log('---ONSUBMIT---');
                                     e.preventDefault();
                                     return onRegister({
                                             name: this.nameElem.value,

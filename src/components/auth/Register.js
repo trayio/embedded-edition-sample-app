@@ -6,11 +6,18 @@ export default class Register extends React.Component {
         redirectToReferrer: false,
         error: false,
         success: false,
+        loading: false,
     }
 
-    showError = () => this.setState({ error: true });
+    showError = () => this.setState({
+        error: true,
+        loading: false
+    });
 
     register = (data) => {
+        this.setState({
+            loading: true
+        });
         fetch('/api/register', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -23,7 +30,8 @@ export default class Register extends React.Component {
                 if (response.ok) {
 
                     this.setState({
-                        success: true
+                        success: true,
+                        loading: false,
                     });
 
                     setTimeout(() => window.location = '/login', 1000);
@@ -51,7 +59,7 @@ export default class Register extends React.Component {
 
                 {this.state.error ? <h3 style={{color: "red", textAlign: "center"}}>Registration failed</h3> : ""}
                 {this.state.success ? <h3 style={{color: "green", textAlign: "center"}}>Registration success</h3> : ""}
-                <RegisterForm onRegister={this.register}/>
+                <RegisterForm onRegister={this.register} loading={this.state.loading}/>
             </div>
         )
     }
