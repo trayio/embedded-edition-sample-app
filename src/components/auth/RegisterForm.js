@@ -52,12 +52,15 @@ class RegisterForm extends React.Component {
                                 ref={(elem) => this.form = elem}
                                 onSubmit={e => {
                                     e.preventDefault();
-                                    return onRegister({
-                                            name: this.nameElem.value,
-                                            username: this.usernameElem.value,
-                                            password: this.passwordElem.value,
-                                        },
-                                    );
+                                    this.form.validateFields();
+                                    if (this.form.isValid()) {
+                                        return onRegister({
+                                                name: this.nameElem.value,
+                                                username: this.usernameElem.value,
+                                                password: this.passwordElem.value,
+                                            },
+                                        );
+                                    }
                                 }
                                 }
                             >
@@ -71,6 +74,7 @@ class RegisterForm extends React.Component {
                                     placeholder="Full Name"
                                     fullWidth={true}
                                     style={{marginBottom: 10}}
+                                    required
                                 />
 
                                 <Input
@@ -79,6 +83,7 @@ class RegisterForm extends React.Component {
                                     placeholder="Username"
                                     fullWidth={true}
                                     style={{marginBottom: 10}}
+                                    required
                                 />
 
                                 <Input
@@ -87,6 +92,7 @@ class RegisterForm extends React.Component {
                                     placeholder="Password"
                                     fullWidth={true}
                                     type="password"
+                                    required
                                 />
 
                                 <Button
