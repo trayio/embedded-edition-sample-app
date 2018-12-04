@@ -74,7 +74,7 @@ TRAY_MASTER_TOKEN=<When you successfully run the script, it will store your toke
 #### Making queries and executing mutations on the GQL API
 You can see the query + mutation definitions in the file `server/graphql.js`. For example the Solutions listing query for a partner account is defined as the code below:
 ```
-    templates: () => {
+    listSolutions: () => {
         const query = gql`
             {
                 viewer {
@@ -99,7 +99,7 @@ This query fetches all Solutions for the given master token and provides the id 
 To create side effects through the GraphQL API you must run a mutation. For example to create a Solution Instance from a Solution for a given external user, the mutation is defined as the code below:
 
 ```
-    createWorkflowFromTemplate: (userToken, templateId) => {
+    createSolutionInstance: (userToken, solutionId) => {
         const mutation = gql`
             mutation {
                 createSolutionInstance(
