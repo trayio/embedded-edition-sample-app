@@ -35,7 +35,12 @@ export default class Login extends React.Component {
                     });
                 } else {
                     res.json().then(body => {
-                        alert(`Unable to login: ${JSON.stringify(body)}`);
+                        alert(`Unable to login: ${body.error}`);
+                        this.setState(
+                            {
+                                loading: false
+                            }
+                        )
                     });
                 }
             })
