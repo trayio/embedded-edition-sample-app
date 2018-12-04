@@ -197,7 +197,6 @@ export const mutations = {
     },
 
     createSolutionInstance: (userToken, solutionId, name) => {
-        console.log(userToken, solutionId, name);
         const mutation = gql`
             mutation {
                 createSolutionInstance(input: {solutionId: "${solutionId}", instanceName: "${name}", authValues: [], configValues: []}) {
