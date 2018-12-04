@@ -18,7 +18,7 @@ class RegisterForm extends React.Component {
                 position: 'absolute',
                 left: 0,
                 right: 0,
-                margin: 'auto'
+                margin: '30px auto'
             },
             paper: {
                 padding: 20,
@@ -65,7 +65,7 @@ class RegisterForm extends React.Component {
                                 }
                             >
 
-                                <h3 style={{textAlign: "center", padding: "30px"}}> New User Form </h3>
+                                <h3 style={{textAlign: "center"}}> New User Form </h3>
 
                                 <Input
                                     inputRef={(input) => this.nameElem = input}
