@@ -99,7 +99,7 @@ This query fetches all Solutions for the given master token and provides the id 
 To create side effects through the GraphQL API you must run a mutation. For example to create a Solution Instance from a Solution for a given external user, the mutation is defined as the code below:
 
 ```
-    createSolutionInstance: (userToken, solutionId) => {
+    createSolutionInstance: (userToken, solutionId, name) => {
         const mutation = gql`
             mutation {
                 createSolutionInstance(
