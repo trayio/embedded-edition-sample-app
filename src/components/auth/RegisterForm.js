@@ -52,15 +52,12 @@ class RegisterForm extends React.Component {
                                 ref={(elem) => this.form = elem}
                                 onSubmit={e => {
                                     e.preventDefault();
-                                    this.form.validateFields();
-                                    if (this.form.isValid()) {
-                                        return onRegister({
-                                                name: this.nameElem.value,
-                                                username: this.usernameElem.value,
-                                                password: this.passwordElem.value,
-                                            },
-                                        );
-                                    }
+                                    return onRegister({
+                                            name: this.nameElem.value,
+                                            username: this.usernameElem.value,
+                                            password: this.passwordElem.value,
+                                        },
+                                    );
                                 }
                                 }
                             >
