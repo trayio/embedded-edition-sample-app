@@ -1,6 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
-import {withTheme} from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 
 class View extends React.Component {
     render() {

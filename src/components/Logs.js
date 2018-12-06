@@ -1,10 +1,10 @@
 import React from 'react';
-import {withTheme} from "@material-ui/core/styles/index";
+import { withTheme } from "@material-ui/core/styles/index";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import SuccessIcon from '@material-ui/icons/Done';
 import FailIcon from '@material-ui/icons/Clear';
-import {get} from 'lodash';
+import { get } from 'lodash';
 import Loading from './Loading';
 
 export class Logs extends React.PureComponent {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import {white} from '@material-ui/core/colors/';
+import { white } from '@material-ui/core/colors/';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Input from '@material-ui/core/Input';
 import Typography from '@material-ui/core/Typography';

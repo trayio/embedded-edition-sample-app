@@ -1,8 +1,8 @@
 import React from 'react';
 import LoginForm from './LoginForm'
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Loading from "../Loading";
-import {auth} from './Auth';
+import { auth } from './Auth';
 
 export default class Login extends React.Component {
     state = {

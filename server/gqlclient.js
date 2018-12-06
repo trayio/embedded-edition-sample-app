@@ -1,8 +1,8 @@
 import fetch from "node-fetch";
-import {HttpLink} from 'apollo-link-http';
-import {setContext} from 'apollo-link-context';
-import {ApolloClient} from 'apollo-client';
-import {InMemoryCache} from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const gqlEndpoint = process.env.TRAY_ENDPOINT;
 const masterToken = process.env.TRAY_MASTER_TOKEN;
