@@ -1,6 +1,6 @@
-import {log} from './logging';
-import {mutations, queries} from './graphql';
-import {get, map, values} from 'lodash';
+import { log } from './logging';
+import { mutations, queries } from './graphql';
+import { get, map, values } from 'lodash';
 
 // Get nodes for a given path from graphQL response:
 function getNodesAt (results, path) {

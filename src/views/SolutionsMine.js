@@ -2,7 +2,7 @@ import React from 'react';
 import View from '../components/View';
 import Error from '../components/Error';
 import Typography from '@material-ui/core/Typography';
-import {withTheme} from "@material-ui/core/styles/index";
+import { withTheme } from "@material-ui/core/styles/index";
 import Loading from '../components/Loading';
 import Instance from '../components/Instance';
 

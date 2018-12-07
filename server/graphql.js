@@ -2,7 +2,7 @@
 
 import gql from 'graphql-tag';
 
-import {generateClient, masterClient} from './gqlclient';
+import { generateClient, masterClient } from './gqlclient';
 
 export const queries = {
     me: token => {

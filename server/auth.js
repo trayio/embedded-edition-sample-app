@@ -1,9 +1,9 @@
-import {log} from './logging';
-import {get} from 'lodash';
+import { log } from './logging';
+import { get } from 'lodash';
 
-import {attemptLogin, generateUserAccessToken,} from './domain/login';
+import { attemptLogin, generateUserAccessToken } from './domain/login';
 
-import {checkUserExists, generateNewUser, validateRequest,} from './domain/registration';
+import { checkUserExists, generateNewUser, validateRequest } from './domain/registration';
 
 module.exports = function (app) {
 

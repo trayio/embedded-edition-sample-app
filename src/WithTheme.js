@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import {withTheme} from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 
 function WithTheme(props) {
     const { theme } = props;
@@ -33,4 +33,4 @@ WithTheme.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 
-export default withTheme()(WithTheme); // Let's get the theme as a property
+export default withTheme()(WithTheme);

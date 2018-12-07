@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Route, withRouter} from 'react-router-dom';
+import { Redirect, Route, withRouter } from 'react-router-dom';
 
 export const auth = {
     isAuthenticated: false,
