@@ -14,9 +14,13 @@ export const openConfigWindow = () => {
             // Handle popup error message
             alert(`Error: ${e.data.err}`);
         }
+        if (e.data.type === 'tray.configPopup.cancel') {
+            configWindow.close();
+        }
         if (e.data.type === 'tray.configPopup.finish') {
             // Handle popup finish message
             configFinished = true;
+            configWindow.close();
         }
     };
     window.addEventListener('message', onmessage);
@@ -31,6 +35,10 @@ export const openConfigWindow = () => {
             if (!configFinished) {
                 alert('Configuration not finished');
             } else {
+                alert(
+                    'Configuration finished. You can enable the new ' +
+                    'solution instance from the "Solutions > My Instances" section'
+                );
                 console.log('Configuration finished');
             }
             window.removeEventListener('message', onmessage);
