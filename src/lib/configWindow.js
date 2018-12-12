@@ -14,9 +14,13 @@ export const openConfigWindow = () => {
             // Handle popup error message
             alert(`Error: ${e.data.err}`);
         }
+        if (e.data.type === 'tray.configPopup.cancel') {
+            configWindow.close();
+        }
         if (e.data.type === 'tray.configPopup.finish') {
             // Handle popup finish message
             configFinished = true;
+            configWindow.close();
         }
     };
     window.addEventListener('message', onmessage);
