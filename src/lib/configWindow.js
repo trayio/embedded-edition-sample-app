@@ -35,6 +35,10 @@ export const openConfigWindow = () => {
             if (!configFinished) {
                 alert('Configuration not finished');
             } else {
+                alert(
+                    'Configuration finished. You can enable the new ' +
+                    'solution instance from the "Solutions > My Instances" section'
+                );
                 console.log('Configuration finished');
             }
             window.removeEventListener('message', onmessage);
