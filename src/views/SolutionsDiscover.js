@@ -14,7 +14,7 @@ import Loading from '../components/Loading';
 import { openConfigWindow } from '../lib/configWindow';
 import { listSolutions, createSolutionInstance } from '../api/solutions';
 
-export class DiscoverIntegrations extends React.PureComponent {
+export class SolutionsDiscover extends React.PureComponent {
 
     state = {
         loading: true,
@@ -72,7 +72,7 @@ export class DiscoverIntegrations extends React.PureComponent {
                     variant="headline"
                     style={styles.header}
                 >
-                    Discover integrations
+                    Discover solutions
                 </Typography>
                 <Paper>
                     <List style={styles.list}>
@@ -123,4 +123,4 @@ export class DiscoverIntegrations extends React.PureComponent {
 
 }
 
-export default DiscoverIntegrations;
+export default SolutionsDiscover;

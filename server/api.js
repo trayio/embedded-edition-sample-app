@@ -10,6 +10,9 @@ function getNodesAt (results, path) {
     );
 }
 
+const solutionPath = `${process.env.TRAY_APP_URL}/external/solutions/${process.env.TRAY_PARTNER}`;
+const templatePath = `${process.env.TRAY_APP_URL}/external/configure/${process.env.TRAY_PARTNER}`;
+
 module.exports = function (app) {
 
     // GET Account:
@@ -73,7 +76,7 @@ module.exports = function (app) {
                     const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
                     res.status(200).send({
                         data: {
-                            popupUrl: `${process.env.TRAY_APP_URL}/external/solutions/${process.env.TRAY_PARTNER}/configure/${solutionInstanceId}?code=${authorizationCode}`
+                            popupUrl: `${solutionPath}/configure/${solutionInstanceId}?code=${authorizationCode}`
                         }
                     });
                 })
@@ -105,7 +108,7 @@ module.exports = function (app) {
                 const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
                 res.status(200).send({
                     data: {
-                        popupUrl: `${process.env.TRAY_APP_URL}/external/solutions/${process.env.TRAY_PARTNER}/configure/${req.params.solutionInstanceId}?code=${authorizationCode}`
+                        popupUrl: `${solutionPath}/configure/${req.params.solutionInstanceId}?code=${authorizationCode}`
                     }
                 });
             })
@@ -178,7 +181,7 @@ module.exports = function (app) {
             .then(({payload, workflowId}) => {
                 res.status(200).send({
                     data: {
-                        popupUrl: `${process.env.TRAY_APP_URL}/external/configure/${process.env.TRAY_PARTNER}/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
+                        popupUrl: `${templatePath}/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
                     }
                 });
             })
@@ -212,7 +215,7 @@ module.exports = function (app) {
             .then(({payload, workflowId}) => {
                 res.status(200).send({
                     data: {
-                        popupUrl: `${process.env.TRAY_APP_URL}/external/configure/${process.env.TRAY_PARTNER}/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
+                        popupUrl: `${templatePath}/${workflowId}?code=${payload.data.generateAuthorizationCode.authorizationCode}`
                     }
                 });
             })
