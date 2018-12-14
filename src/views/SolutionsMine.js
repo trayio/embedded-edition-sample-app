@@ -8,7 +8,7 @@ import Instance from '../components/Instance';
 
 import { listSolutionInstances } from '../api/solutions';
 
-export class MineIntegrations extends React.PureComponent {
+export class SolutionsMine extends React.PureComponent {
 
     styles = {
         list: {
@@ -51,7 +51,7 @@ export class MineIntegrations extends React.PureComponent {
             <div>
                 <div style={this.styles.list}>
                     <Typography variant="headline" style={{margin: "20px"}}>
-                        My Instances
+                        My Solution Instances
                     </Typography>
                     {
                         solutionInstances.map(({id, name, enabled}) => (
@@ -84,4 +84,4 @@ export class MineIntegrations extends React.PureComponent {
 
 }
 
-export default withTheme()(MineIntegrations);
+export default withTheme()(SolutionsMine);

@@ -15,7 +15,7 @@ import { openConfigWindow } from '../lib/configWindow';
 import { useWorkflow } from '../api/workflows';
 import { listTemplates } from '../api/templates';
 
-export class DiscoverIntegrations extends React.PureComponent {
+export class IntegrationsDiscover extends React.PureComponent {
 
     state = {
         loading: true,
@@ -123,4 +123,4 @@ export class DiscoverIntegrations extends React.PureComponent {
 
 }
 
-export default DiscoverIntegrations;
+export default IntegrationsDiscover;

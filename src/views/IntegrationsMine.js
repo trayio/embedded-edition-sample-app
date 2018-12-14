@@ -8,7 +8,7 @@ import Workflow from '../components/Workflow';
 
 import { listWorkflows } from '../api/workflows';
 
-export class MineIntegrations extends React.PureComponent {
+export class IntegrationsMine extends React.PureComponent {
 
     styles = {
         list: {
@@ -85,4 +85,4 @@ export class MineIntegrations extends React.PureComponent {
 
 }
 
-export default withTheme()(MineIntegrations);
+export default withTheme()(IntegrationsMine);
