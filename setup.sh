@@ -51,7 +51,7 @@ else
 
     # Run api and app:
     cleanup;
-    yarn run api & yarn run start
+    npm run api & npm run start
 fi
 
 trap exit SIGINT EXIT
