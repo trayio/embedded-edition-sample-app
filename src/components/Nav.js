@@ -30,12 +30,7 @@ const styles = theme => ({
 
 class Nav extends React.PureComponent {
     state = {
-        integrationsOpen: true,
         solutionsOpen: true,
-    };
-
-    handleIntegrationsClick = () => {
-        this.setState({integrationsOpen: !this.state.integrationsOpen});
     };
 
     handleSolutionsClick = () => {
@@ -60,38 +55,6 @@ class Nav extends React.PureComponent {
 
                             </ListItem>
                         </Link>
-
-                        <ListItem button onClick={this.handleIntegrationsClick}>
-                            <ListItemIcon>
-                                <PlugIcon/>
-                            </ListItemIcon>
-                            <ListItemText inset primary="Integrations"/>
-                            {this.state.integrationsOpen ? <ExpandLess/> : <ExpandMore/>}
-                        </ListItem>
-
-                        <Collapse in={this.state.integrationsOpen} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-
-                                <Link className={classes.link} to="/integrations/mine">
-                                    <ListItem button className={classes.nested}>
-                                        <ListItemIcon>
-                                            <CircleIcon style={{borderRadius: 20}}/>
-                                        </ListItemIcon>
-                                        <ListItemText inset primary="My Integrations" style={{whiteSpace: 'nowrap'}}/>
-                                    </ListItem>
-                                </Link>
-
-                                <Link className={classes.link} to="/integrations/discover">
-                                    <ListItem button className={classes.nested}>
-                                        <ListItemIcon>
-                                            <CircleIcon style={{borderRadius: 20}}/>
-                                        </ListItemIcon>
-                                        <ListItemText inset primary="Discover"/>
-                                    </ListItem>
-                                </Link>
-
-                            </List>
-                        </Collapse>
 
                         <ListItem button onClick={this.handleSolutionsClick}>
                             <ListItemIcon>
