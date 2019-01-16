@@ -8,7 +8,7 @@ Tray.io Embedded Edition sample application
   * [Setting up and running](#setting-up-and-running-the-sample-application)
 
 ## Intro
-In this repo is a sample webapp which runs on top of the Tray.io Embedded Edition API - this is an application which simply allows you to create new external users linked to your Tray.io partner account, and allow them to create and configure the public Workflow Templates that exist on your Tray.io partner account.
+In this repo is a sample webapp which runs on top of the Tray.io Embedded Edition API - this is an application which simply allows you to create new external users linked to your Tray.io partner account, and allow them to create and configure copies of your Solutions that exist on your Tray.io partner account.
 
 ## Important concepts in Tray.io Embedded Edition
 
@@ -17,7 +17,7 @@ There are a few key things we should define to understand how to integrate Embed
 #### System components:
 
 ##### Your Partner Account
-This is the Tray.io account we will provide for the purposes of setting up your integration to Tray.io. You will have to create any workflow templates that you would like your users to use on this account. When you sign up an external user to Tray.io through your system, they will be considered to be a user linked to this account's team.
+This is the Tray.io account we will provide for the purposes of setting up your integration to Tray.io. You will have to create any Solutions that you would like your users to use on this account. When you sign up an external user to Tray.io through your system, they will be considered to be a user linked to this account's team.
 
 ##### Your Partner Accounts Workflows
 

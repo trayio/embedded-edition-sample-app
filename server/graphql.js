@@ -20,25 +20,6 @@ export const queries = {
         return generateClient(token).query({query});
     },
 
-    templates: () => {
-        const query = gql`
-            {
-                viewer {
-                    templates {
-                        edges {
-                            node {
-                                id
-                                title
-                            }
-                        }
-                    }
-                }
-            }
-        `;
-
-        return masterClient.query({query});
-    },
-
     solutions: () => {
         const query = gql`
             {
@@ -88,73 +69,6 @@ export const queries = {
                                 id
                                 name
                                 enabled
-                            }
-                        }
-                    }
-                }
-            }
-        `;
-
-
-        return generateClient(token).query({query});
-    },
-
-    workflows: token => {
-        const query = gql`
-            {
-                viewer {
-                    workflows {
-                        edges {
-                            node {
-                                id
-                                name
-                                enabled
-                            }
-                        }
-                    }
-                }
-            }
-        `;
-
-        return generateClient(token).query({query});
-    },
-
-    workflow: (id, token) => {
-        const query = gql`
-            {
-                viewer {
-                    workflows(criteria: {ids: "${id}"}) {
-                        edges {
-                            node {
-                                id
-                                name
-                                enabled
-                            }
-                        }
-                    }
-                }
-            }
-        `;
-
-
-        return generateClient(token).query({query});
-    },
-
-    workflowLogs: (id, token) => {
-        const query = gql`
-            {
-                viewer {
-                    workflows(criteria: {ids: "${id}"}) {
-                        edges {
-                            node {
-                                logs {
-                                    edges {
-                                        node {
-                                            created
-                                            currentState
-                                        }
-                                    }
-                                }
                             }
                         }
                     }
@@ -222,18 +136,6 @@ export const mutations = {
         return generateClient(userToken).mutate({mutation});
     },
 
-    createWorkflowFromTemplate: (userToken, templateId) => {
-        const mutation = gql`
-            mutation {
-                createWorkflowFromTemplate(input: {templateId: "${templateId}"}) {
-                    workflowId
-                }
-            }
-        `;
-
-        return generateClient(userToken).mutate({mutation});
-    },
-
     createExternalUser: (uuid, name) => {
         const mutation = gql`
             mutation {
@@ -262,29 +164,5 @@ export const mutations = {
                     workflowId,
                 };
             });
-    },
-
-    deleteWorkflow: (workflowID, token) => {
-        const mutation = gql`
-            mutation {
-                deleteWorkflow(input: {workflowId: "${workflowID}"}) {
-                    clientMutationId
-                }
-            }
-        `;
-
-        return generateClient(token).mutate({mutation});
-    },
-
-    updateWorkflowStatus: (workflowID, status, token) => {
-        const mutation = gql`
-            mutation {
-                updateWorkflow(input: {workflowId: "${workflowID}", enabled: ${status}}) {
-                    clientMutationId
-                }
-            }
-        `;
-
-        return generateClient(token).mutate({mutation});
-    },
+    }
 }
