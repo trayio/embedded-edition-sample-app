@@ -47,7 +47,7 @@ When an external user configures a Solution, a copy of that Solution will be cre
 
 ## Setting up and running the sample application
 
-To set up and run the sample application first you must install the packages:
+To set up and run the sample application first you must have Node LTS v10 and then install the packages:
 
 ```
 npm install
