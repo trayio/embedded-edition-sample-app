@@ -4,9 +4,10 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import { PrivateRoute, RedirectMain } from "./components/auth/Auth";
 
+import Demo from "./views/Demo";
 import Account from "./views/Account";
-import SolutionsDiscover from "./views/SolutionsDiscover";
 import SolutionsMine from "./views/SolutionsMine";
+import SolutionsDiscover from "./views/SolutionsDiscover";
 
 const App = () => (
     <Router>
@@ -14,6 +15,7 @@ const App = () => (
             <Switch>
                 <RedirectMain exact from="/"/>
             </Switch>
+            <Route path="/demo" component={Demo}/>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
             <PrivateRoute path="/account" component={Account}/>

@@ -18,19 +18,19 @@ module.exports = function (app) {
     // GET Account:
     app.get('/api/me', (req, res) => {
         queries.me(req.session.token)
-            .then((results) => res.status(200).send(results.data.viewer.details))
-            .catch(err => res.status(500).send(err));
+        .then((results) => res.status(200).send(results.data.viewer.details))
+        .catch(err => res.status(500).send(err));
     });
 
     // GET Solutions:
     app.get('/api/solutions', (req, res) => {
         queries.solutions()
-            .then((results) => {
-                res.status(200).send({
-                    data: getNodesAt(results, 'data.viewer.solutions.edges')
-                });
-            })
-            .catch(err => res.status(500).send(err));
+        .then((results) => {
+            res.status(200).send({
+                data: getNodesAt(results, 'data.viewer.solutions.edges')
+            });
+        })
+        .catch(err => res.status(500).send(err));
     });
 
     // GET Solution Instances:
@@ -42,12 +42,12 @@ module.exports = function (app) {
         }
 
         queries.solutionInstances(externalUserToken)
-            .then(results => {
-                res.status(200).send({
-                    data: getNodesAt(results, 'data.viewer.solutionInstances.edges'),
-                });
-            })
-            .catch(err => res.status(500).send(err));
+        .then(results => {
+            res.status(200).send({
+                data: getNodesAt(results, 'data.viewer.solutionInstances.edges'),
+            });
+        })
+        .catch(err => res.status(500).send(err));
     });
 
     // POST Solution Instances
@@ -57,33 +57,33 @@ module.exports = function (app) {
             req.body.id,
             req.body.name,
         )
-            .then(solutionInstance => {
-                return mutations.getGrantTokenForUser(
-                    req.session.user.trayId,
-                ).then(({payload}) => {
-                    const solutionInstanceId = solutionInstance.data.createSolutionInstance.solutionInstance.id;
-                    const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
-                    res.status(200).send({
-                        data: {
-                            popupUrl: `${solutionPath}/configure/${solutionInstanceId}?code=${authorizationCode}`
-                        }
-                    });
-                })
+        .then(solutionInstance => {
+            return mutations.getGrantTokenForUser(
+                req.session.user.trayId,
+            ).then(({payload}) => {
+                const solutionInstanceId = solutionInstance.data.createSolutionInstance.solutionInstance.id;
+                const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
+                res.status(200).send({
+                    data: {
+                        popupUrl: `${solutionPath}/configure/${solutionInstanceId}?code=${authorizationCode}`
+                    }
+                });
             })
-            .catch(err => {
-                res.status(500).send(err)
-            });
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        });
     });
 
+    // PATCH solution instance:
     app.patch('/api/solutionInstance/:solutionInstanceId', (req, res) => {
-        // PATCH solution instance:
         mutations.updateSolutionInstance(
             req.session.token,
             req.params.solutionInstanceId,
             req.body.enabled
         )
-            .then(() => res.sendStatus(200))
-            .catch(err => res.status(500).send({err}));
+        .then(() => res.sendStatus(200))
+        .catch(err => res.status(500).send({err}));
     });
 
 
@@ -93,15 +93,25 @@ module.exports = function (app) {
             req.session.user.trayId,
             req.params.solutionInstanceId,
         )
-            .then(({payload}) => {
-                const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
-                res.status(200).send({
-                    data: {
-                        popupUrl: `${solutionPath}/configure/${req.params.solutionInstanceId}?code=${authorizationCode}`
-                    }
-                });
-            })
-            .catch(err => res.status(500).send({err}));
+        .then(({payload}) => {
+            const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
+            res.status(200).send({
+                data: {
+                    popupUrl: `${solutionPath}/configure/${req.params.solutionInstanceId}?code=${authorizationCode}`
+                }
+            });
+        })
+        .catch(err => res.status(500).send({err}));
+    });
+
+    // DELETE Solution Instance:
+    app.delete('/api/solutionInstance/:solutionInstanceId', (req, res) => {
+        mutations.deleteSolutionInstance(
+            req.session.token,
+            req.params.solutionInstanceId,
+        )
+        .then(() => res.sendStatus(200))
+        .catch(err => res.status(500).send({err}));
     });
 
 };
