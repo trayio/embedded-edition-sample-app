@@ -72,3 +72,7 @@ p {
 .app-name {
     margin-bottom: 5px;
 }
+
+.demo-container {
+    padding: 20px;
+}

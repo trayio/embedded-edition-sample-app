@@ -56,7 +56,7 @@ export class Demo extends React.PureComponent {
             return 0;
         }
 
-        return this.state.solutions.length * 20;
+        return this.state.solutions.length * 30;
     }
 
     calculateSize() {
@@ -72,7 +72,6 @@ export class Demo extends React.PureComponent {
 
     listInstances = () => {
         listSolutionInstances().then(({body}) => {
-            console.log(body);
             this.setState({instances: body.data, loadinginstances: false});
         });
     }
@@ -168,22 +167,24 @@ export class Demo extends React.PureComponent {
 
         return (
             <Loading loading={this.state.loadinginstances && this.state.loadingSolutions}>
-                <div>
-                    <h2 className="header">Available Integrations</h2>
-                    {this.renderSolutions()}
-                </div>
-                <div>
-                    <h2 className="header">Active Integrations</h2>
+                <div className="demo-container">
+                    <div>
+                        <h2 className="header">Available Integrations</h2>
+                        {this.renderSolutions()}
+                    </div>
+                    <div>
+                        <h2 className="header">Active Integrations</h2>
 
-                    {this.state.instances && this.state.instances.length ?
-                        <p>You have authorized the following applications with <a href="#">Asana Connect</a>.</p> :
-                        <p>Applications you authorize with <a href="#">Asana Connect</a> will appear here.</p>
-                    }
+                        {this.state.instances && this.state.instances.length ?
+                            <p>You have authorized the following applications with <a href="#">Asana Connect</a>.</p> :
+                            <p>Applications you authorize with <a href="#">Asana Connect</a> will appear here.</p>
+                        }
 
-                    {this.renderInstances()}
-                </div>
-                <div className="footer">
-                    <a href="#">Manage Developer Apps</a>
+                        {this.renderInstances()}
+                    </div>
+                    <div className="footer">
+                        <a href="#">Manage Developer Apps</a>
+                    </div>
                 </div>
             </Loading>
         );
