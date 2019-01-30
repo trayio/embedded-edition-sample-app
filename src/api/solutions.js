@@ -58,3 +58,11 @@ export const getSolutionInstance = id =>
             body: await res.json(),
         }));
 
+export const deleteSolutionInstance = id =>
+    fetch(`/api/solutionInstance/${id}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        })
+        .then(async res => ({
+            ok: res.ok,
+        }));

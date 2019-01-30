@@ -164,5 +164,17 @@ export const mutations = {
                     workflowId,
                 };
             });
-    }
-}
+    },
+
+    deleteSolutionInstance: (userToken, solutionInstanceId) => {
+        const mutation = gql`
+            mutation {
+                removeSolutionInstance(input: {solutionInstanceId: "${solutionInstanceId}"}) {
+                    clientMutationId
+                }
+            }
+        `;
+
+        return generateClient(userToken).mutate({mutation});
+    },
+};
