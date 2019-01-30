@@ -60,7 +60,7 @@ export class Demo extends React.PureComponent {
     }
 
     calculateSize() {
-        const standardContentHeight = 129;
+        const standardContentHeight = 139;
         return standardContentHeight + this.calculateInstancesSize() + this.calculateSolutionSize();
     }
 
