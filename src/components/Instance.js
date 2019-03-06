@@ -23,14 +23,22 @@ export class Instance extends React.PureComponent {
         instanceState: undefined,
     };
 
-    onClickConfigure = () => {
+    openPopup = (addCustomValidation = false) => {
         const configWindow = openConfigWindow();
 
         updateSolutionInstanceConfig(this.props.id).then(({body}) => {
             // After we generate the popup URL, set it to the previously opened
             // window:
-            configWindow.location = body.data.popupUrl;
+            configWindow.location = addCustomValidation ? `${body.data.popupUrl}&customValidation=true` : body.data.popupUrl;
         });
+    };
+
+    onClickConfigure = () => {
+        this.openPopup(false);
+    };
+
+    onClickConfigureWithValidation = () => {
+        this.openPopup(true);
     };
 
     onClickEnable = () => {
@@ -102,6 +110,14 @@ export class Instance extends React.PureComponent {
                                 color="primary"
                             >
                                 Configure
+                            </Button>
+                            <Button
+                                style={styles.button}
+                                onClick={this.onClickConfigureWithValidation}
+                                variant="outlined"
+                                color="primary"
+                            >
+                                Configure with custom validation
                             </Button>
                         </div>
 
