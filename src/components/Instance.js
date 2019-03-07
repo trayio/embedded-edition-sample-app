@@ -15,30 +15,41 @@ import {
     updateSolutionInstance,
     updateSolutionInstanceConfig,
 } from '../api/solutions';
+import {ConfigWizard} from "./ConfigWizard";
 
 export class Instance extends React.PureComponent {
     state = {
         error: false,
         loading: false,
         instanceState: undefined,
+        configWizardSrc: undefined,
     };
 
-    openPopup = (addCustomValidation = false) => {
-        const configWindow = openConfigWindow();
-
+    openPopup = (openInIframe, addCustomValidation = false) => {
         updateSolutionInstanceConfig(this.props.id).then(({body}) => {
-            // After we generate the popup URL, set it to the previously opened
-            // window:
-            configWindow.location = addCustomValidation ? `${body.data.popupUrl}&customValidation=true` : body.data.popupUrl;
+            const url = addCustomValidation ? `${body.data.popupUrl}&customValidation=true` : body.data.popupUrl;
+
+            if (!openInIframe) {
+                const configWindow = openConfigWindow();
+                configWindow.location = url;
+            } else {
+                this.setState({
+                    configWizardSrc: url
+                })
+            }
         });
     };
 
     onClickConfigure = () => {
-        this.openPopup(false);
+        this.openPopup(false,false);
     };
 
     onClickConfigureWithValidation = () => {
-        this.openPopup(true);
+        this.openPopup(false,true);
+    };
+
+    onClickConfigureInIframe = () => {
+        this.openPopup(true, false);
     };
 
     onClickEnable = () => {
@@ -48,15 +59,23 @@ export class Instance extends React.PureComponent {
         });
     };
 
+    closeIframe = () => {
+        this.setState({
+            configWizardSrc: undefined
+        })
+    };
+
     render() {
         const {id, name} = this.props;
+        const {configWizardSrc} = this.state;
 
         const enabled = get(this.state, 'instanceState', this.props.enabled);
 
         const styles = {
             controls: {
-                marginLeft: "10px",
+                margin: "10px",
                 float: "right",
+                maxWidth: '400px'
             },
             pill: {
                 backgroundColor: enabled ? "#7ebc54" : "#df5252",
@@ -119,7 +138,16 @@ export class Instance extends React.PureComponent {
                             >
                                 Configure with custom validation
                             </Button>
+                            <Button
+                                style={styles.button}
+                                onClick={this.onClickConfigureInIframe}
+                                variant="outlined"
+                                color="primary"
+                            >
+                                Configure in iframe
+                            </Button>
                         </div>
+                        {configWizardSrc && <ConfigWizard src={configWizardSrc} onClose={this.closeIframe}/>}
 
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
