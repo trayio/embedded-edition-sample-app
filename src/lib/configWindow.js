@@ -33,9 +33,9 @@ export const openConfigWindow = () => {
 
             setTimeout(() => {
                     // Add errors to all inputs
-                    const errors = e.data.data.visibleSlots.reduce(
+                    const errors = e.data.data.visibleValues.reduce(
                         (errors, externalId) => {
-                            console.log(`Visible ${externalId} value:`, e.data.data.slotValues[externalId]);
+                            console.log(`Visible ${externalId} value:`, e.data.data.configValues[externalId]);
                             // Uncomment next line to set an error message
                             // errors[externalId] = 'Custom error message';
                             return errors;
