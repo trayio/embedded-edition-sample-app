@@ -25,7 +25,7 @@ export class Instance extends React.PureComponent {
         configWizardSrc: undefined,
     };
 
-    openPopup = (openInIframe, addCustomValidation = false) => {
+    openWizard = (openInIframe, addCustomValidation = false) => {
         updateSolutionInstanceConfig(this.props.id).then(({body}) => {
             const url = addCustomValidation ? `${body.data.popupUrl}&customValidation=true` : body.data.popupUrl;
 
@@ -41,15 +41,15 @@ export class Instance extends React.PureComponent {
     };
 
     onClickConfigure = () => {
-        this.openPopup(false,false);
+        this.openWizard(false,false);
     };
 
     onClickConfigureWithValidation = () => {
-        this.openPopup(false,true);
+        this.openWizard(false,true);
     };
 
     onClickConfigureInIframe = () => {
-        this.openPopup(true, false);
+        this.openWizard(true, false);
     };
 
     onClickEnable = () => {
