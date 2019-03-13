@@ -38,7 +38,8 @@ export class ConfigWizard extends React.PureComponent {
                 width: '100%',
                 height: '100%',
                 minHeight: '500px',
-                border: 'none',
+                border: '1px solid #2196f3',
+                borderRadius: '4px',
             },
         };
 
