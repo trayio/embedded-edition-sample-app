@@ -22,6 +22,39 @@ export const openConfigWindow = () => {
             configFinished = true;
             configWindow.close();
         }
+        if (e.data.type === 'tray.configPopup.validate') {
+            // Return validation in progress
+            configWindow.postMessage({
+                type: 'tray.configPopup.client.validation',
+                data: {
+                    inProgress: true,
+                }
+            }, '*');
+
+            setTimeout(() => {
+                    // Add errors to all inputs
+                    const errors = e.data.data.visibleValues.reduce(
+                        (errors, externalId) => {
+                            console.log(`Visible ${externalId} value:`, e.data.data.configValues[externalId]);
+                            // Uncomment next line to set an error message
+                            // errors[externalId] = 'Custom error message';
+                            return errors;
+                        },
+                        {}
+                    );
+
+                    // Return validation
+                    configWindow.postMessage({
+                        type: 'tray.configPopup.client.validation',
+                        data: {
+                            inProgress: false,
+                            errors: errors,
+                        }
+                    }, '*');
+                },
+                2000
+            );
+        }
     };
     window.addEventListener('message', onmessage);
 
