@@ -4,7 +4,6 @@ import { withTheme } from '@material-ui/core/styles';
 
 class View extends React.Component {
     render() {
-        const { theme } = this.props;
         const styles = {
             header: {
                 backgroundColor: "#2196F3",

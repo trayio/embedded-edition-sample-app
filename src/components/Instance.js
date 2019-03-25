@@ -14,6 +14,7 @@ import { openConfigWindow } from '../lib/configWindow';
 import {
     updateSolutionInstance,
     updateSolutionInstanceConfig,
+    deleteSolutionInstance,
 } from '../api/solutions';
 import {ConfigWizard} from "./ConfigWizard";
 
@@ -58,6 +59,10 @@ export class Instance extends React.PureComponent {
             this.setState({instanceState: !enabled});
         });
     };
+
+    onClickDelete = () => {
+        deleteSolutionInstance(this.props.id).then(this.props.loadAllSolutionInstances);
+    }
 
     closeIframe = () => {
         this.setState({
@@ -145,6 +150,14 @@ export class Instance extends React.PureComponent {
                                 color="primary"
                             >
                                 Configure in iframe
+                            </Button>
+                            <Button
+                                style={styles.button}
+                                onClick={this.onClickDelete}
+                                variant="outlined"
+                                color="primary"
+                            >
+                                Delete
                             </Button>
                         </div>
                         {configWizardSrc && <ConfigWizard src={configWizardSrc} onClose={this.closeIframe}/>}
