@@ -45,7 +45,12 @@ export class ConfigWizard extends React.PureComponent {
 
         return (
             <div style={styles.container}>
-                <iframe ref={this.iframe} style={styles.iframe} src={this.props.src}/>
+                <iframe
+                    ref={this.iframe}
+                    style={styles.iframe}
+                    src={this.props.src}
+                    title="Solution instance configurator"
+                />
             </div>
         )
     }

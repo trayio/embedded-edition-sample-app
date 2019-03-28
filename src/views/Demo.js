@@ -1,6 +1,4 @@
 import React from 'react';
-import View from '../components/View';
-import Error from '../components/Error';
 import Loading from '../components/Loading';
 
 // Update to use Solutions
@@ -105,7 +103,7 @@ export class Demo extends React.PureComponent {
         return this.state.solutions && this.state.solutions.map(i => {
             return (
                 <div className="integration-container">
-                    <a className="integration-name" href="#">{i.title}</a>
+                    <button className="integration-name">{i.title}</button>
                     <span
                         className="activate"
                         onClick={() => this.onClickActivateIntegration(i.id, i.title)}
@@ -129,23 +127,21 @@ export class Demo extends React.PureComponent {
                 {this.state.instances.map(w => {
                     return (
                         <div className="workflow-container">
-                            <a
-                                href="%"
-                            >
+                            <button>
                                 {w.name}
-                            </a>
-                            <a
+                            </button>
+                            <button
                                 className="deactivate"
                                 onClick={() => this.onClickDeactivateIntegration(w.id)}
                             >
-                                Deactivate
-                            </a>
-                            <a
+                                Delete
+                            </button>
+                            <button
                                 className="reconfigure"
                                 onClick={() => this.onReconfigureIntegration(w.id)}
                             >
                                 Reconfigure
-                            </a>
+                            </button>
                         </div>
                     );
                 })}
@@ -154,12 +150,6 @@ export class Demo extends React.PureComponent {
     }
 
     render() {
-        const styles = {
-            integrationContainer: {
-                padding: '10px 0',
-            },
-        };
-
         window.parent.postMessage({
             type: 'tray_demo_size',
             height: this.calculateSize() + 'px',
@@ -176,14 +166,14 @@ export class Demo extends React.PureComponent {
                         <h2 className="header">Active Integrations</h2>
 
                         {this.state.instances && this.state.instances.length ?
-                            <p>You have authorized the following applications with <a href="#">Asana Connect</a>.</p> :
-                            <p>Applications you authorize with <a href="#">Asana Connect</a> will appear here.</p>
+                            <p>You have authorized the following applications with <button>Asana Connect</button>.</p> :
+                            <p>Applications you authorize with <button>Asana Connect</button> will appear here.</p>
                         }
 
                         {this.renderInstances()}
                     </div>
                     <div className="footer">
-                        <a href="#">Manage Developer Apps</a>
+                        <button>Manage Developer Apps</button>
                     </div>
                 </div>
             </Loading>

@@ -6,15 +6,19 @@
     margin-bottom: 0;
 }
 
-a {
+button {
+    background: transparent;
+    border: 0;
+    padding: 0;
     text-decoration: none;
     font-size: 13px;
     color: #14aaf5;
 }
 
-a:hover {
+button:hover {
     color: #32c1ff;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .integration-name {
