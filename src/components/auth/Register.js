@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import RegisterForm from './RegisterForm'
 import {request} from '../../lib/request';
 export default class Register extends React.Component {
@@ -28,13 +29,17 @@ export default class Register extends React.Component {
         })
             .then((response) => {
                 if (response.ok) {
+                    response.json().then(body => {
+                        Cookies.set('tray_id', body.trayId);
+                        Cookies.set('user_uuid', body.uuid);
+                        
+                        this.setState({
+                            success: true,
+                            loading: false,
+                        });
 
-                    this.setState({
-                        success: true,
-                        loading: false,
+                        setTimeout(() => window.location = '/login', 1000);
                     });
-
-                    setTimeout(() => window.location = '/login', 1000);
                 } else {
                     this.showError();
                 }
