@@ -1,19 +1,21 @@
+import { request } from '../lib/request';
+
 export const listSolutions = () =>
-    fetch('/api/solutions', {credentials: 'include'})
+    request('/api/solutions', {credentials: 'include'})
         .then(async res => ({
             ok: res.ok,
             body: await res.json(),
         }));
 
 export const listSolutionInstances = () =>
-    fetch('/api/solutionInstances', {credentials: 'include'})
+    request('/api/solutionInstances', {credentials: 'include'})
         .then(async res => ({
             ok: res.ok,
             body: await res.json(),
         }));
 
 export const createSolutionInstance = (id, name) =>
-    fetch('/api/solutionInstances', {
+    request('/api/solutionInstances', {
         body: JSON.stringify({
             id: id,
             name: name,
@@ -29,7 +31,7 @@ export const createSolutionInstance = (id, name) =>
     }));
 
 export const updateSolutionInstance = (solutionInstanceId, enabled) =>
-    fetch(`/api/solutionInstance/${solutionInstanceId}`, {
+    request(`/api/solutionInstance/${solutionInstanceId}`, {
         method: 'PATCH',
         credentials: 'include',
         headers: {
@@ -43,7 +45,7 @@ export const updateSolutionInstance = (solutionInstanceId, enabled) =>
     }));
 
 export const updateSolutionInstanceConfig = solutionInstanceId =>
-    fetch(`/api/solutionInstance/${solutionInstanceId}/config`, {
+    request(`/api/solutionInstance/${solutionInstanceId}/config`, {
         method: 'PATCH',
         credentials: 'include',
     }).then(async res => ({
@@ -52,14 +54,14 @@ export const updateSolutionInstanceConfig = solutionInstanceId =>
     }));
 
 export const getSolutionInstance = id =>
-    fetch(`/api/solutionInstance/${id}`, {credentials: 'include'})
+    request(`/api/solutionInstance/${id}`, {credentials: 'include'})
         .then(async res => ({
             ok: res.ok,
             body: await res.json(),
         }));
 
 export const deleteSolutionInstance = id =>
-    fetch(`/api/solutionInstance/${id}`, {
+    request(`/api/solutionInstance/${id}`, {
             method: 'DELETE',
             credentials: 'include',
         })

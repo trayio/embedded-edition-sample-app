@@ -15,7 +15,7 @@ import {
 import './demo.css';
 
 import config from '../config.js';
-
+import {request} from '../lib/request';
 export class Demo extends React.PureComponent {
     state = {
         solutions: null,
@@ -25,7 +25,7 @@ export class Demo extends React.PureComponent {
     }
 
     componentDidMount() {
-        fetch('/api/login', {
+        request('/api/login', {
             method: 'POST',
             body: JSON.stringify({
                 username: config.username,

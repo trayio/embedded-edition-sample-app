@@ -3,6 +3,7 @@ import LoginForm from './LoginForm'
 import { Redirect } from 'react-router-dom';
 import Loading from "../Loading";
 import { auth } from './Auth';
+import { request } from '../../lib/request';
 
 export default class Login extends React.Component {
     state = {
@@ -15,7 +16,7 @@ export default class Login extends React.Component {
         this.setState({
             loading: true
         })
-        fetch('/api/login', {
+        request('/api/login', {
             method: 'POST',
             body: JSON.stringify(data),
             credentials: 'include',

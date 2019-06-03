@@ -1,5 +1,7 @@
+import {request} from '../lib/request';
+
 export const listTemplates = () =>
-    fetch('/api/templates', {credentials: 'include'})
+    request('/api/templates', {credentials: 'include'})
         .then(async res => ({
             ok: res.ok,
             body: await res.json(),

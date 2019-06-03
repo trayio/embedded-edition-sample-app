@@ -1,6 +1,6 @@
 import React from 'react';
 import RegisterForm from './RegisterForm'
-
+import {request} from '../../lib/request';
 export default class Register extends React.Component {
     state = {
         redirectToReferrer: false,
@@ -18,7 +18,7 @@ export default class Register extends React.Component {
         this.setState({
             loading: true
         });
-        fetch('/api/register', {
+        request('/api/register', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {

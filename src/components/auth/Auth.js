@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import {request} from '../../lib/request';
 
 export const auth = {
     isAuthenticated: false,
@@ -12,7 +13,7 @@ export const auth = {
     },
 
     signout(cb) {
-        fetch('/api/logout', {
+        request('/api/logout', {
             method: 'POST',
             credentials: 'include',
         })
