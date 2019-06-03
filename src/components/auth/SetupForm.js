@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { white } from '@material-ui/core/colors/';
 import Input from '@material-ui/core/Input';
 import Typography from '@material-ui/core/Typography';
+import Cookies from 'js-cookie';
 
 class SetupForm extends React.Component {
     render() {
@@ -65,6 +66,7 @@ class SetupForm extends React.Component {
                                 label="Master token"
                                 placeholder="token"
                                 fullWidth={true}
+                                defaultValue={Cookies.get('master_token')}
                             />
 
                             <Input
@@ -73,6 +75,7 @@ class SetupForm extends React.Component {
                                 style={{marginTop: 10}}
                                 placeholder="partner"
                                 fullWidth={true}
+                                defaultValue={Cookies.get('partner')}
                             />
 
                             <Button
