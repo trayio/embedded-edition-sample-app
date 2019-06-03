@@ -56,18 +56,11 @@ class LoginForm extends React.Component {
                             onSubmit={(e) => {
                                 e.preventDefault();
                                 return onLogin({
-                                    token: this.tokenElem.value,
                                     username: this.usernameElem.value,
                                     password: this.passwordElem.value
                                 });
                             }}
                         >
-                            <Input
-                                inputRef={(input) => this.tokenElem = input}
-                                label="Master token"
-                                placeholder="token"
-                                fullWidth={true}
-                            />
                             <Input
                                 inputRef={(input) => this.usernameElem = input}
                                 label="Username"
