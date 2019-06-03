@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Loading from "../Loading";
 import { auth } from './Auth';
 import { request } from '../../lib/request';
+import Cookies from 'js-cookie';
 
 export default class Login extends React.Component {
     state = {
@@ -26,13 +27,16 @@ export default class Login extends React.Component {
         })
             .then(res => {
                 if (res.ok) {
-                    auth.authenticate(() => {
-                        this.setState(
-                            {
-                                redirectToReferrer: true,
-                                loading: false
-                            }
-                        )
+                    res.json().then(body => {
+                        Cookies.set('access_token', body.userAccessToken);
+                        auth.authenticate(() => {
+                            this.setState(
+                                {
+                                    redirectToReferrer: true,
+                                    loading: false
+                                }
+                            )
+                        });
                     });
                 } else {
                     res.json().then(body => {
