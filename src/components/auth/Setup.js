@@ -2,7 +2,6 @@ import React from 'react';
 import SetupForm from './SetupForm'
 import { Redirect } from 'react-router-dom';
 import Loading from "../Loading";
-import { auth } from './Auth';
 import Cookies from 'js-cookie';
 
 export default class Login extends React.Component {
@@ -13,44 +12,12 @@ export default class Login extends React.Component {
 
     setup = (data) => {
         console.log('Setting up with ' + data.token);
-        this.setState({
-            loading: true
-        })
-        fetch('/api/setup', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(res => {
-                if (res.ok) {
-                    Cookies.set('master_token', data.token);
-                    Cookies.set('partner_name', data.partner);
+        Cookies.set('master_token', data.token);
+        Cookies.set('partner_name', data.partner);
 
-                    auth.authenticate(() => {
-                        this.setState(
-                            {
-                                redirectToReferrer: true,
-                                loading: false
-                            }
-                        )
-                    });
-                } else {
-                    res.json().then(body => {
-                        alert(`Unable to login: ${body.error}`);
-                        this.setState(
-                            {
-                                loading: false
-                            }
-                        )
-                    });
-                }
-            })
-            .catch((err) => {
-                console.error('Error logging in.', err);
-            });
+        this.setState({
+            redirectToReferrer: true,
+        })
     }
 
     render() {
@@ -64,12 +31,11 @@ export default class Login extends React.Component {
             },
         };
 
-        const {from} = this.props.location.state || {from: {pathname: '/'}};
         const {redirectToReferrer} = this.state;
 
         if (redirectToReferrer) {
             return (
-                <Redirect to={from}/>
+                <Redirect to={'/login'}/>
             );
         }
 
