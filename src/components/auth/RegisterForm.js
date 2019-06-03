@@ -54,6 +54,7 @@ class RegisterForm extends React.Component {
                                     e.preventDefault();
                                     return onRegister({
                                             name: this.nameElem.value,
+                                            token: this.tokenElem.value,
                                             username: this.usernameElem.value,
                                             password: this.passwordElem.value,
                                         },
@@ -69,6 +70,16 @@ class RegisterForm extends React.Component {
                                     autoFocus={true}
                                     label="Name"
                                     placeholder="Full Name"
+                                    fullWidth={true}
+                                    style={{marginBottom: 10}}
+                                    required
+                                />
+
+                                <Input
+                                    inputRef={(input) => this.tokenElem = input}
+                                    autoFocus={true}
+                                    label="Master token"
+                                    placeholder="Token"
                                     fullWidth={true}
                                     style={{marginBottom: 10}}
                                     required
