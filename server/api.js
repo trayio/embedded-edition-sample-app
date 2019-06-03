@@ -114,4 +114,19 @@ module.exports = function (app) {
         .catch(err => res.status(500).send({err}));
     });
 
+    app.get('/api/overview', (req, res) => {
+        mutations.getGrantTokenForUser(
+            req.session.user.trayId
+        )
+        .then(({payload}) => {
+            const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
+            res.status(200).send({
+                data: {
+                    iframeSrc: `${solutionPath}/overview?code=${authorizationCode}`
+                }
+            });
+        })
+        .catch(err => res.status(500).send({err}));
+    });
+
 };

@@ -85,6 +85,15 @@ class Nav extends React.PureComponent {
                                     </ListItem>
                                 </Link>
 
+                                <Link className={classes.link} to="/iframe">
+                                    <ListItem button className={classes.nested}>
+                                        <ListItemIcon>
+                                            <CircleIcon style={{borderRadius: 20}}/>
+                                        </ListItemIcon>
+                                        <ListItemText inset primary="Iframe"/>
+                                    </ListItem>
+                                </Link>
+
                             </List>
                         </Collapse>
                     </List>

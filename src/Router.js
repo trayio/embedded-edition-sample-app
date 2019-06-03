@@ -8,6 +8,7 @@ import Demo from "./views/Demo";
 import Account from "./views/Account";
 import SolutionsMine from "./views/SolutionsMine";
 import SolutionsDiscover from "./views/SolutionsDiscover";
+import Overview from "./views/Overview";
 
 const App = () => (
     <Router>
@@ -20,6 +21,7 @@ const App = () => (
             <Route path="/register" component={Register}/>
             <PrivateRoute path="/account" component={Account}/>
             <PrivateRoute path="/solutions/discover" component={SolutionsDiscover}/>
+            <PrivateRoute path="/iframe" component={Overview}/>
             <PrivateRoute path="/solutions/mine" component={SolutionsMine}/>
         </div>
     </Router>
