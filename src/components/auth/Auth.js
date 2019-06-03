@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {request} from '../../lib/request';
+import Cookies from 'js-cookie';
 
 export const auth = {
     isAuthenticated: false,
@@ -18,6 +19,7 @@ export const auth = {
             credentials: 'include',
         })
             .then((res) => {
+				Cookies.remove('access_token');
                 this.isAuthenticated = false;
                 if (typeof cb === 'function') {
                     // user was logged out
@@ -36,7 +38,7 @@ export const auth = {
 
 export const PrivateRoute = ({component: Component, ...rest}) => (
     <Route {...rest} render={props => (
-        auth.isAuthenticated ? (
+        Cookies.get('access_token') ? (
             <Component {...props}/>
         ) : (
             <Redirect to={{
@@ -48,7 +50,7 @@ export const PrivateRoute = ({component: Component, ...rest}) => (
 );
 
 export const RedirectMain = (props) => (
-    auth.isAuthenticated ? (
+    Cookies.get('access_token')? (
         <Redirect {...props} to="/solutions/discover"/>
     ) : (
         <Redirect {...props} to="/setup"/>
