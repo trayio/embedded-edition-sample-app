@@ -44,10 +44,11 @@ class LoginForm extends React.Component {
         return (
             <div>
                 <div style={styles.loginContainer}>
-                    <Paper style={styles.paper}>
+                    <Paper style={styles.paper} classes={{root: 'LoginForm'}}>
                         <Typography
                             style={styles.loginHeader}
                             variant="headline"
+                            classes={{root: 'LoginForm-heading'}}
                         >
                             Login to OEM demo app
                         </Typography>

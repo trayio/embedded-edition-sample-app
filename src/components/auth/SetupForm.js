@@ -44,10 +44,11 @@ class SetupForm extends React.Component {
         return (
             <div>
                 <div style={styles.setupContainer}>
-                    <Paper style={styles.paper}>
+                    <Paper style={styles.paper} classes={{root: 'SetupForm'}}>
                         <Typography
                             style={styles.setupHeader}
                             variant="headline"
+                            classes={{root: 'SetupForm-heading'}}
                         >
                             Setup the OEM demo app
                         </Typography>

@@ -43,7 +43,7 @@ class RegisterForm extends React.Component {
         return (
             <div>
                 <div style={styles.loginContainer}>
-                    <Paper style={styles.paper}>
+                    <Paper style={styles.paper} classes={{root: 'RegisterForm'}}>
                         {this.props.loading ?
                             <div style={{textAlign: "center"}}>
                                 <CircularProgress/>
