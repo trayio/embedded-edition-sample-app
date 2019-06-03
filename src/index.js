@@ -6,6 +6,7 @@ import App from './Router';
 import registerServiceWorker from './registerServiceWorker';
 import blue from '@material-ui/core/colors/blue';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Cookies from 'js-cookie';
 
 const theme = createMuiTheme({
     palette: {
@@ -13,6 +14,17 @@ const theme = createMuiTheme({
         primary: blue,
     },
 });
+
+const attachStyleSheet = () => {
+    const head = document.head;
+    const link = document.createElement("link");
+
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.href = `https://s3-eu-west-1.amazonaws.com/tray-emb-demo/${Cookies.get('partner_name')}/main.css`;
+
+    head.appendChild(link);
+}
 
 ReactDOM.render((
     <div>
@@ -25,3 +37,4 @@ ReactDOM.render((
 ), document.getElementById('root'));
 
 registerServiceWorker();
+attachStyleSheet();
