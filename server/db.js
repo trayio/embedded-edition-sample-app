@@ -1,5 +1,4 @@
 // In-memory users instead of a DB:
-const mockUserDB = [];
 var cacheManager = require('cache-manager');
 var memoryCache = cacheManager.caching({
 	store: 'memory',
