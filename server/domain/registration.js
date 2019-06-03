@@ -2,9 +2,13 @@
 
 import uuidv1 from 'uuid/v1';
 
-import {isNil} from 'lodash';
-import {mutations} from "../graphql";
-import {insertUserToMockDB, retrieveUserFromMockDB, userExistsInMockDB,} from '../db';
+import { isNil, merge } from 'lodash';
+import { mutations } from '../graphql';
+import {
+	insertUserToMockDB,
+	retrieveUserFromMockDB,
+	userExistsInMockDB,
+} from '../db';
 
 /**
  * Validate user object:
@@ -12,16 +16,16 @@ import {insertUserToMockDB, retrieveUserFromMockDB, userExistsInMockDB,} from '.
  * @return {Array<Error>} List of missing input fields
  */
 const validateNewUser = user => {
-    const errors = [];
-    const fields = ['username', 'password', 'name'];
+	const errors = [];
+	const fields = ['username', 'password', 'name'];
 
-    fields.forEach(f => {
-        if (isNil(user[f]) || user[f] === '') {
-            errors.push(f);
-        }
-    });
+	fields.forEach(f => {
+		if (isNil(user[f]) || user[f] === '') {
+			errors.push(f);
+		}
+	});
 
-    return errors;
+	return errors;
 };
 
 /**
@@ -29,8 +33,7 @@ const validateNewUser = user => {
  * @param {Request} req
  * @return {Boolean}
  */
-export const checkUserExists = req =>
-    userExistsInMockDB(req.body);
+export const checkUserExists = req => userExistsInMockDB(req);
 
 /**
  * Validate user object from a request:
@@ -38,16 +41,16 @@ export const checkUserExists = req =>
  * @return {Validation} Has a valid field and a list of errors if not valud
  */
 export const validateRequest = req => {
-    const validationErrors = validateNewUser(req.body);
+	const validationErrors = validateNewUser(req);
 
-    if (validationErrors.length) {
-        return {
-            valid: false,
-            errors: validationErrors,
-        };
-    }
+	if (validationErrors.length) {
+		return {
+			valid: false,
+			errors: validationErrors,
+		};
+	}
 
-    return { valid: true };
+	return { valid: true };
 };
 
 /**
@@ -55,22 +58,22 @@ export const validateRequest = req => {
  * @param {Request} req
  * @return {User} The new user that was created
  */
-export const generateNewUser = req => {
-    // Generate UUID for user:
-    const uuid = uuidv1();
+export const generateNewUser = (req, masterToken )=> {
+	// Generate UUID for user:
+	const uuid = uuidv1();
 
-    // Generate a tray user for this account:
-    return mutations.createExternalUser(uuid, req.body.name)
-        .then(createRes => {
-            // Add user to internal DB:
-            insertUserToMockDB(
-                {
-                    uuid: uuid,
-                    body: req.body,
-                    trayId: createRes.data.createExternalUser.userId,
-                },
-            );
+	// Generate a tray user for this account:
+	return mutations.createExternalUser(uuid, req.name, masterToken).then(createRes => {
+		// Add user to internal DB:
+		let test = merge(
+			{
+				uuid: uuid,
+				trayId: createRes.data.createExternalUser.userId,
+			},
+			req
+		);
+		insertUserToMockDB(test);
 
-            return retrieveUserFromMockDB(req.body);
-        });
+		return retrieveUserFromMockDB(req);
+	});
 };

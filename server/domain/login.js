@@ -1,8 +1,8 @@
 /** @module domain/login */
 
-import {get} from 'lodash';
-import {mutations} from '../graphql';
-import {retrieveUserFromMockDB} from '../db';
+import { get } from 'lodash';
+import { mutations } from '../graphql';
+import { retrieveUserFromMockDB } from '../db';
 
 /**
  * Attempt to retrieve a user from the DB:
@@ -10,14 +10,7 @@ import {retrieveUserFromMockDB} from '../db';
  * @return {User | undefined}
  */
 export const attemptLogin = req => {
-    const user = retrieveUserFromMockDB(req.body);
-
-    if (user) {
-        req.session.user = user;
-        req.session.admin = true;
-    }
-
-    return user;
+	return retrieveUserFromMockDB(req);
 };
 
 /**
@@ -27,13 +20,7 @@ export const attemptLogin = req => {
  * @param {User}
  * @return {Promise<GQLMutation>} Promise that wraps authorization mutation.
  */
-export const generateUserAccessToken = (req, res, user) =>
-    mutations.authorize(user.trayId)
-        .then(authorizeResponse => {
-            req.session.token = get(
-                authorizeResponse,
-                'data.authorize.accessToken'
-            );
-
-            return authorizeResponse;
-        });
+export const generateUserAccessToken = (req, res, user, masterToken) =>
+	mutations.authorize(user.trayId, masterToken).then(authorizeResponse => {
+		return authorizeResponse.data.authorize.accessToken;
+	});

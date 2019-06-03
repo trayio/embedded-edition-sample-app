@@ -5,7 +5,6 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const gqlEndpoint = process.env.TRAY_ENDPOINT;
-const masterToken = process.env.TRAY_MASTER_TOKEN;
 
 const defaultOptions = {
     watchQuery: {
@@ -37,5 +36,4 @@ const generateClient = token =>
 
 module.exports = {
     generateClient,
-    masterClient: generateClient(masterToken),
 };

@@ -5,10 +5,6 @@ ENDPOINT=${ENDPOINT:-prod}
 read -p "Enter TRAY_PARTNER - name of partner, used for custom CSS + external route name (asana): " PARTNER
 PARTNER=${PARTNER:-asana}
 
-read -p "Enter TRAY_MASTER_TOKEN - the master token for your partner account (""): " MASTER_TOKEN
-if [ -e ".token" ]; then
-    MASTER_TOKEN=${MASTER_TOKEN:-$(cat .token)}
-fi
 
 cleanup() {
     echo ""
@@ -35,23 +31,12 @@ exit() {
     kill -- -$(pgrep setup.sh)
 }
 
-if [ -z "$MASTER_TOKEN" ]; then
-    echo ""
-    echo "Error: Please run the script with your partner account master token"
-    echo ""
-else
     # Set env variables:
     export HTTPS=true
     export TRAY_ENDPOINT=$ENDPOINT
-    export TRAY_PARTNER=$PARTNER
-    export TRAY_MASTER_TOKEN=$MASTER_TOKEN
-
-    > .token;
-    echo "$MASTER_TOKEN" >> .token
 
     # Run api and app:
     cleanup;
     npm run api & npm run start
-fi
 
 trap exit SIGINT EXIT
