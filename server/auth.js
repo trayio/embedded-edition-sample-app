@@ -88,6 +88,10 @@ module.exports = function (app) {
 
     // Authenticate all endpoints except the auth endpoints defined in this module
     app.use(function (req, res, next) {
+        if (req.url === "/api/health") {
+            return res.status(200).send();
+        }
+        
         if (req.session && req.session.admin) {
             return next();
         } else {

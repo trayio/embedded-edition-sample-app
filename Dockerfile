@@ -1,10 +1,13 @@
-FROM node:6-alpine
+FROM node:10-alpine
 
-COPY ./ /oem
-WORKDIR /oem
+COPY ./ /src
+WORKDIR /src
 
 RUN npm install
 
-ENTRYPOINT ["/usr/local/bin/npm"]
-CMD ["start"]
+ENV TRAY_ENDPOINT=staging
+ENV TRAY_PARTNER=partner
+ENV TRAY_MASTER_TOKEN=abc123
+
+CMD npm run api & npm run start
 
