@@ -1,19 +1,21 @@
 // In-memory users instead of a DB:
 const mockUserDB = [];
+var cacheManager = require('cache-manager');
+var memoryCache = cacheManager.caching({
+	store: 'memory',
+	max: 1000,
+	ttl: 43200 /*seconds*/,
+});
 
 /**
  * Retreive user from the Mock DB:
  * @param {User} input - {username: 'myname', password: 'mypass'}
  * @returns {User | undefined}
  */
-export const retrieveUserFromMockDB = input => {
-    const matches = mockUserDB.filter(
-        user =>
-            user.username === input.username &&
-            user.password === input.password
-    );
-
-    return matches[0];
+export const retrieveUserFromMockDB = req => {
+	return memoryCache.get(generateKey(req)).then(function(result) {
+		return result;
+	});
 };
 
 /**
@@ -21,9 +23,14 @@ export const retrieveUserFromMockDB = input => {
  * @param {User} input
  * @returns {Boolean}
  */
-export const userExistsInMockDB = input => {
-    const matches = mockUserDB.filter(user => user.username === input.username);
-    return matches.length > 0;
+export const userExistsInMockDB = user => {
+	return memoryCache.get(generateKey(user), function(err, result) {
+		return result ? 1 : 0;
+	});
+};
+
+const generateKey = input => {
+	return input.token + input.username;
 };
 
 /**
@@ -32,12 +39,20 @@ export const userExistsInMockDB = input => {
  *
  * @returns {Void}
  */
-export const insertUserToMockDB = input => {
-    mockUserDB.push({
-        name: input.body.name,
-        uuid: input.uuid,
-        trayId: input.trayId,
-        username: input.body.username,
-        password: input.body.password,
-    });
+export const insertUserToMockDB = user => {
+	memoryCache.set(
+		generateKey(user),
+		{
+			name: user.name,
+			uuid: user.uuid,
+			trayId: user.trayId,
+			username: user.username,
+			password: user.password,
+		},
+		function(err) {
+			if (err) {
+				throw err;
+			}
+		}
+	);
 };
