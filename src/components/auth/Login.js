@@ -94,19 +94,11 @@ export default class Login extends React.Component {
 							{this.explain}
 						</div>
 					</div>
-					{this.state.error ? (
-						<div>
-							<h3 style={{ color: 'red', textAlign: 'center' }}>
-								Login failed:
-							</h3>
-							<h4 style={{ textAlign: 'center' }}>
-								{this.state.message}
-							</h4>
-						</div>
-					) : (
-						''
-					)}
-					<LoginForm onLogin={this.login} />
+					<LoginForm
+						onLogin={this.login}
+						error={this.state.error}
+						message={this.state.message}
+					/>
 				</Loading>
 			</div>
 		);

@@ -20,7 +20,7 @@ class SetupForm extends React.Component {
         }
     }
     componentDidMount() {
-        request('https://7e9cfeb6-9a4a-4b1f-93c1-28b0bc64b455.trayapp.io/?token=emb-demo', {method: 'GET'})
+        request('https://7e9cfeb6-9a4a-4b1f-93c1-28b0bc64b455.trayapp.io/?token=emb-demo', {method: 'GET'}, false)
             .then(async res => {
                 const body = await res.json();
                 this.setState({items: body});

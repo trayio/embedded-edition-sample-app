@@ -1,12 +1,20 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { white } from '@material-ui/core/colors/';
+import { white, red } from '@material-ui/core/colors/';
 import PersonAdd from '@material-ui/icons/PersonAdd';
+import Build from '@material-ui/icons/Build';
 import Input from '@material-ui/core/Input';
-import Typography from '@material-ui/core/Typography';
+import ErrorMessage from './ErrorMessage';
+import Cookies from 'js-cookie';
 
 class LoginForm extends React.Component {
+
+    handleSetupClick = () => {
+        Cookies.remove('master_token');
+        window.location.replace("/setup")
+    };
+
 	render() {
 		const { onLogin } = this.props;
 		const styles = {
@@ -18,7 +26,7 @@ class LoginForm extends React.Component {
 				maxWidth: 400,
 				height: 'auto',
 				position: 'absolute',
-				top: '25%',
+				top: '20%',
 				left: 0,
 				right: 0,
 				margin: 'auto',
@@ -34,6 +42,11 @@ class LoginForm extends React.Component {
 			loginBtn: {
 				marginTop: 20,
 				float: 'right',
+			},
+			setupBtn: {
+				marginTop: 20,
+				borderSize: 1,
+				float: 'left',
 			},
 			loginHeader: {
 				textAlign: 'center',
@@ -71,6 +84,22 @@ class LoginForm extends React.Component {
 								fullWidth={true}
 								type="password"
 							/>
+
+							<ErrorMessage
+								title="Login failed"
+								message={this.props.message}
+							/>
+
+							<Button
+								style={styles.setupBtn}
+								label="Register"
+								onClick={this.handleSetupClick}
+								color="primary"
+								variant="outlined"
+							>
+								{<Build />}
+							</Button>
+
 
 							<Button
 								style={styles.loginBtn}
