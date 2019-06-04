@@ -17,8 +17,7 @@ const styles = theme => ({
         width: '100%',
         height: '100%',
         maxWidth: 250,
-        backgroundColor: theme.palette.background.paper,
-        paddingBottom: 40,
+        backgroundColor: theme.palette.background.paper
     },
     nested: {
         paddingLeft: theme.spacing.unit * 4,

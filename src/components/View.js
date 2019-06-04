@@ -15,7 +15,8 @@ class View extends React.Component {
             container: {
                 backgroundColor: "#F5F5F5",
                 display: "flex",
-                minHeight: 500
+                minHeight: 500,
+                height: 'calc(100vh - 51px)'
             },
             content: {width: "100%"},
         };

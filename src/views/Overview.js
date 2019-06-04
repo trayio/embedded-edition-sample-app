@@ -38,7 +38,8 @@ export class Overview extends React.PureComponent {
 
         const styles = {
             container: {
-                flex: 1
+                flex: 1,
+                height: '100%'
             },
             iframe: {
                 width: '100%',
