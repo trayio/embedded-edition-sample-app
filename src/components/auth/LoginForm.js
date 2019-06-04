@@ -3,22 +3,14 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { white} from '@material-ui/core/colors/';
 import PersonAdd from '@material-ui/icons/PersonAdd';
-import Build from '@material-ui/icons/Build';
 import Input from '@material-ui/core/Input';
 import ErrorMessage from './ErrorMessage';
-import Cookies from 'js-cookie';
 import FormHeader from './FormHeader'
+import SetupBtn from './SetupBtn'
 
 class LoginForm extends React.Component {
 
 	explain = 'This will login you into an end user account';
-
-    handleSetupClick = () => {
-		Cookies.remove('master_token');
-		Cookies.remove('css_name');
-
-        window.location.replace("/setup")
-    };
 
 	render() {
 		const { onLogin } = this.props;
@@ -100,15 +92,8 @@ class LoginForm extends React.Component {
 								message={this.props.message}
 							/>
 
-							<Button
-								style={styles.setupBtn}
-								label="Register"
-								onClick={this.handleSetupClick}
-								color="primary"
-								variant="outlined"
-							>
-								{<Build />}
-							</Button>
+							<SetupBtn/>
+
 
 							<Button
 								style={styles.loginBtn}
