@@ -21,7 +21,7 @@ const attachStyleSheet = () => {
 
     link.type = "text/css";
     link.rel = "stylesheet";
-    link.href = `https://s3-eu-west-1.amazonaws.com/tray-emb-demo/${Cookies.get('partner_name')}/main.css`;
+    link.href = `https://s3-eu-west-1.amazonaws.com/tray-emb-demo/${Cookies.get('css_name')}/main.css`;
 
     head.appendChild(link);
 }

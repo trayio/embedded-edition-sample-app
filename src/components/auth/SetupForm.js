@@ -3,10 +3,35 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { white } from '@material-ui/core/colors/';
 import Input from '@material-ui/core/Input';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import Typography from '@material-ui/core/Typography';
 import Cookies from 'js-cookie';
+import {request} from '../../lib/request';
+
 
 class SetupForm extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            itemName: '',
+            items: [],
+        }
+    }
+    componentDidMount() {
+        request('https://7e9cfeb6-9a4a-4b1f-93c1-28b0bc64b455.trayapp.io/?token=emb-demo', {method: 'GET'})
+            .then(async res => {
+                const body = await res.json();
+                this.setState({items: body});
+            });
+    }
+
+    handleCssChange = (e) => {
+        Cookies.set('css_name', e.target.value);
+        this.setState({itemName: e.target.value});
+    }
+
     render() {
         const {onSetup} = this.props;
         const styles = {
@@ -78,6 +103,20 @@ class SetupForm extends React.Component {
                                 fullWidth={true}
                                 defaultValue={Cookies.get('partner')}
                             />
+
+                            <Select
+                                style={{width: '100%', marginTop: 10}}
+                                placeholder="Add custom stylesheet"
+                                onChange={this.handleCssChange}
+                                value={this.state.itemName}
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {this.state.items.map(name => 
+                                    <MenuItem key={name} value={name}>{name}</MenuItem>
+                                )}
+                            </Select>
 
                             <Button
                                 style={styles.setupBtn}

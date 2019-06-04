@@ -1,6 +1,5 @@
 import React from 'react';
 import SetupForm from './SetupForm'
-import { Redirect } from 'react-router-dom';
 import Loading from "../Loading";
 import Cookies from 'js-cookie';
 
@@ -15,9 +14,7 @@ export default class Login extends React.Component {
         Cookies.set('master_token', data.token);
         Cookies.set('partner_name', data.partner);
 
-        this.setState({
-            redirectToReferrer: true,
-        })
+        window.location.replace('/login');
     }
 
     render() {
@@ -30,14 +27,6 @@ export default class Login extends React.Component {
                 border: "none",
             },
         };
-
-        const {redirectToReferrer} = this.state;
-
-        if (redirectToReferrer) {
-            return (
-                <Redirect to={'/login'}/>
-            );
-        }
 
         return (
             <div style={style.container}>
