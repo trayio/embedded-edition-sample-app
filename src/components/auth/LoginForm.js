@@ -11,7 +11,9 @@ import Cookies from 'js-cookie';
 class LoginForm extends React.Component {
 
     handleSetupClick = () => {
-        Cookies.remove('master_token');
+		Cookies.remove('master_token');
+		Cookies.remove('css_name');
+
         window.location.replace("/setup")
     };
 

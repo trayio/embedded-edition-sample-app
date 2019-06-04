@@ -13,7 +13,11 @@ var memoryCache = cacheManager.caching({
  */
 export const retrieveUserFromMockDB = req => {
 	return memoryCache.get(generateKey(req)).then(function(result) {
-		return result;
+		if (result) {
+			if (result.password == req.password) {
+				return result;
+			}
+		}
 	});
 };
 
