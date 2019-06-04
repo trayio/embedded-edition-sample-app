@@ -54,7 +54,6 @@ export default class Login extends React.Component {
 			});
 	};
 
-	explain = 'This will login you into an end user account';
 
 	render() {
 		const style = {
@@ -79,20 +78,6 @@ export default class Login extends React.Component {
 		return (
 			<div style={style.container}>
 				<Loading loading={this.state.loading}>
-					<div>
-						<h1 style={{ textAlign: 'center' }}>Login</h1>
-
-						<div
-							style={{
-								textAlign: 'center',
-								width: '500px',
-								margin: 'auto',
-								paddingBottom: '10px',
-							}}
-						>
-							{this.explain}
-						</div>
-					</div>
 					<LoginForm
 						onLogin={this.login}
 						error={this.state.error}

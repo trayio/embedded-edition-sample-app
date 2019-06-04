@@ -43,24 +43,9 @@ export default class Register extends React.Component {
 			});
 	};
 
-	explain =
-		'This will create a new temporary end user account that lasts up to 12 hours';
-
 	render() {
 		return (
 			<div>
-				<h1 style={{ textAlign: 'center' }}>Register a New User</h1>
-
-				<div
-					style={{
-						textAlign: 'center',
-						width: '500px',
-						margin: 'auto',
-						paddingBottom: '10px',
-					}}
-				>
-					{this.explain}
-				</div>
 				{this.state.success ? (
 					<h3 style={{ color: 'green', textAlign: 'center' }}>
 						Registration success
