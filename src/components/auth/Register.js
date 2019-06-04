@@ -1,5 +1,4 @@
 import React from 'react';
-import Cookies from 'js-cookie';
 import RegisterForm from './RegisterForm';
 import { request } from '../../lib/request';
 export default class Register extends React.Component {
