@@ -4,6 +4,8 @@ import Button from '@material-ui/core/Button';
 import { white } from '@material-ui/core/colors/';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Input from '@material-ui/core/Input';
+import ErrorMessage from './ErrorMessage';
+
 import Typography from '@material-ui/core/Typography';
 
 class LoginForm extends React.Component {
@@ -18,7 +20,7 @@ class LoginForm extends React.Component {
 				maxWidth: 400,
 				height: 'auto',
 				position: 'absolute',
-				top: '25%',
+				top: '20%',
 				left: 0,
 				right: 0,
 				margin: 'auto',
@@ -70,6 +72,11 @@ class LoginForm extends React.Component {
 								placeholder="pass"
 								fullWidth={true}
 								type="password"
+							/>
+
+							<ErrorMessage
+								title="Login failed"
+								message={this.props.message}
 							/>
 
 							<Button

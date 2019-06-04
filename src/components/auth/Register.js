@@ -61,18 +61,6 @@ export default class Register extends React.Component {
 				>
 					{this.explain}
 				</div>
-				{this.state.error ? (
-					<div>
-						<h3 style={{ color: 'red', textAlign: 'center' }}>
-							Registration failed:
-						</h3>
-						<h4 style={{ textAlign: 'center' }}>
-							{this.state.message}
-						</h4>
-					</div>
-				) : (
-					''
-				)}
 				{this.state.success ? (
 					<h3 style={{ color: 'green', textAlign: 'center' }}>
 						Registration success
@@ -83,6 +71,8 @@ export default class Register extends React.Component {
 				<RegisterForm
 					onRegister={this.register}
 					loading={this.state.loading}
+					error={this.state.error}
+					message={this.state.message}
 				/>
 			</div>
 		);
