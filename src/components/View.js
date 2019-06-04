@@ -40,7 +40,7 @@ class View extends React.Component {
 
         return (
             <div>
-                <div style={styles.header}>
+                <div style={styles.header} className="App-header">
 					{partnerName ? (
 						<span>{partnerName}</span>
 					) : (<span>OEM Demo Application</span>) }
