@@ -2,9 +2,7 @@ import React from 'react';
 import Nav from './Nav';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-// import Typography from '@material-ui/core/Typography';
 import Cookies from 'js-cookie';
-
 
 class View extends React.Component {
 
