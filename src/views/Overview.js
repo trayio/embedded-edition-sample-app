@@ -44,7 +44,8 @@ export class Overview extends React.PureComponent {
                 width: '100%',
                 height: '100%',
                 minHeight: '500px',
-                border: 0
+                border: 0,
+                display: 'block'
             },
         };
 
