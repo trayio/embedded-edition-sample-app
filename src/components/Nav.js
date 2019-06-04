@@ -60,37 +60,26 @@ class Nav extends React.PureComponent {
                             </ListItem>
                         </Link>
 
-                        <ListItem button onClick={this.handleSolutionsClick}>
-                            <ListItemIcon>
-                                <PlugIcon/>
-                            </ListItemIcon>
-                            <ListItemText inset primary="Solutions"/>
-                            {this.state.solutionsOpen ? <ExpandLess/> : <ExpandMore/>}
-                        </ListItem>
+                        <Link className={classes.link} to="/solutions/discover">
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <CircleIcon style={{borderRadius: 20}}/>
+                                </ListItemIcon>
+                                <ListItemText inset primary="Available Solutions"/>
+                            </ListItem>
+                        </Link>
 
-                        <Collapse in={this.state.solutionsOpen} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
 
                                 <Link className={classes.link} to="/solutions/mine">
-                                    <ListItem button className={classes.nested}>
+                                    <ListItem button>
                                         <ListItemIcon>
                                             <CircleIcon style={{borderRadius: 20}}/>
                                         </ListItemIcon>
-                                        <ListItemText inset primary="My Instances" style={{whiteSpace: 'nowrap'}}/>
+                                        <ListItemText inset primary="My Active Instances" style={{whiteSpace: 'nowrap'}}/>
                                     </ListItem>
                                 </Link>
 
-                                <Link className={classes.link} to="/solutions/discover">
-                                    <ListItem button className={classes.nested}>
-                                        <ListItemIcon>
-                                            <CircleIcon style={{borderRadius: 20}}/>
-                                        </ListItemIcon>
-                                        <ListItemText inset primary="Discover"/>
-                                    </ListItem>
-                                </Link>
 
-                            </List>
-                        </Collapse>
                     </List>
                 </div>
             </div>
