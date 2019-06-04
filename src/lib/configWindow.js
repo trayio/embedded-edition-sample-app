@@ -70,7 +70,7 @@ export const openConfigWindow = () => {
             } else {
                 alert(
                     'Configuration finished. You can enable the new ' +
-                    'solution instance from the "Solutions > My Instances" section'
+                    'solution instance from the "My Active Instances" section'
                 );
                 console.log('Configuration finished');
             }

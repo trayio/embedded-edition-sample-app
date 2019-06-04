@@ -72,7 +72,7 @@ export class SolutionsDiscover extends React.PureComponent {
                     variant="headline"
                     style={styles.header}
                 >
-                    Discover solutions
+                    Available solutions
                 </Typography>
                 <Paper>
                     <List style={styles.list}>
