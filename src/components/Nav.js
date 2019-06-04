@@ -43,6 +43,9 @@ class Nav extends React.PureComponent {
         return (
             <div>
                 <div className={classes.root}>
+                    {Cookies.get('css_name') &&
+                        <img src={`https://s3-eu-west-1.amazonaws.com/tray-emb-demo/${Cookies.get('css_name')}/logo.png`} />
+                    }
                     <List
                         component="nav"
                     >
