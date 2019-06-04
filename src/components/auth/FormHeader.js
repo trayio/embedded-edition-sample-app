@@ -1,11 +1,9 @@
 import React from 'react';
-import { white } from '@material-ui/core/colors/';
 import Typography from '@material-ui/core/Typography';
 
 class FormHeader extends React.Component {
 
     render() {
-		const { onRegister } = this.props;
 		const styles = {
 			explainSubtitle: {
 				textAlign: 'center',

@@ -6,8 +6,6 @@ import Input from '@material-ui/core/Input';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorMessage from './ErrorMessage';
 import FormHeader from './FormHeader'
-import Typography from '@material-ui/core/Typography';
-
 
 class RegisterForm extends React.Component {
 	explain =
@@ -44,11 +42,7 @@ class RegisterForm extends React.Component {
 			},
 			btnSpan: {
 				marginLeft: 5,
-			},
-			setupHeader: {
-                textAlign: "center",
-                marginBottom: 15,
-            }
+			}
 		};
 
 		return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { white, red } from '@material-ui/core/colors/';
+import { white} from '@material-ui/core/colors/';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Build from '@material-ui/icons/Build';
 import Input from '@material-ui/core/Input';
@@ -36,7 +36,6 @@ class LoginForm extends React.Component {
 				left: 0,
 				right: 0,
 				margin: 'auto',
-				top: '20%'
 			},
 			paper: {
 				padding: 20,
