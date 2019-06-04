@@ -19,13 +19,21 @@ const parseRequest = req => {
 };
 
 module.exports = function(app) {
-	app.use(
-		require('express-session')({
-			secret: '2C44-4D44-WppQ38S',
-			resave: true,
-			saveUninitialized: true,
-		})
-	);
+	// Authenticate all endpoints except the auth endpoints defined in this module
+	app.use(function(req, res, next) {
+		if (req.url === '/api/health') {
+			return res.status(200).send();
+		}
+		let headers = parseHeaders(req);
+		// check for headers
+		if (headers.master_token) {
+			return next();
+		} else {
+			return res
+				.status(401)
+				.send({error: 'Master token not found' });
+		}
+	});
 
 	/*
 	 * /api/login:
@@ -67,7 +75,7 @@ module.exports = function(app) {
 				log({ message: 'Login failed for user:', object: req });
 				res.status(401).send({
 					error:
-						'User not found. Keep in mind OEM Demo app stores new users in-memory and they are lost on server restart.',
+						'User not found. Keep in mind users in the Demo app stores are cleared periodically',
 				});
 			}
 		});
@@ -131,21 +139,5 @@ module.exports = function(app) {
 	app.post('/api/logout', function(req, res) {
 		req.session.destroy();
 		res.sendStatus(200);
-	});
-
-
-	// Authenticate all endpoints except the auth endpoints defined in this module
-	app.use(function(req, res, next) {
-		if (req.url === "/api/health") {
-            return res.status(200).send();
-		}
-
-		let headers = parseHeaders(req);
-		// check for headers
-		if (headers.master_token) {
-			return next();
-		} else {
-			return res.sendStatus(401);
-		}
 	});
 };

@@ -49,7 +49,7 @@ export default class Register extends React.Component {
             });
     }
 
-    explain = 'This will create a new in-memory user account in the local Express backend that will persist until the backend is restarted.';
+    explain = 'This will create a new temporary user account that lasts up to 12 hours';
 
     render() {
         return (
