@@ -87,7 +87,7 @@ module.exports = function(app) {
 				log({ message: 'Login failed for user:', object: req });
 				res.status(401).send({
 					error:
-						'Could not find user Keep in mind users in the Demo app stores are cleared periodically',
+						'Could not login. The demo app database is cleared periodically, you may have to recreate that user.',
 				});
 			}
 		});
@@ -140,11 +140,14 @@ module.exports = function(app) {
 				});
 
 				let errorCode = get(err, 'networkError.statusCode');
-				if (errorCode == 401 || 403) {
-					res.status(errorCode).send({
-						error:
-							'Invalid master token. Please check that you have entered it correctly!',
-					});
+				console.log(err);
+				if (errorCode) {
+					if (errorCode === 401 || 403) {
+						res.status(errorCode).send({
+							error:
+								'Invalid master token. Please check that you have entered it correctly!',
+						});
+					}
 				} else {
 					res.status(500).send({
 						error:
