@@ -12,8 +12,8 @@ class View extends React.Component {
         Cookies.remove('user_uuid');
 
         window.location.replace("/login")
-    };
-
+	};
+	
     render() {
         const styles = {
             header: {
@@ -34,12 +34,17 @@ class View extends React.Component {
                 float: "right"
             },
 
-        };
+		};
+		
+		let partnerName = Cookies.get('partner_name');
 
         return (
             <div>
                 <div style={styles.header}>
-                    <span>OEM Demo Application</span>
+					{partnerName ? (
+						<span>{partnerName}</span>
+					) : (<span>OEM Demo Application</span>) }
+                    
                     <Button color="inherit" style={styles.logout} onClick={this.handleLogout} to="/login">Logout</Button>
                 </div>
                 <div style={styles.container}>
