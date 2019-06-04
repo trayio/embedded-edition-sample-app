@@ -58,22 +58,24 @@ export const validateRequest = req => {
  * @param {Request} req
  * @return {User} The new user that was created
  */
-export const generateNewUser = (req, masterToken )=> {
+export const generateNewUser = (req, masterToken) => {
 	// Generate UUID for user:
 	const uuid = uuidv1();
 
 	// Generate a tray user for this account:
-	return mutations.createExternalUser(uuid, req.name, masterToken).then(createRes => {
-		// Add user to internal DB:
-		let test = merge(
-			{
-				uuid: uuid,
-				trayId: createRes.data.createExternalUser.userId,
-			},
-			req
-		);
-		insertUserToMockDB(test);
+	return mutations
+		.createExternalUser(uuid, req.name, masterToken)
+		.then(createRes => {
+			// Add user to internal DB:
+			let test = merge(
+				{
+					uuid: uuid,
+					trayId: createRes.data.createExternalUser.userId,
+				},
+				req
+			);
+			insertUserToMockDB(test);
 
-		return retrieveUserFromMockDB(req);
-	});
+			return retrieveUserFromMockDB(req);
+		});
 };

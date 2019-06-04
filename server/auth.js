@@ -25,13 +25,12 @@ module.exports = function(app) {
 			return res.status(200).send();
 		}
 		let headers = parseHeaders(req);
+		console.log(headers);
 		// check for headers
 		if (headers.master_token) {
 			return next();
 		} else {
-			return res
-				.status(401)
-				.send({error: 'Master token not found' });
+			return res.status(401).send({ error: 'Master token not found' });
 		}
 	});
 
@@ -62,20 +61,33 @@ module.exports = function(app) {
 					.then(userAccessToken =>
 						res.status(200).send({
 							userAccessToken: userAccessToken,
+							userUUID: user.uuid,
+							userTrayID: user.trayId,
 						})
 					)
 					.catch(err => {
 						log({
-							message: 'Failed to generate user access token:',
+							message: 'Failed to generate user access token',
 							object: err,
 						});
-						res.status(500).send(err);
+
+						let errorCode = get(err, 'networkError.statusCode');
+						if (errorCode == 401 || 403) {
+							res.status(errorCode).send({
+								error:
+									'Invalid master token. Please check that you have entered it correctly!',
+							});
+						} else {
+							res.status(500).send({
+								error: 'Failed to generate user access token',
+							});
+						}
 					});
 			} else {
 				log({ message: 'Login failed for user:', object: req });
 				res.status(401).send({
 					error:
-						'User not found. Keep in mind users in the Demo app stores are cleared periodically',
+						'Could not find user Keep in mind users in the Demo app stores are cleared periodically',
 				});
 			}
 		});
@@ -126,9 +138,19 @@ module.exports = function(app) {
 						'There was an error creating the external Tray user:',
 					object: err,
 				});
-				res.status(500).send(
-					'There was an error creating the external Tray user:'
-				);
+
+				let errorCode = get(err, 'networkError.statusCode');
+				if (errorCode == 401 || 403) {
+					res.status(errorCode).send({
+						error:
+							'Invalid master token. Please check that you have entered it correctly!',
+					});
+				} else {
+					res.status(500).send({
+						error:
+							'There was an error creating the external Tray user:',
+					});
+				}
 			});
 	});
 

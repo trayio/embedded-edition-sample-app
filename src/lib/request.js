@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 export const request = (path, options, sendHeaders) =>
     fetch(path, {
         ...options,
-        headers: sendHeaders ? {
+        headers: !sendHeaders ? {
             user_uuid: Cookies.get('user_uuid'),
             access_token: Cookies.get('access_token'),
             master_token: Cookies.get('master_token'),
