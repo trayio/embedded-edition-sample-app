@@ -26,6 +26,10 @@ const styles = theme => ({
     },
     link: {
         textDecoration: "none",
+    },
+    logo: {
+        display: 'block',
+        width: '100%',
     }
 });
 
@@ -45,7 +49,7 @@ class Nav extends React.PureComponent {
             <div>
                 <div className={classes.root}>
                     {Cookies.get('css_name') &&
-                        <img src={`https://s3-eu-west-1.amazonaws.com/tray-emb-demo/${Cookies.get('css_name')}/logo.png`} />
+                        <img style={{width: '150px', display: 'block', padding: '20px 0', margin: '0 auto'}} src={`https://s3-eu-west-1.amazonaws.com/tray-emb-demo/${Cookies.get('css_name')}/logo.png`} />
                     }
                     <List
                         component="nav"
