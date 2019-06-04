@@ -6,10 +6,19 @@ import Input from '@material-ui/core/Input';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorMessage from './ErrorMessage';
 import FormHeader from './FormHeader'
+import Cookies from 'js-cookie';
+import Build from '@material-ui/icons/Build';
 
 class RegisterForm extends React.Component {
 	explain =
 		'This will create a new temporary end user account that lasts up to 12 hours';
+		
+	handleSetupClick = () => {
+		Cookies.remove('master_token');
+		Cookies.remove('css_name');
+
+		window.location.replace("/setup")
+	};
 
 	render() {
 		const { onRegister } = this.props;
@@ -42,7 +51,12 @@ class RegisterForm extends React.Component {
 			},
 			btnSpan: {
 				marginLeft: 5,
-			}
+			},
+			setupBtn: {
+				marginTop: 20,
+				borderSize: 1,
+				float: 'left',
+			},
 		};
 
 		return (
@@ -109,6 +123,16 @@ class RegisterForm extends React.Component {
 									title="Registration  failed"
 									message={this.props.message}
 								/>
+
+								<Button
+									style={styles.setupBtn}
+									label="Register"
+									onClick={this.handleSetupClick}
+									color="primary"
+									variant="outlined"
+								>
+									{<Build />}
+								</Button>
 
 								<Button
 									style={styles.loginBtn}

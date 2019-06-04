@@ -13,7 +13,6 @@ class LoginForm extends React.Component {
 
 	explain = 'This will login you into an end user account';
 
-
     handleSetupClick = () => {
 		Cookies.remove('master_token');
 		Cookies.remove('css_name');
@@ -110,7 +109,6 @@ class LoginForm extends React.Component {
 							>
 								{<Build />}
 							</Button>
-
 
 							<Button
 								style={styles.loginBtn}
