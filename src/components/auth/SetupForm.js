@@ -89,7 +89,8 @@ class SetupForm extends React.Component {
                                 label="Master token"
                                 placeholder="token"
                                 fullWidth={true}
-                                defaultValue={Cookies.get('master_token')}
+								defaultValue={Cookies.get('master_token')}
+								required
                             />
 
                             <Input
