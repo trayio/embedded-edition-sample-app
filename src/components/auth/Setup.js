@@ -18,6 +18,10 @@ export default class Login extends React.Component {
     }
 
     render() {
+        if (Cookies.get('master_token') ){
+            window.location.replace('/login')
+        }
+
         const style = {
             container: {
                 height: "300px",

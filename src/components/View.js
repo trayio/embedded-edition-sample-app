@@ -40,7 +40,7 @@ class View extends React.Component {
             <div>
                 <div style={styles.header}>
                     <span>OEM Demo Application</span>
-                    <Button color="inherit" style={styles.logout} onClick={this.handleLogout} to="/login" >Logout</Button>
+                    <Button color="inherit" style={styles.logout} onClick={this.handleLogout} to="/login">Logout</Button>
                 </div>
                 <div style={styles.container}>
                     <Nav/>
