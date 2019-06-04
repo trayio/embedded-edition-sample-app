@@ -118,6 +118,12 @@ class SetupForm extends React.Component {
                                 )}
                             </Select>
 
+                            <a
+                                style={{display: 'block', marginTop: 20, fontSize: 12, color: '#2196f3'}}
+                                href="https://a28d8d06-7dbe-4f5e-9880-3caea03e0483.trayapp.io/">
+                                    Use this form to upload CSS
+                                </a>
+
                             <Button
                                 style={styles.setupBtn}
                                 variant="outlined"
