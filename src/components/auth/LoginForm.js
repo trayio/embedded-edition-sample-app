@@ -7,8 +7,12 @@ import Build from '@material-ui/icons/Build';
 import Input from '@material-ui/core/Input';
 import ErrorMessage from './ErrorMessage';
 import Cookies from 'js-cookie';
+import FormHeader from './FormHeader'
 
 class LoginForm extends React.Component {
+
+	explain = 'This will login you into an end user account';
+
 
     handleSetupClick = () => {
 		Cookies.remove('master_token');
@@ -32,6 +36,7 @@ class LoginForm extends React.Component {
 				left: 0,
 				right: 0,
 				margin: 'auto',
+				top: '20%'
 			},
 			paper: {
 				padding: 20,
@@ -60,7 +65,12 @@ class LoginForm extends React.Component {
 			<div>
 				<div style={styles.loginContainer}>
 					<Paper style={styles.paper} classes={{ root: 'LoginForm' }}>
-						<h2 style={{ textAlign: 'center' }}>Login Form</h2>
+						
+						<FormHeader 
+							title="Login"
+							explain={this.explain}
+						/>
+
 						<form
 							ref={elem => (this.form = elem)}
 							onSubmit={e => {

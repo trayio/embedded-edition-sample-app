@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Cookies from 'js-cookie';
 import {request} from '../../lib/request';
+import FormHeader from './FormHeader'
 
 
 class SetupForm extends React.Component {
@@ -70,13 +71,9 @@ class SetupForm extends React.Component {
             <div>
                 <div style={styles.setupContainer}>
                     <Paper style={styles.paper} classes={{root: 'SetupForm'}}>
-                        <Typography
-                            style={styles.setupHeader}
-                            variant="headline"
-                            classes={{root: 'SetupForm-heading'}}
-                        >
-                            Setup the OEM demo app
-                        </Typography>
+                        <FormHeader 
+                            title="Setup"
+                        />
                         <form
                             ref={(elem) => this.form = elem}
                             onSubmit={(e) => {

@@ -5,8 +5,14 @@ import { white } from '@material-ui/core/colors/';
 import Input from '@material-ui/core/Input';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorMessage from './ErrorMessage';
+import FormHeader from './FormHeader'
+import Typography from '@material-ui/core/Typography';
+
 
 class RegisterForm extends React.Component {
+	explain =
+		'This will create a new temporary end user account that lasts up to 12 hours';
+
 	render() {
 		const { onRegister } = this.props;
 		const styles = {
@@ -19,6 +25,7 @@ class RegisterForm extends React.Component {
 				left: 0,
 				right: 0,
 				margin: '30px auto',
+				top: '10%'
 			},
 			paper: {
 				padding: 20,
@@ -38,6 +45,10 @@ class RegisterForm extends React.Component {
 			btnSpan: {
 				marginLeft: 5,
 			},
+			setupHeader: {
+                textAlign: "center",
+                marginBottom: 15,
+            }
 		};
 
 		return (
@@ -63,10 +74,11 @@ class RegisterForm extends React.Component {
 									});
 								}}
 							>
-								<h3 style={{ textAlign: 'center' }}>
-									{' '}
-									New User Form{' '}
-								</h3>
+
+								<FormHeader 
+									title="Registration"
+									explain={this.explain}
+								/>
 
 								<Input
 									inputRef={input => (this.nameElem = input)}
