@@ -1,8 +1,21 @@
 import React from 'react';
 import Nav from './Nav';
 import { withTheme } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+// import Typography from '@material-ui/core/Typography';
+import Cookies from 'js-cookie';
+
 
 class View extends React.Component {
+
+    handleLogout = () => {
+        Cookies.remove('access_token');
+        Cookies.remove('tray_id');
+        Cookies.remove('user_uuid');
+
+        window.location.replace("/login")
+    };
+
     render() {
         const styles = {
             header: {
@@ -19,11 +32,18 @@ class View extends React.Component {
                 paddingBottom: 40,
             },
             content: {width: "100%"},
+            logout: {
+                float: "right"
+            },
+
         };
 
         return (
             <div>
-                <div style={styles.header}>OEM Demo Application</div>
+                <div style={styles.header}>
+                    <span>OEM Demo Application</span>
+                    <Button color="inherit" style={styles.logout} onClick={this.handleLogout} to="/login" >Logout</Button>
+                </div>
                 <div style={styles.container}>
                     <Nav/>
                     <div style={styles.content}>
