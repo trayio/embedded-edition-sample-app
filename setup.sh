@@ -45,6 +45,7 @@ else
     export TRAY_ENDPOINT=$ENDPOINT
     export TRAY_PARTNER=$PARTNER
     export TRAY_MASTER_TOKEN=$MASTER_TOKEN
+    export BABEL_DISABLE_CACHE=1
 
     > .token;
     echo "$MASTER_TOKEN" >> .token
