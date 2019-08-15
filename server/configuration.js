@@ -2,7 +2,7 @@ export const setEnvironment = () => {
     const productionGraphqlEndpoint = 'https://tray.io/graphql';
     const stagingGraphqlEndpoint = 'https://staging.tray.io/graphql';
 
-    const appUrlStaging = 'https://app-staging.tray.io';
+    const appUrlStaging = 'https://app.staging.tray.io';
     const appUrlProd = 'https://app.tray.io';
 
     switch (process.env.TRAY_ENDPOINT) {
