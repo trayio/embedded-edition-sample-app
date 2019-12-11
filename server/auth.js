@@ -2,7 +2,7 @@ import { log } from './logging';
 import { get } from 'lodash';
 import ColorThief from 'colorthief';
 import captureWebsite from 'capture-website';
-import { unlinkSync, existsSync } from 'fs';
+import { unlinkSync, existsSync, mkdirSync } from 'fs';
 import { RGBToHex } from './domain/palette';
 
 import { attemptLogin, generateUserAccessToken } from './domain/login';
@@ -100,7 +100,12 @@ module.exports = function (app) {
             return;
         }
 
-        const filePath = 'palette_screenshot.png';
+        const folderPath = '.tmp';
+        const filePath = '.tmp/palette_screenshot.png';
+
+        if (!existsSync(folderPath)) {
+            mkdirSync(folderPath);
+        }
 
         if (existsSync(filePath)) {
             unlinkSync(filePath);
