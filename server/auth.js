@@ -1,5 +1,9 @@
 import { log } from './logging';
 import { get } from 'lodash';
+import ColorThief from 'colorthief';
+import captureWebsite from 'capture-website';
+import { unlinkSync, existsSync } from 'fs';
+import { RGBToHex } from './domain/palette';
 
 import { attemptLogin, generateUserAccessToken } from './domain/login';
 
@@ -84,6 +88,28 @@ module.exports = function (app) {
     app.post('/api/logout', function (req, res) {
         req.session.destroy();
         res.sendStatus(200);
+    });
+
+    /**
+     * /api/palette:
+     * Returns palette of a given website
+     */
+    app.get('/api/palette', async (req, res) => {
+        if (!req.query.url) {
+            res.sendStatus(400);
+            return;
+        }
+
+        const filePath = 'palette_screenshot.png';
+
+        if (existsSync(filePath)) {
+            unlinkSync(filePath);
+        }
+
+        await captureWebsite.file(req.query.url, filePath);
+        const palette = (await ColorThief.getPalette(filePath, 6)).map(color => RGBToHex(...color));
+
+        res.status(200).send(palette);
     });
 
     // Authenticate all endpoints except the auth endpoints defined in this module

@@ -1,27 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './Router';
 import registerServiceWorker from './registerServiceWorker';
-import blue from '@material-ui/core/colors/blue';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import AdminProvider from './components/admin/AdminProvider';
 
-const theme = createMuiTheme({
-    palette: {
-        type: 'light',
-        primary: blue,
-    },
-});
-
-ReactDOM.render((
+ReactDOM.render(
     <div>
         <BrowserRouter>
-            <MuiThemeProvider theme={theme}>
-                <App/>
-            </MuiThemeProvider>
+            <AdminProvider>
+                <App />
+            </AdminProvider>
         </BrowserRouter>
-    </div>
-), document.getElementById('root'));
+    </div>,
+    document.getElementById('root')
+);
 
 registerServiceWorker();
