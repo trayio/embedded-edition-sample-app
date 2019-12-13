@@ -29,6 +29,12 @@ export const queries = {
                             node {
                                 id
                                 title
+                                description
+                                tags
+                                customFields {
+                                    key
+                                    value
+                                }
                             }
                         }
                     }
@@ -49,6 +55,12 @@ export const queries = {
                                 id
                                 name
                                 enabled
+                                solution {
+                                    customFields {
+                                        key
+                                        value
+                                    }
+                                }
                             }
                         }
                     }

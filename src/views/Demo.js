@@ -1,5 +1,8 @@
 import React from 'react';
 import Loading from '../components/Loading';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 // Update to use Solutions
 import { openConfigWindow } from '../lib/configWindow';
@@ -17,11 +20,15 @@ import './demo.css';
 import config from '../config.js';
 
 export class Demo extends React.PureComponent {
+    containerRef = React.createRef(null);
+    observingSize = false;
+
     state = {
         solutions: null,
         instances: null,
         loadinginstances: true,
         loadingSolutions: true,
+        entitiesToSkip: {},
     }
 
     componentDidMount() {
@@ -41,25 +48,16 @@ export class Demo extends React.PureComponent {
         });
     }
 
-    calculateInstancesSize() {
-        if (!this.state.instances || !this.state.instances.length) {
-            return 0;
+    componentDidUpdate() {
+        if(this.containerRef.current && !this.observingSize) {
+            new ResizeObserver(([entry]) => {
+                window.parent.postMessage({
+                    type: 'tray_demo_size',
+                    height: entry.contentRect.height + 'px',
+                }, '*');
+            }).observe(this.containerRef.current);
+            this.observingSize = true;
         }
-
-        return 40 + this.state.instances.length * 18;
-    }
-
-    calculateSolutionSize() {
-        if (!this.state.solutions || !this.state.solutions.length) {
-            return 0;
-        }
-
-        return this.state.solutions.length * 30;
-    }
-
-    calculateSize() {
-        const standardContentHeight = 139;
-        return standardContentHeight + this.calculateInstancesSize() + this.calculateSolutionSize();
     }
 
     listSolutions = () => {
@@ -100,80 +98,50 @@ export class Demo extends React.PureComponent {
     }
 
     renderSolutions() {
-        return this.state.solutions && this.state.solutions.map(i => {
-            return (
-                <div className="integration-container">
-                    <button className="integration-name">{i.title}</button>
-                    <span
-                        className="activate"
+        return (
+            this.state.solutions &&
+            this.state.solutions.map(i => {
+                const imgUrl = i.customFields.find(customField => customField.key === 'imgUrl');
+
+                return (
+                    <GridItem
+                        title={i.title}
+                        image={imgUrl ? imgUrl.value : undefined}
                         onClick={() => this.onClickActivateIntegration(i.id, i.title)}
-                    >
-                        Activate
-                    </span>
-                </div>
-            );
-        });
+                    />
+                );
+            })
+        );
     }
 
     renderInstances() {
         if (!this.state.instances || !this.state.instances.length) return null;
 
-        return (
-            <div className="workflow-container">
-                <div className="workflow-header">
-                    <h3 className="app-name">App Name</h3>
-                </div>
+        return this.state.instances.map(w => {
+            const imgUrl = w.solution.customFields.find(customField => customField.key === 'imgUrl');
 
-                {this.state.instances.map(w => {
-                    return (
-                        <div className="workflow-container">
-                            <button>
-                                {w.name}
-                            </button>
-                            <button
-                                className="deactivate"
-                                onClick={() => this.onClickDeactivateIntegration(w.id)}
-                            >
-                                Delete
-                            </button>
-                            <button
-                                className="reconfigure"
-                                onClick={() => this.onReconfigureIntegration(w.id)}
-                            >
-                                Reconfigure
-                            </button>
-                        </div>
-                    );
-                })}
-            </div>
-        );
+            return (
+                <GridItem
+                    title={w.name}
+                    image={imgUrl ? imgUrl.value : undefined}
+                    onClick={() => this.onReconfigureIntegration(w.id)}
+                />
+            );
+        });
     }
 
-    render() {
-        window.parent.postMessage({
-            type: 'tray_demo_size',
-            height: this.calculateSize() + 'px',
-        }, '*');
 
+    render() {
         return (
             <Loading loading={this.state.loadinginstances && this.state.loadingSolutions}>
-                <div className="demo-container">
-                    <div>
-                        <h2 className="header">Available Integrations</h2>
+                <div className="demo-container" ref={this.containerRef}>
+                    <Typography variant="display1">Available Integrations</Typography>
+                    <div className="demo-grid">
                         {this.renderSolutions()}
                     </div>
-                    <div>
-                        <h2 className="header">Active Integrations</h2>
-
-                        {this.state.instances && this.state.instances.length ?
-                            <p>You have authorized the following applications with <button>Asana Connect</button>.</p> :
-                            <p>Applications you authorize with <button>Asana Connect</button> will appear here.</p>
-                        }
-
+                    <Typography variant="display1">Active integrations</Typography>
+                    <div className="demo-grid">
                         {this.renderInstances()}
-                    </div>
-                    <div className="footer">
-                        <button>Manage Developer Apps</button>
                     </div>
                 </div>
             </Loading>
@@ -182,3 +150,36 @@ export class Demo extends React.PureComponent {
 }
 
 export default Demo;
+
+function GridItem({ title, onClick, image = '//s3.amazonaws.com/images.tray.io/artisan/icons/slack.png' }) {
+    const [raised, setRaised] = React.useState(false);
+
+    const handleMouseOver = React.useCallback(() => {
+        setRaised(true);
+    }, []);
+
+    const handleMouseOut = React.useCallback(() => {
+        setRaised(false);
+    }, []);
+
+    return (
+        <Card
+            className="demo-grid-item"
+            raised={raised}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+            onClick={onClick}
+        >
+            <CardContent className="demo-grid-item-content">
+                <img src={image} className="demo-grid-item-content-img" />
+                <div className="demo-grid-item-content-title">{title}</div>
+            </CardContent>
+        </Card>
+    );
+}
+
+
+
+// FONT from parent window
+// Size with resizeObserver
+// 
