@@ -53,7 +53,7 @@ To set up and run the sample application first you must have Node LTS v10 and th
 npm install
 ```
 
-In order to setup your environment variables and run the application, you then have to run `. ./setup.sh`
+In order to setup your environment variables and run the application, you then have to run `./setup.sh`
 
 ```
 TRAY_ENDPOINT=prod
