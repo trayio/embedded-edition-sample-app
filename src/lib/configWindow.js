@@ -10,6 +10,8 @@ export const openConfigWindow = () => {
     // Listen to popup messages
     let configFinished = false;
     const onmessage = e => {
+        console.log(`${e.data.type} event received`);
+
         if (e.data.type === 'tray.configPopup.error') {
             // Handle popup error message
             alert(`Error: ${e.data.err}`);

@@ -2,6 +2,9 @@ import {withTheme} from "@material-ui/core/styles/index";
 import React from 'react';
 
 export class ConfigWizard extends React.PureComponent {
+    state = {
+        ready: false,
+    };
 
     constructor(props) {
         super(props);
@@ -17,12 +20,16 @@ export class ConfigWizard extends React.PureComponent {
     }
 
     handleIframeEvents = (e) => {
+        console.log(`${e.data.type} event received`);
         // Here we should handle all event types
         if (e.data.type === 'tray.configPopup.error') {
             alert(`Error: ${e.data.err}`);
         }
         if (e.data.type === 'tray.configPopup.cancel') {
             this.props.onClose();
+        }
+        if (e.data.type === 'tray.configPopup.ready') {
+            this.setState({ ready: true });
         }
         if (e.data.type === 'tray.configPopup.finish') {
             this.props.onClose();
@@ -32,7 +39,8 @@ export class ConfigWizard extends React.PureComponent {
     render() {
         const styles = {
             container: {
-                flex: 1
+                flex: 1,
+                position: 'relative',
             },
             iframe: {
                 width: '100%',
@@ -40,7 +48,18 @@ export class ConfigWizard extends React.PureComponent {
                 minHeight: '500px',
                 border: '1px solid #2196f3',
                 borderRadius: '4px',
+                boxSizing: 'border-box',
             },
+            loadingScreen: {
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                position: 'absolute',
+                background: 'white',
+                border: '1px solid #2196f3',
+                borderRadius: '4px',
+            }
         };
 
         return (
@@ -51,6 +70,7 @@ export class ConfigWizard extends React.PureComponent {
                     src={this.props.src}
                     title="Solution instance configurator"
                 />
+                {!this.state.ready && <div style={styles.loadingScreen}>Loading...</div>}
             </div>
         )
     }
