@@ -20,6 +20,25 @@ export const queries = {
         return generateClient(token).query({query});
     },
 
+    auths: token => {
+        const query = gql`
+            {
+                viewer {
+                    authentications {
+                        edges {
+                            node {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+        return generateClient(token).query({query});
+    },
+
     solutions: () => {
         const query = gql`
             {

@@ -11,7 +11,7 @@ function getNodesAt (results, path) {
 }
 
 const solutionPath = `${process.env.TRAY_APP_URL}/external/solutions/${process.env.TRAY_PARTNER}`;
-const templatePath = `${process.env.TRAY_APP_URL}/external/configure/${process.env.TRAY_PARTNER}`;
+const editAuthPath = `${process.env.TRAY_APP_URL}/external/auth/edit/${process.env.TRAY_PARTNER}`;
 
 module.exports = function (app) {
 
@@ -20,6 +20,34 @@ module.exports = function (app) {
         queries.me(req.session.token)
         .then((results) => res.status(200).send(results.data.viewer.details))
         .catch(err => res.status(500).send(err));
+    });
+
+    // GET user auths:
+    app.get('/api/auths', (req, res) => {
+
+        queries.auths(req.session.token)
+            .then((results) => {
+                    res.status(200)
+                        .send({
+                            data: getNodesAt(results, 'data.viewer.authentications.edges')
+                        })
+                }
+            )
+            .catch(err => res.status(500).send(err));
+    });
+
+    // GET auth url:
+    app.post('/api/auth', (req, res) => {
+        mutations.getGrantTokenForUser(req.session.user.trayId)
+            .then(({payload}) => {
+                const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
+                res.status(200).send({
+                    data: {
+                        popupUrl: `${editAuthPath}/${req.body.authId}?code=${authorizationCode}`
+                    }
+                });
+            })
+            .catch(err => res.status(500).send(err));
     });
 
     // GET Solutions:
