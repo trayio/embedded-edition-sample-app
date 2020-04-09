@@ -6,6 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import AccountIcon from '@material-ui/icons/AccountCircle';
+import AccountBox from '@material-ui/icons/AccountBox';
 import PlugIcon from '@material-ui/icons/SettingsInputComponent';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -52,6 +53,16 @@ class Nav extends React.PureComponent {
                                     <AccountIcon/>
                                 </ListItemIcon>
                                 <ListItemText inset primary="Account"/>
+
+                            </ListItem>
+                        </Link>
+
+                        <Link to="/authentications" className={classes.link}>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <AccountBox/>
+                                </ListItemIcon>
+                                <ListItemText inset primary="Authentications"/>
 
                             </ListItem>
                         </Link>
