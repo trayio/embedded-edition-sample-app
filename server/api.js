@@ -12,6 +12,7 @@ function getNodesAt (results, path) {
 
 const solutionPath = `${process.env.TRAY_APP_URL}/external/solutions/${process.env.TRAY_PARTNER}`;
 const editAuthPath = `${process.env.TRAY_APP_URL}/external/auth/edit/${process.env.TRAY_PARTNER}`;
+const createAuthPath = `${process.env.TRAY_APP_URL}/external/auth/create/${process.env.TRAY_PARTNER}`;
 
 module.exports = function (app) {
 
@@ -44,6 +45,20 @@ module.exports = function (app) {
                 res.status(200).send({
                     data: {
                         popupUrl: `${editAuthPath}/${req.body.authId}?code=${authorizationCode}`
+                    }
+                });
+            })
+            .catch(err => res.status(500).send(err));
+    });
+
+    // GET auth create url:
+    app.post('/api/auth/create', (req, res) => {
+        mutations.getGrantTokenForUser(req.session.user.trayId)
+            .then(({payload}) => {
+                const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
+                res.status(200).send({
+                    data: {
+                        popupUrl: `${createAuthPath}/${req.body.solutionInstanceId}/${req.body.externalAuthId}?code=${authorizationCode}`
                     }
                 });
             })
