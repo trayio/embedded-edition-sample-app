@@ -28,3 +28,20 @@ export const getAuthEditUrl = (authId) =>
             ok: res.ok,
             body: await res.json(),
         }))
+
+export const getAuthCreateUrl = (solutionInstanceId, externalAuthId) =>
+    fetch('/api/auth/create', {
+        body: JSON.stringify({
+            solutionInstanceId,
+            externalAuthId
+        }),
+        headers: {
+            'content-type': 'application/json',
+        },
+        method: 'POST',
+        credentials: 'include'
+    })
+        .then(async res => ({
+            ok: res.ok,
+            body: await res.json(),
+        }))

@@ -17,6 +17,9 @@ import {
     deleteSolutionInstance,
 } from '../api/solutions';
 import {ConfigWizard} from "./ConfigWizard";
+import TextField from "@material-ui/core/TextField";
+import {getAuthCreateUrl} from "../api/me";
+import {openAuthWindow} from "../lib/authWindow";
 
 export class Instance extends React.PureComponent {
     state = {
@@ -24,6 +27,8 @@ export class Instance extends React.PureComponent {
         loading: false,
         instanceState: undefined,
         configWizardSrc: undefined,
+        authExternalId: undefined,
+        authUrlParams: ''
     };
 
     openWizard = (openInIframe, addCustomValidation = false) => {
@@ -70,6 +75,19 @@ export class Instance extends React.PureComponent {
         })
     };
 
+    onCreateAuth = () => {
+        getAuthCreateUrl(this.props.id, this.state.authExternalId)
+            .then(({body}) => {
+                openAuthWindow(`${body.data.popupUrl}&${this.state.authUrlParams}`);
+            })
+    };
+
+    handleChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
+    };
+
     render() {
         const {id, name} = this.props;
         const {configWizardSrc} = this.state;
@@ -100,6 +118,10 @@ export class Instance extends React.PureComponent {
                 width: "100%",
                 marginBottom: "10px"
             },
+            textFields: {
+                width: "100%",
+                margin: "10px 0",
+            }
         };
 
         return (
@@ -158,6 +180,36 @@ export class Instance extends React.PureComponent {
                                 color="primary"
                             >
                                 Delete
+                            </Button>
+                            <Typography variant="title">
+                                Create auth
+                            </Typography>
+                            <TextField
+                                style={styles.textFields}
+                                label="Auth external id"
+                                value={this.state.authExternalId}
+                                onChange={this.handleChange('authExternalId')}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                style={styles.textFields}
+                                label="Advanced Url Params"
+                                value={this.state.authUrlParams}
+                                onChange={this.handleChange('authUrlParams')}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <Button
+                                style={styles.button}
+                                onClick={this.onCreateAuth}
+                                variant="outlined"
+                                color="primary"
+                                disabled={!this.state.authExternalId}
+                            >
+                                Create auth
                             </Button>
                         </div>
                         {configWizardSrc && <ConfigWizard src={configWizardSrc} onClose={this.closeIframe}/>}
