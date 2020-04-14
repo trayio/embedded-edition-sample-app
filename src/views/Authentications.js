@@ -10,6 +10,7 @@ import { listAuths, getAuthEditUrl } from '../api/me';
 import { openAuthWindow } from "../lib/authWindow";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import TextField from "@material-ui/core/TextField";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Grid from "@material-ui/core/Grid";
@@ -31,12 +32,16 @@ export class Authentications extends React.PureComponent {
             maxWidth: "1000px",
             backgroundColor: "white",
         },
+        advancedInput: {
+            flex: 1,
+        }
     };
 
     state = {
         loading: true,
         error: false,
         auths: [],
+        params: '',
     }
 
     componentDidMount() {
@@ -101,8 +106,14 @@ export class Authentications extends React.PureComponent {
     showAuthWindow = (id) => () => {
         getAuthEditUrl(id)
             .then(({body}) => {
-                openAuthWindow(body.data.popupUrl);
+                openAuthWindow(`${body.data.popupUrl}&${this.state.params}`);
             })
+    };
+
+    handleChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
     };
 
     render() {
@@ -126,10 +137,21 @@ export class Authentications extends React.PureComponent {
                             color="primary"
                             disabled={this.state.loading}
                             onClick={this.loadAuths}
+                            style={this.styles.header}
                         >
                             Refresh
                             <RefreshIcon />
                         </Button>
+                        <TextField
+                            id="params"
+                            label="Advanced Url Params"
+                            value={this.state.params}
+                            onChange={this.handleChange('params')}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            style={this.styles.advancedInput}
+                        />
                     </Grid>
                     {this.state.error ?
                         <Error msg={this.state.error}/> :
