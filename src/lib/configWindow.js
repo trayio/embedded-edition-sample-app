@@ -10,11 +10,12 @@ export const openConfigWindow = () => {
     // Listen to popup messages
     let configFinished = false;
     const onmessage = e => {
-        console.log(`${e.data.type} event received`);
+        console.log('message', e.data.type, e.data);
 
         if (e.data.type === 'tray.configPopup.error') {
             // Handle popup error message
             alert(`Error: ${e.data.err}`);
+            configWindow.close();
         }
         if (e.data.type === 'tray.configPopup.cancel') {
             configWindow.close();
