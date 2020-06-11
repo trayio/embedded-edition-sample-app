@@ -1,5 +1,5 @@
 # Prompt for input from user:
-read -p "Enter TRAY_ENDPOINT - prod or stg (prod): " ENDPOINT
+read -p "Enter TRAY_ENDPOINT - prod, stg or fe-stg (prod): " ENDPOINT
 ENDPOINT=${ENDPOINT:-prod}
 
 read -p "Enter TRAY_PARTNER - name of partner, used for custom CSS + external route name (asana): " PARTNER
