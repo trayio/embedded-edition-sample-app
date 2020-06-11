@@ -1,25 +1,33 @@
 export const setEnvironment = () => {
     const productionGraphqlEndpoint = 'https://tray.io/graphql';
     const stagingGraphqlEndpoint = 'https://staging.tray.io/graphql';
+    const frontendStagingGraphqlEndpoint = 'https://frontend-staging.tray.io/graphql';
 
-    const appUrlStaging = 'https://embedded.staging.tray.io';
     const appUrlProd = 'https://embedded.tray.io';
+    const appUrlStaging = 'https://embedded.staging.tray.io';
+    const appUrlFrontendStaging = 'https://embedded.frontend-staging.tray.io';
 
     switch (process.env.TRAY_ENDPOINT) {
         case 'stg':
         case 'staging':
-            console.log(`ENDPOINT passed as Staging`);
+            console.log(`ENDPOINT passed as staging`);
             process.env.TRAY_ENDPOINT = stagingGraphqlEndpoint;
             process.env.TRAY_APP_URL = appUrlStaging;
             break;
         case 'prod':
         case 'production':
-            console.log(`ENDPOINT passed as Production`);
+            console.log(`ENDPOINT passed as production`);
             process.env.TRAY_ENDPOINT = productionGraphqlEndpoint;
             process.env.TRAY_APP_URL = appUrlProd;
             break;
+        case 'fe-stg':
+        case 'frontend-staging':
+            console.log(`ENDPOINT passed as frontend-staging`);
+            process.env.TRAY_ENDPOINT = frontendStagingGraphqlEndpoint;
+            process.env.TRAY_APP_URL = appUrlFrontendStaging;
+            break;
         default:
-            console.log(`No valid ENDPOINT was passed. Defaulting to Prod ${productionGraphqlEndpoint}`);
+            console.log(`No valid ENDPOINT was passed. Defaulting to production ${productionGraphqlEndpoint}`);
             process.env.TRAY_ENDPOINT = productionGraphqlEndpoint;
             process.env.TRAY_APP_URL = appUrlProd;
             break;
