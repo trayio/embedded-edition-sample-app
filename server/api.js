@@ -56,9 +56,13 @@ module.exports = function (app) {
         mutations.getGrantTokenForUser(req.session.user.trayId)
             .then(({payload}) => {
                 const authorizationCode = payload.data.generateAuthorizationCode.authorizationCode;
+                const popupUrl = req.body.solutionInstanceId && req.body.externalAuthId ?
+                    `${createAuthPath}/${req.body.solutionInstanceId}/${req.body.externalAuthId}?code=${authorizationCode}` :
+                    `${createAuthPath}?code=${authorizationCode}`;
+
                 res.status(200).send({
                     data: {
-                        popupUrl: `${createAuthPath}/${req.body.solutionInstanceId}/${req.body.externalAuthId}?code=${authorizationCode}`
+                        popupUrl 
                     }
                 });
             })
