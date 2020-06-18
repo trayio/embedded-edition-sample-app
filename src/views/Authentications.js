@@ -8,6 +8,7 @@ import { withTheme } from "@material-ui/core/styles/index";
 import Loading from '../components/Loading';
 import { listAuths, getAuthEditUrl } from '../api/me';
 import { openAuthWindow } from "../lib/authWindow";
+import { getAuthCreateUrl } from "../api/me";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import TextField from "@material-ui/core/TextField";
@@ -68,6 +69,14 @@ export class Authentications extends React.PureComponent {
                 });
         });
     }
+
+
+    onCreateAuth = () => {
+        getAuthCreateUrl()
+            .then(({body}) => {
+                openAuthWindow(`${body.data.popupUrl}&${this.state.params}`);
+            })
+    };
 
     buildList() {
         return (
@@ -132,6 +141,15 @@ export class Authentications extends React.PureComponent {
                         >
                             Authentications
                         </Typography>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            disabled={this.state.loading}
+                            onClick={this.onCreateAuth}
+                            style={this.styles.header}
+                        >
+                            New
+                        </Button>
                         <Button
                             variant="outlined"
                             color="primary"
