@@ -4,6 +4,8 @@ import Error from '../components/Error';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withTheme } from "@material-ui/core/styles/index";
 import Loading from '../components/Loading';
 import { listAuths, getAuthEditUrl } from '../api/me';
@@ -16,6 +18,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Grid from "@material-ui/core/Grid";
 import RefreshIcon from '@material-ui/icons/Refresh';
+import { AuthWizard } from '../components/AuthWizard';
 
 export class Authentications extends React.PureComponent {
 
@@ -28,12 +31,15 @@ export class Authentications extends React.PureComponent {
             margin: "20px auto",
         },
         header: {margin: "20px"},
+        headerOptions: { display: 'flex', margin: "0 20px 20px 20px" },
+        headerOption: { marginRight: "20px" },
         list: {
             margin: "10px",
             maxWidth: "1000px",
             backgroundColor: "white",
         },
         advancedInput: {
+            marginRight: "20px",
             flex: 1,
         }
     };
@@ -43,6 +49,8 @@ export class Authentications extends React.PureComponent {
         error: false,
         auths: [],
         params: '',
+        shouldOpenInFrame: false,
+        iframeURL: undefined
     }
 
     componentDidMount() {
@@ -70,11 +78,23 @@ export class Authentications extends React.PureComponent {
         });
     }
 
+    openAuthWizard = (url) => {
+        if (this.state.shouldOpenInFrame) {
+          this.setState({ iframeURL: url });
+        } else {
+          openAuthWindow(url);
+        }
+    }
+
+    closeIframe = () => {
+        this.setState({ iframeURL: undefined });
+        this.loadAuths();
+    }
 
     onCreateAuth = () => {
         getAuthCreateUrl()
             .then(({body}) => {
-                openAuthWindow(`${body.data.popupUrl}&${this.state.params}`);
+                this.openAuthWizard(`${body.data.popupUrl}&${this.state.params}`);
             })
     };
 
@@ -115,7 +135,7 @@ export class Authentications extends React.PureComponent {
     showAuthWindow = (id) => () => {
         getAuthEditUrl(id)
             .then(({body}) => {
-                openAuthWindow(`${body.data.popupUrl}&${this.state.params}`);
+                this.openAuthWizard(`${body.data.popupUrl}&${this.state.params}`);
             })
     };
 
@@ -131,50 +151,72 @@ export class Authentications extends React.PureComponent {
                 <Grid item style={this.styles.grid}>
                     <Grid
                         container
-                        direction="row"
-                        justify="flex-start"
-                        alignItems="center"
+                        direction="column"
                     >
                         <Typography
                             variant="headline"
+                            align="left"
                             style={this.styles.header}
                         >
                             Authentications
                         </Typography>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            disabled={this.state.loading}
-                            onClick={this.onCreateAuth}
-                            style={this.styles.header}
-                        >
-                            New
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            disabled={this.state.loading}
-                            onClick={this.loadAuths}
-                            style={this.styles.header}
-                        >
-                            Refresh
-                            <RefreshIcon />
-                        </Button>
-                        <TextField
-                            id="params"
-                            label="Advanced Url Params"
-                            value={this.state.params}
-                            onChange={this.handleChange('params')}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            style={this.styles.advancedInput}
-                        />
+                        <div style={this.styles.headerOptions}>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                disabled={this.state.loading}
+                                onClick={this.onCreateAuth}
+                                style={this.styles.headerOption}
+                            >
+                                New
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                disabled={this.state.loading}
+                                onClick={this.loadAuths}
+                                style={this.styles.headerOption}
+                            >
+                                Refresh
+                                <RefreshIcon />
+                            </Button>
+                            <TextField
+                                id="params"
+                                label="Advanced Url Params"
+                                value={this.state.params}
+                                onChange={this.handleChange('params')}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                style={this.styles.advancedInput}
+                            />
+                            <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    color="primary"
+                                    value={this.state.shouldOpenInFrame}
+                                    onChange={({ target: { checked } }) => {
+                                      this.setState({ shouldOpenInFrame: checked });
+                                    }}
+                                  />
+                                }
+                                label="Open in iframe"
+                            />
+                        </div>
                     </Grid>
-                    {this.state.error ?
-                        <Error msg={this.state.error}/> :
-                        this.buildList()
-                    }
+                    {this.state.error ? (
+                          <Error msg={this.state.error} />
+                     ) : (
+                         <>
+                           {this.state.iframeURL && (
+                             <AuthWizard
+                               src={this.state.iframeURL}
+                               onClose={this.closeIframe}
+                             />
+                           )}
+                           {this.buildList()}
+                         </>
+                     )}
                 </Grid>
             </View>
         );
