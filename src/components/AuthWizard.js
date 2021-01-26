@@ -21,7 +21,7 @@ export class AuthWizard extends React.PureComponent {
     console.log(`${e.data.type} event received`);
     // Here we should handle all event types
     if (e.data.type === "tray.authPopup.error") {
-      alert(`Error: ${e.data.err}`);
+      alert(`Error: ${e.data.error}`);
     }
     if (e.data.type === "tray.authpopup.close") {
       this.props.onClose();
