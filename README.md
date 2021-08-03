@@ -31,7 +31,7 @@ Your Solutions will be available to list and edit through the Tray.io GraphQL AP
 
 #### Your Partner Accounts External Users
 
-In order for your users to take advantage of the Tray.io platform, they must have a Tray account. We have set up a system to provision Tray.io accounts which will be linked to the team of your Partner user.
+In order for your users to take advantage of the Tray.io platform, they must have a Tray account. We have set up a system to provision Tray.io accounts which will be linked to the team of your Partner user. This will generate the associated tray accounts for the end users but the end users would not be aware of this.
 
 #### Your External Users Solution Instances
 
