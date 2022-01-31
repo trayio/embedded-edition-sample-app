@@ -48,7 +48,7 @@ When an external user configures a Solution, a copy of that Solution will be cre
 The application will require the following information to run:
 
 ```
-TRAY_ENDPOINT => prod / fe-stag / stg
+TRAY_ENDPOINT => prod / eu1-prod / fe-stag / stg
 
 TRAY_MASTER_TOKEN => <your partner token - must be from same environment as reference in the endpoint>
 
@@ -60,6 +60,7 @@ TRAY_PARTNER => <your partner name i.e. asana or tray.io - to retrieve partner c
  You can retrieve the token for any environment by visiting the Tray app instance for that environment i.e. 
  
  prod -> https://app.tray.io
+ eu1-prod -> https://app.eu1.tray.io
  stg -> https://app.staging.tray.io
  fe-stag -> https://app.frontend-staging.tray.io
 
