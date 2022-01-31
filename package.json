@@ -18,14 +18,14 @@
     "express-session": "^1.15.6",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.21",
     "morgan": "^1.9.0",
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^2.6.7",
     "react": "^16.4.0",
     "react-apollo": "^2.1.5",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "3.1.2",
+    "react-scripts": "5.0.0",
     "uuid": "^3.2.1"
   },
   "scripts": {
