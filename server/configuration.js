@@ -1,11 +1,13 @@
 export const setEnvironment = () => {
     const productionGraphqlEndpoint = 'https://tray.io/graphql';
     const productionEuGraphqlEndpoint = "https://eu1.tray.io/graphql";
+    const productionApGraphqlEndpoint = "https://ap1.tray.io/graphql";
     const stagingGraphqlEndpoint = 'https://staging.tray.io/graphql';
     const frontendStagingGraphqlEndpoint = 'https://frontend-staging.tray.io/graphql';
 
     const appUrlProd = 'https://embedded.tray.io';
     const appEuUrlProd = "https://embedded.eu1.tray.io";
+    const appApUrlProd = "https://embedded.ap1.tray.io";
     const appUrlStaging = 'https://embedded.staging.tray.io';
     const appUrlFrontendStaging = 'https://embedded.frontend-staging.tray.io';
 
@@ -26,6 +28,11 @@ export const setEnvironment = () => {
         case 'eu1-production':
             process.env.TRAY_ENDPOINT = productionEuGraphqlEndpoint;
             process.env.TRAY_APP_URL = appEuUrlProd;
+            break;
+        case 'ap1-prod':
+        case 'ap1-production':
+            process.env.TRAY_ENDPOINT = productionApGraphqlEndpoint;
+            process.env.TRAY_APP_URL = appApUrlProd;
             break;
         case 'fe-stg':
         case 'frontend-staging':
