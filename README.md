@@ -81,7 +81,8 @@ cat <<EOT>> .env
 TRAY_ENDPOINT=prod
 # ensure master token matches the environment chosen in "TRAY_ENDPOINT"
 TRAY_MASTER_TOKEN=<your partner token>
-# can be any partner "asana", "tray.io" etc 
+# your partner id is the embedded id found within the settings in the app, using your partner id will allow the use of
+# css stylesheets. If you do not care about styling then the partner can be "asana", "tray.io" etc
 TRAY_PARTNER=tray.io
 EOT
 ```
