@@ -66,7 +66,7 @@ TRAY_PARTNER => <your partner name i.e. asana or tray.io - to retrieve partner c
 
 You will then need to log on as a embedded user and visit `Settings & people` -> `Tokens`
 
-![getting-token](https://github.com/trayio/embedded-edition-sample-app/blob/master/.images/getting-token)
+![getting-token](https://github.com/trayio/embedded-edition-sample-app/blob/master/.images/getting-token.png)
 
 The app will bring the environment variables it needs from a `.env` file at the root of the repository.
 
