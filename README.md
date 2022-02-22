@@ -1,13 +1,13 @@
-Tray.io Embedded Edition sample application
-=================
+# Tray.io Embedded Edition sample application
 
 ## Table of Contents
 
-  * [Intro](#trayio-embedded-edition-sample-application)
-  * [Important concepts in Tray.io Embedded Edition](#important-concepts-in-trayio-embedded-edition)
-  * [Setting up and running](#setting-up-and-running-the-sample-application)
+- [Intro](#trayio-embedded-edition-sample-application)
+- [Important concepts in Tray.io Embedded Edition](#important-concepts-in-trayio-embedded-edition)
+- [Setting up and running](#setting-up-and-running-the-sample-application)
 
 ## Intro
+
 In this repo is a sample webapp which runs on top of the Tray.io Embedded Edition API - this is an application which simply allows you to create new external users linked to your Tray.io partner account, and allow them to create and configure copies of your Solutions that exist on your Tray.io partner account.
 
 ## Important concepts in Tray.io Embedded Edition
@@ -15,6 +15,7 @@ In this repo is a sample webapp which runs on top of the Tray.io Embedded Editio
 There are a few key things we should define to understand how to integrate Embedded Edition.
 
 #### Your Partner Account
+
 This is the Tray.io account we will provide for the purposes of setting up your integration to Tray.io. You will have to create any Solutions that you would like your users to use on this account. When you sign up an external user to Tray.io through your system, they will be considered to be a user linked to this account's team.
 
 #### Your Partner Accounts Workflows
@@ -39,16 +40,16 @@ When an external user configures a Solution, a copy of that Solution will be cre
 
 ### Integration details:
 
-* [Embedded Edition GraphQL API](https://tray.io/docs/article/partner-api-intro)
-* [Using the Tray.io configurator and authentication UIs from within your application](https://tray.io/docs/article/embedded-external-configuration)
-* [Authenticating your external users](https://github.com/trayio/embedded-edition-sample-app#authenticating-your-external-users)
+- [Embedded Edition GraphQL API](https://tray.io/docs/article/partner-api-intro)
+- [Using the Tray.io configurator and authentication UIs from within your application](https://tray.io/docs/article/embedded-external-configuration)
+- [Authenticating your external users](https://github.com/trayio/embedded-edition-sample-app#authenticating-your-external-users)
 
 ## Setting up and running the sample application
 
 The application will require the following information to run:
 
 ```
-TRAY_ENDPOINT => prod / eu1-prod / fe-stag / stg
+TRAY_ENDPOINT => prod / eu1-prod / fe-stg / stg
 
 TRAY_MASTER_TOKEN => <your partner token - must be from same environment as reference in the endpoint>
 
@@ -57,12 +58,12 @@ TRAY_PARTNER => <your partner name i.e. asana or tray.io - to retrieve partner c
 
 #### Getting the master token
 
- You can retrieve the token for any environment by visiting the Tray app instance for that environment i.e. 
- 
- prod -> https://app.tray.io
- eu1-prod -> https://app.eu1.tray.io
- stg -> https://app.staging.tray.io
- fe-stag -> https://app.frontend-staging.tray.io
+You can retrieve the token for any environment by visiting the Tray app instance for that environment i.e.
+
+prod -> https://app.tray.io
+eu1-prod -> https://app.eu1.tray.io
+stg -> https://app.staging.tray.io
+fe-stg -> https://app.frontend-staging.tray.io
 
 You will then need to log on as a embedded user and visit `Settings & people` -> `Tokens`
 
@@ -81,7 +82,7 @@ cat <<EOT>> .env
 TRAY_ENDPOINT=prod
 # ensure master token matches the environment chosen in "TRAY_ENDPOINT"
 TRAY_MASTER_TOKEN=<your partner token>
-# can be any partner "asana", "tray.io" etc 
+# can be any partner "asana", "tray.io" etc
 TRAY_PARTNER=tray.io
 EOT
 ```
@@ -103,7 +104,9 @@ npm run start
 ## Implementation details
 
 #### Making queries and executing mutations on the GQL API
+
 You can see the query + mutation definitions in the file `server/graphql.js`. For example the Solutions listing query for a partner account is defined as the code below:
+
 ```
     listSolutions: () => {
         const query = gql`
