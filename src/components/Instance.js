@@ -28,7 +28,8 @@ export class Instance extends React.PureComponent {
         instanceState: undefined,
         configWizardSrc: undefined,
         authExternalId: undefined,
-        authUrlParams: ''
+        authUrlParams: '',
+        accountId: ''
     };
 
     openWizard = (openInIframe, addCustomValidation = false) => {
@@ -78,7 +79,7 @@ export class Instance extends React.PureComponent {
     onCreateAuth = () => {
         getAuthCreateUrl(this.props.id, this.state.authExternalId)
             .then(({body}) => {
-                openAuthWindow(`${body.data.popupUrl}&${this.state.authUrlParams}`);
+                openAuthWindow(`${body.data.popupUrl}&${this.state.authUrlParams}`, this.state.accountId);
             })
     };
 
@@ -198,6 +199,15 @@ export class Instance extends React.PureComponent {
                                 label="Advanced Url Params"
                                 value={this.state.authUrlParams}
                                 onChange={this.handleChange('authUrlParams')}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                style={styles.textFields}
+                                label="Account id (For use with enhanced session transfer security)"
+                                value={this.state.accountId}
+                                onChange={this.handleChange('accountId')}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
